@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const socket = require('socket.io');
 const app = express();
 
 //routes
@@ -17,8 +16,8 @@ app.use(cors());
 app.use('/chat', chatRoutes);
 app.use('/users', userRoutes);
 
-mongoose.connect(process.env.MONGODB_CONNECT);
-
-app.listen(3001, () => {
-  console.log('app running');
+mongoose.connect(process.env.MONGODB_CONNECT).then((result) => {
+  const server = app.listen(3001);
+  const io = require('./socket').init(server);
+  io.on('connection', (socket) => console.log('Client connected'));
 });

@@ -1,4 +1,5 @@
 const Message = require('../model/message');
+const io = require('../socket');
 
 exports.createMessage = (req, res, next) => {
   const text = req.body.text;
@@ -14,19 +15,23 @@ exports.createMessage = (req, res, next) => {
     dateOfSending,
     creator,
   });
-  return message
+
+  message
     .save()
     .then((result) => {
+      io.getIO().emit('messages', { action: 'create', result });
       res.status(201).json({ message: 'message created' });
     })
-    .catch((err) => console.error(err));
+    .catch((err) => {
+      console.error('error when saving the message');
+    });
 };
 
 exports.getMessages = (req, res, next) => {
-  const messages = Message.find()
+  Message.find()
     .then((result) => {
-      return res.status(201).json({ message: 'Fetched Successfully!', result });
+      io.getIO().emit('messages', { action: 'get', result });
+      res.status(201).json({ message: 'Fetched Successfully!', result });
     })
     .catch((err) => console.error(err));
-  return messages;
 };

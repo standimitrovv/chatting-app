@@ -12,19 +12,25 @@ const Message: React.FC<Props> = ({ message }) => {
     .split(' ')
     .filter((el) => el.length > 1);
 
-  const hour = localHour[0].slice(0, 5) + ' ' + localHour[1];
+  const hour =
+    localHour[0].split(':').slice(0, 2).join(':') + ' ' + localHour[1];
 
   return (
-    <div className='flex'>
+    <div className='flex h-16 items-center'>
       <img
         src={message.usersImageUrl}
         alt='users profile'
         referrerPolicy='no-referrer'
+        className='rounded-full w-12 h-12'
       />
-      <div className='flex flex-col px-2'>
-        <h5>{message.usersName}</h5>
-        <p>Message: {message.text}</p>
-        <p>at {hour}</p>
+      <div>
+        <div className='flex px-2 items-center'>
+          <h5 className='font-medium'>{message.usersName}</h5>
+          <p className='font-thin text-sm text-gray-400 ml-2'>{hour}</p>
+        </div>
+        <div className='px-2'>
+          <p>{message.text}</p>
+        </div>
       </div>
     </div>
   );
