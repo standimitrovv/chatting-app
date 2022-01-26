@@ -82,25 +82,24 @@ const Input: React.FC<Props> = ({ userCredentials, updateUser }) => {
 
   return (
     <div>
-      <div className='w-11/12 fixed bottom-0 px-2 py-3 border-t border-black bg-orange-300 h-26'>
+      <div className='w-full md:w-11/12 fixed bottom-0 px-2 py-3 border-t border-gray bg-zinc-700 h-26'>
         <form
-          className='my-4 mx-2 mr-16 flex space-x-4 min-w-fit '
+          className='my-4 flex space-x-4 px-4 md:mr-28 lg:mr-24 xl:mr-20 2xl:mr-16'
           onSubmit={submitFormHandler}
         >
-          <div className='flex-1'>
-            <input
-              type='text'
-              placeholder='Write a message..'
-              className='p-3 rounded-sm w-full h-full bg-gray-200 focus-within:outline-none'
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setUsersInput(e.target.value)
-              }
-              value={usersInput}
-            />
-          </div>
+          <input
+            type='text'
+            placeholder='Write a message..'
+            className='p-3 rounded-sm w-full h-full bg-zinc-300 focus-within:outline-none '
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setUsersInput(e.target.value)
+            }
+            value={usersInput}
+          />
+
           <button
             type='submit'
-            className='w-20 bg-blue-500 rounded-sm text-white'
+            className='bg-blue-500 rounded-sm text-white font-semibold px-4 '
           >
             Send
           </button>
@@ -114,8 +113,9 @@ const Input: React.FC<Props> = ({ userCredentials, updateUser }) => {
       >
         <Box sx={style}>
           <p className='text-white text-center font-semibold'>
-            It looks like you are not logged in yet!
+            It looks like you are not signed in yet.
           </p>
+
           <div className='flex relative'>
             <img
               src={googleSvg}

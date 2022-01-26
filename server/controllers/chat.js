@@ -35,3 +35,20 @@ exports.getMessages = (req, res, next) => {
     })
     .catch((err) => console.error(err));
 };
+
+exports.deleteMessage = (req, res, next) => {
+  const messageId = req.params.messageId;
+  Message.findById(messageId)
+    .then((message) => {
+      if (!message) throw new Error('No message found');
+      else return Message.findByIdAndRemove(messageId);
+    })
+    .then((result) => {
+      io.getIO().emit('messages', { action: 'delete', result });
+      res.status(200).json({ message: 'Deleted successfully' });
+    })
+    .catch((err) => {
+      if (!err.statusCode) err.statusCode = 500;
+      next(err);
+    });
+};

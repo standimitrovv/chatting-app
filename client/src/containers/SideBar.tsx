@@ -1,6 +1,7 @@
 import React from 'react';
 import { signInWithGoogle, auth } from '../auth/firebaseConfig';
 import { apiBeginning, IUser } from '../App';
+import appLogo from '../images/logo.jpg';
 
 interface Props {
   user: IUser;
@@ -40,8 +41,16 @@ const SideBar: React.FC<Props> = ({ user, updateUser }) => {
     }
   };
   return (
-    <div className='w-60 h-full bg-slate-700'>
-      <h1>Chatting app</h1>
+    <div className='h-30 py-4 md:py-0 md:w-60  md:h-full bg-black flex flex-col items-center'>
+      <div className='md:mt-12'>
+        <img src={appLogo} alt='App logo' className='h-28 w-full md:h-full ' />
+      </div>
+      {user.fullName && (
+        <div className='text-center'>
+          <p className='text-white mt-3'>Signed in as:</p>
+          <p className='text-white font-bold'>{user.fullName.split(' ')[0]}</p>
+        </div>
+      )}
       <button
         className='mt-5 bg-slate-300 p-2 rounded-sm'
         onClick={signTheUserIn}

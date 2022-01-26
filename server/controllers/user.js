@@ -25,3 +25,15 @@ exports.createUser = (req, res, next) => {
       throw new Error('Couldnt create user profile');
     });
 };
+
+exports.getAllUsers = (req, res, next) => {
+  User.find()
+    .then((result) => {
+      res
+        .status(200)
+        .json({ message: 'Successfully fetched all the users', users: result });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};

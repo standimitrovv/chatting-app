@@ -3,6 +3,7 @@ import openSocket from 'socket.io-client';
 import Message from './components/Message';
 import SideBar from './containers/SideBar';
 import Input from './containers/Input';
+import Greeting from './containers/Greeting';
 
 export interface IMessage {
   _id: string;
@@ -52,6 +53,13 @@ const App: React.FC = () => {
       if (data.action === 'get') {
         setMessages(data.result);
       }
+      if (data.action === 'delete') {
+        const messageId = data.result._id;
+        setMessages((prevState) => {
+          prevState = prevState.filter((message) => message._id !== messageId);
+          return [...prevState];
+        });
+      }
     });
   }, []);
 
@@ -59,14 +67,19 @@ const App: React.FC = () => {
     setUser(userCredentials);
   };
 
-  console.log(messages.length - 6);
-
   return (
-    <div className='flex h-screen'>
+    <div className='flex flex-col md:flex-row h-screen'>
       <SideBar user={user} updateUser={updateUserCredentials} />
 
-      <div className='flex flex-col w-full '>
-        <div className='flex flex-col flex-1 overflow-y-scroll px-3 py-4 mb-24 space-y-3'>
+      <div className='flex flex-col w-full h-full bg-zinc-700'>
+        <Greeting messages={messages} />
+        <div
+          className={`flex flex-col flex-1 ${
+            messages.length > 16
+              ? 'overflow-y-scroll space-y-3'
+              : 'overflow-hidden space-y-1'
+          }  p-5 mb-24 `}
+        >
           {messages &&
             messages.map((msg) => <Message message={msg} key={msg._id} />)}
         </div>
