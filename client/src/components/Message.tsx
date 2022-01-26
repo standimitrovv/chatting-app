@@ -26,7 +26,7 @@ const Message: React.FC<Props> = ({ message }) => {
   };
 
   const isAdmin =
-    (message.usersName === 'Stanimir Dimitrov' &&
+    (message.usersName === process.env.REACT_APP_ADMIN_NAME &&
       message.creator === process.env.REACT_APP_ADMIN_ID_1) ||
     message.creator === process.env.REACT_APP_ADMIN_ID_2;
   return (
