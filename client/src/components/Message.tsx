@@ -27,8 +27,8 @@ const Message: React.FC<Props> = ({ message }) => {
 
   const isAdmin =
     (message.usersName === 'Stanimir Dimitrov' &&
-      message.creator === 'l3o9xgIfDOd3bczzNK7DRhBKgCu2') ||
-    message.creator === 'K1Us3j6F5cObofmMy8xoQ1jMk6r2';
+      message.creator === process.env.REACT_APP_ADMIN_ID_1) ||
+    message.creator === process.env.REACT_APP_ADMIN_ID_2;
   return (
     <div className='flex h-16 items-center'>
       <img

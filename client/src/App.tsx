@@ -20,7 +20,7 @@ export interface IUser {
   photoUrl: string;
 }
 
-export const apiBeginning = 'http://localhost:3001';
+export const apiBeginning = process.env.REACT_APP_API_SERVER!;
 
 const App: React.FC = () => {
   const [messages, setMessages] = useState<IMessage[] | []>([]);
