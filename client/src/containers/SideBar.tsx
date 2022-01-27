@@ -2,6 +2,9 @@ import React from 'react';
 import { signInWithGoogle, auth } from '../auth/firebaseConfig';
 import { apiBeginning, IUser } from '../App';
 import appLogo from '../images/logo.jpg';
+import { PlusIcon, CogIcon } from '@heroicons/react/outline';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
 
 interface Props {
   user: IUser;
@@ -41,8 +44,8 @@ const SideBar: React.FC<Props> = ({ user, updateUser }) => {
     }
   };
   return (
-    <div className='h-30 py-4 md:py-0 md:w-60  md:h-full bg-black flex flex-col items-center'>
-      <div className='md:mt-12'>
+    <div>
+      {/* <div className='md:mt-12'>
         <img src={appLogo} alt='App logo' className='h-28 w-full md:h-full ' />
       </div>
       {user.fullName && (
@@ -56,7 +59,45 @@ const SideBar: React.FC<Props> = ({ user, updateUser }) => {
         onClick={signTheUserIn}
       >
         {!user.email ? 'Sign in with Google' : 'Sign out'}
-      </button>
+      </button> */}
+
+      <div className='h-30 py-4 md:py-0 md:w-28 md:h-full bg-slate-800 flex flex-col items-center '>
+        <div className=''>
+          <div className='w-16 my-7 pb-4 border-b bg-cover cursor-pointer '>
+            <img src={appLogo} alt='App logo' className='rounded-full h-14 ' />
+          </div>
+        </div>
+        <div className='border-l-4 w-full flex justify-center group'>
+          <div className='w-14 h-14 pb-4 rounded-lg bg-blue-500 cursor-pointer group-hover:bg-blue-500 group-hover:rounded-lg'>
+            <Tooltip
+              title='All Chat'
+              placement='right'
+              arrow
+              sx={{ maxWidth: 220 }}
+            >
+              <p className='text-white w-14 h-14 flex items-center justify-center font-bold  '>
+                All
+              </p>
+            </Tooltip>
+          </div>
+        </div>
+        <div className='group'>
+          <div className='w-14 h-14 my-4 pb-4 rounded-full bg-slate-600 relative cursor-pointer group-hover:rounded-lg group-hover:bg-green-400'>
+            <Tooltip placement='right' title='Add a new channel' arrow>
+              <div className='w-14 h-14 flex items-center justify-center '>
+                <PlusIcon className='w-6 h-6 text-green-500 group-hover:text-white ' />
+              </div>
+            </Tooltip>
+          </div>
+        </div>
+        <div className='mt-auto py-7'>
+          <Tooltip title='Settings' placement='top' arrow>
+            <IconButton>
+              <CogIcon className='w-7 h-7 text-gray-200 hover:animate-spin' />
+            </IconButton>
+          </Tooltip>
+        </div>
+      </div>
     </div>
   );
 };
