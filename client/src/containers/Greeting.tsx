@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { IUser, IMessage, apiBeginning } from '../App';
+import { IUser, apiBeginning } from '../App';
+import { IMessage } from '../components/AllChat';
 
 interface Props {
   messages: IMessage[];

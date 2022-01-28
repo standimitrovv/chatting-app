@@ -1,5 +1,5 @@
 import React from 'react';
-import { IMessage } from '../App';
+import { IMessage } from './AllChat';
 import { TrashIcon } from '@heroicons/react/outline';
 
 interface Props {
