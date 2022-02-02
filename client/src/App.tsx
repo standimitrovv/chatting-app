@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-import SideBar from './containers/SideBar';
-import AllChat from './components/AllChat';
-import UserSpecificChat from './components/UserSpecificChat';
-import { IActiveChannelState } from './containers/SideBar';
+import SideBar from './components/SideBar';
+import AllChat from './AllChat/AllChat';
+import StartPage from './Start/Start';
+import { IActiveChannelState } from './components/SideBar';
 
 export interface IUser {
   fullName: string;
@@ -49,7 +49,7 @@ const App: React.FC = () => {
       {activeChannel.all && (
         <AllChat user={user} updateUser={updateUserCredentials} />
       )}
-      {activeChannel.start && <UserSpecificChat />}
+      {activeChannel.start && <StartPage />}
     </div>
   );
 };

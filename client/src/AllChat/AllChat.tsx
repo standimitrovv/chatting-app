@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Greeting from '../containers/Greeting';
+import Greeting from './Greeting';
 import Message from './Message';
-import Input from '../containers/Input';
+import Input from '../components/Input';
 import { apiBeginning, IUser } from '../App';
 import openSocket from 'socket.io-client';
 
