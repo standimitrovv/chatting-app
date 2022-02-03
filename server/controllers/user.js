@@ -1,4 +1,5 @@
-const User = require('../model/user');
+const User = require('../models/user');
+const HttpError = require('../models/error');
 
 exports.createUser = (req, res, next) => {
   const email = req.body.email;
@@ -13,27 +14,29 @@ exports.createUser = (req, res, next) => {
         return user
           .save()
           .then((result) => {
-            return res.status(201).json({ message: 'User created!' });
+            if (!result) throw new HttpError('Could not save the user', 400);
+            else return res.status(201).json({ message: 'User created!' });
           })
           .catch((err) => {
-            err.statusCode = 405;
-            throw err;
+            throw new HttpError('Something went wrong', 500);
           });
       }
     })
     .catch((error) => {
-      throw new Error('Couldnt create user profile');
+      throw new HttpError('Something went wrong, please try again later!', 500);
     });
 };
 
-exports.getAllUsers = (req, res, next) => {
-  User.find()
-    .then((result) => {
-      res
-        .status(200)
-        .json({ message: 'Successfully fetched all the users', users: result });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+exports.getAllUsers = async (req, res, next) => {
+  try {
+    const users = await User.find();
+    if (!users || users.length === 0) {
+      return next(new HttpError('No users found', 400));
+    }
+    res.json({ users });
+  } catch (err) {
+    return next(
+      new HttpError('Something went wrong, please try again later!', 500)
+    );
+  }
 };

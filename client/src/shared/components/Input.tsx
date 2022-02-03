@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { auth, signInWithGoogle } from '../auth/firebaseConfig';
-import { IUser, apiBeginning } from '../App';
+import { auth, signInWithGoogle } from '../../auth/firebaseConfig';
+import { IUser, apiBeginning } from '../../App';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import googleSvg from '../images/google.png';
+import googleSvg from '../../images/google.png';
 
 interface Props {
   userCredentials: IUser;
@@ -38,7 +38,7 @@ const Input: React.FC<Props> = ({ userCredentials, updateUser }) => {
         dateOfSending: new Date(),
         creator: userId,
       };
-      fetch(apiBeginning + '/chat/create-message', {
+      fetch(apiBeginning + '/all-chat/create-message', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

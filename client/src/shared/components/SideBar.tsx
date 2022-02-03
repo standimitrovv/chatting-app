@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { signInWithGoogle, auth } from '../auth/firebaseConfig';
-import { apiBeginning, IUser } from '../App';
-import appLogo from '../images/logo.jpg';
+import { signInWithGoogle, auth } from '../../auth/firebaseConfig';
+import { apiBeginning, IUser } from '../../App';
+import appLogo from '../../images/logo.jpg';
 import { PlusIcon, CogIcon } from '@heroicons/react/outline';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';

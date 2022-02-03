@@ -1,0 +1,45 @@
+const Conversation = require('../models/conversation');
+const HttpError = require('../models/error');
+
+exports.createConvo = async (req, res, next) => {
+  const { userId, friendId } = req.body;
+  try {
+    const existingConvo = await Conversation.findOne({
+      members: [userId, friendId],
+    });
+    if (existingConvo) {
+      res.json({ message: 'Conversation already exists', existingConvo });
+      return next(new HttpError('Conversation already exists', 400));
+    }
+    const createdConvo = new Conversation({
+      members: [userId, friendId],
+    });
+    await createdConvo.save();
+    res.json({
+      message: 'Successfully created a new conversation',
+      conv: createdConvo,
+    });
+  } catch (err) {
+    return next(
+      new HttpError('Something went wrong, please try again later!', 500)
+    );
+  }
+};
+
+exports.getConvoOfUser = async (req, res, next) => {
+  const userId = req.params.userId;
+  try {
+    const userConversations = await Conversation.find({
+      members: userId,
+    });
+    if (!userConversations || userConversations.length === 0)
+      return next(
+        new HttpError('User does not have any existing conversations', 401)
+      );
+    res.json({ userConversations });
+  } catch (err) {
+    return next(
+      new HttpError('Something went wrong, please try again later!', 500)
+    );
+  }
+};

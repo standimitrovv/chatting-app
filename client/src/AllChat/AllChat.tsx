@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Greeting from './Greeting';
 import Message from './Message';
-import Input from '../components/Input';
+import Input from '../shared/components/Input';
 import { apiBeginning, IUser } from '../App';
 import openSocket from 'socket.io-client';
 
@@ -23,7 +23,7 @@ const AllChat: React.FC<Props> = ({ user, updateUser }) => {
   const [messages, setMessages] = useState<IMessage[] | []>([]);
 
   useEffect(() => {
-    fetch(apiBeginning + '/chat/get-messages')
+    fetch(apiBeginning + '/all-chat/get-messages')
       .then((res) => res.json())
       .then((data) => setMessages(data.result))
       .catch((err) => console.error(err));

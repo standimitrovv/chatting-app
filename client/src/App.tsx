@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-import SideBar from './components/SideBar';
+import SideBar from './shared/components/SideBar';
 import AllChat from './AllChat/AllChat';
 import StartPage from './Start/Start';
-import { IActiveChannelState } from './components/SideBar';
+import { IActiveChannelState } from './shared/components/SideBar';
 
 export interface IUser {
   fullName: string;

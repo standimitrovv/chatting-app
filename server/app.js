@@ -7,21 +7,25 @@ const app = express();
 //routes
 const chatRoutes = require('./routes/chat');
 const userRoutes = require('./routes/user');
+const conversationRoutes = require('./routes/conversation');
+const messageRoutes = require('./routes/message');
 
-// API esentials
+// API essentials
 app.use(express.json());
 app.use(cors());
 
 // APIs
-app.use('/chat', chatRoutes);
+app.use('/all-chat', chatRoutes);
 app.use('/users', userRoutes);
+app.use('/conversations', conversationRoutes);
+app.use('/messages', messageRoutes);
 
 app.use((req, res, next) => {
   throw new Error('Not implemented!');
 });
 
 app.use((error, req, res, next) => {
-  if (res.headerSet) return next(error);
+  if (res.headerSent) return next(error);
   res
     .status(error.code || 500)
     .json({ message: error.message || 'An unknown error occurred' });

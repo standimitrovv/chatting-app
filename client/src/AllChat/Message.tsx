@@ -20,7 +20,7 @@ const Message: React.FC<Props> = ({ message }) => {
 
   const deleteMessage = () => {
     const messageId = message._id;
-    fetch('http://localhost:3001/chat/delete-message/' + messageId, {
+    fetch('http://localhost:3001/all-chat/delete-message/' + messageId, {
       method: 'DELETE',
     });
   };
