@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { signInWithGoogle, auth } from '../../auth/firebaseConfig';
-import { apiBeginning, IUser } from '../../App';
+import { IUser } from '../../App';
 import appLogo from '../../images/logo.jpg';
 import { PlusIcon, CogIcon } from '@heroicons/react/outline';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
+import useHttp from '../hooks/useHttp';
 
 interface Props {
   user: IUser;
@@ -26,6 +27,7 @@ const SideBar: React.FC<Props> = ({
     start: true,
     all: false,
   });
+  const { sendRequest } = useHttp();
   const signTheUserIn = () => {
     if (!user.email)
       signInWithGoogle()
@@ -36,15 +38,14 @@ const SideBar: React.FC<Props> = ({
           const userId = result.user.uid as string;
           updateUser({ fullName, email, photoUrl });
 
-          fetch(apiBeginning + '/users/create-user', {
-            method: 'POST',
-            headers: {
+          sendRequest(
+            `${process.env.REACT_APP_API_SERVER}/users/create-user`,
+            'POST',
+            JSON.stringify({ email, fullName, photoUrl, userId }),
+            {
               'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, fullName, photoUrl, userId }),
-          })
-            .then((res) => console.log(res))
-            .catch((err) => console.error(err));
+            }
+          );
           localStorage.setItem('name', fullName);
           localStorage.setItem('email', email);
           localStorage.setItem('userImg', photoUrl);

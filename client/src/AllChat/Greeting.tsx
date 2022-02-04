@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { IUser, apiBeginning } from '../App';
+import { IUser } from '../App';
 import { IMessage } from './AllChat';
+import useHttp from '../shared/hooks/useHttp';
 
 interface Props {
   messages: IMessage[];
@@ -8,13 +9,21 @@ interface Props {
 
 const Greeting: React.FC<Props> = ({ messages }) => {
   const [users, setUsers] = useState<IUser[] | []>([]);
+  const { sendRequest } = useHttp();
 
   useEffect(() => {
-    fetch(apiBeginning + '/users/get-users')
-      .then((res) => res.json())
-      .then((data) => setUsers(data.users))
-      .catch((err) => console.log(err));
-  }, []);
+    const getUsers = async () => {
+      try {
+        const { users } = await sendRequest(
+          `${process.env.REACT_APP_API_SERVER}/users/get-users`
+        );
+        setUsers(users);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getUsers();
+  }, [sendRequest]);
 
   return (
     <div className='text-white border-b px-5 py-6 text-center md:text-left'>

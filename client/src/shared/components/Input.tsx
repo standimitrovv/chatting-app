@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { auth, signInWithGoogle } from '../../auth/firebaseConfig';
-import { IUser, apiBeginning } from '../../App';
+import { IUser } from '../../App';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import googleSvg from '../../images/google.png';
+import useHttp from '../hooks/useHttp';
 
 interface Props {
   userCredentials: IUser;
@@ -25,8 +26,9 @@ const style = {
 const Input: React.FC<Props> = ({ userCredentials, updateUser }) => {
   const [usersInput, setUsersInput] = useState<string>('');
   const [isNotLogged, setIsNotLogged] = useState(false);
+  const { sendRequest } = useHttp();
 
-  const submitFormHandler = (e: React.FormEvent) => {
+  const submitFormHandler = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (usersInput.trim().length !== 0 && auth.currentUser) {
@@ -38,16 +40,14 @@ const Input: React.FC<Props> = ({ userCredentials, updateUser }) => {
         dateOfSending: new Date(),
         creator: userId,
       };
-      fetch(apiBeginning + '/all-chat/create-message', {
-        method: 'POST',
-        headers: {
+      await sendRequest(
+        `${process.env.REACT_APP_API_SERVER}/all-chat/create-message`,
+        'POST',
+        JSON.stringify(message),
+        {
           'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(message),
-      })
-        .then((res) => console.log(res))
-        .catch((err) => console.error(err));
-
+        }
+      );
       setUsersInput('');
     }
     if (!auth.currentUser) setIsNotLogged(true);
@@ -62,15 +62,15 @@ const Input: React.FC<Props> = ({ userCredentials, updateUser }) => {
         const userId = result.user.uid as string;
         updateUser({ fullName, email, photoUrl });
 
-        fetch(apiBeginning + '/users/create-user', {
-          method: 'POST',
-          headers: {
+        sendRequest(
+          `${process.env.REACT_APP_API_SERVER}/users/create-user`,
+          'POST',
+          JSON.stringify({ email, fullName, photoUrl, userId }),
+          {
             'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email, fullName, photoUrl, userId }),
-        })
-          .then((res) => console.log(res))
-          .catch((err) => console.error(err));
+          }
+        ).then((res) => console.log(res));
+
         localStorage.setItem('name', fullName);
         localStorage.setItem('email', email);
         localStorage.setItem('userImg', photoUrl);

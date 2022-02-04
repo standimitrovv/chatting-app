@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { SearchIcon, XIcon } from '@heroicons/react/outline';
-import user from '../images/user.png';
+import { SearchIcon } from '@heroicons/react/outline';
 import SearchResult from './SearchResult';
 import CircularProgress from '@mui/material/CircularProgress';
-
+import useHttp from '../shared/hooks/useHttp';
+import Conversation from './Conversation';
 export interface UserModel {
   _id: string;
   email: string;
@@ -12,47 +12,81 @@ export interface UserModel {
   userId: string;
 }
 
+export interface UserConversation {
+  members: [string];
+  _id: string;
+}
+
 const StartPage: React.FC = () => {
   const [userInput, setUserInput] = useState<string>('');
+  const [userConversations, setUserConversations] = useState<
+    UserConversation[] | []
+  >([]);
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<UserModel[] | []>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, error, sendRequest } = useHttp();
+  const userId = localStorage.getItem('userId');
 
   useEffect(() => {
     const fetchAllUsers = async () => {
-      if (userInput.length >= 2) {
+      if (userInput.trim().length >= 2) {
         try {
-          setIsLoading(true);
-          const response = await fetch('http://localhost:3001/users/get-users');
-          const { users } = await response.json();
-          if (!response.ok)
-            throw new Error('Something went wrong with getting users');
-
-          const filteredUsers = users.filter((user: UserModel) => {
-            if (userInput.trim().length < 2) return null;
-            if (user.fullName.toLowerCase().includes(userInput.toLowerCase())) {
-              return user;
-            } else return null;
-          });
+          const { users } = await sendRequest(
+            `${process.env.REACT_APP_API_SERVER}/users/get-users`
+          );
+          const allUsersExceptCurrentOne = users.filter(
+            (user: UserModel) => user.userId !== userId
+          );
+          const filteredUsers = allUsersExceptCurrentOne.filter(
+            (user: UserModel) => {
+              if (userInput.trim().length < 2) return null;
+              if (
+                user.fullName.toLowerCase().includes(userInput.toLowerCase())
+              ) {
+                return user;
+              } else return null;
+            }
+          );
           setSearchResults(filteredUsers);
-          setIsLoading(false);
         } catch (err) {
-          setIsLoading(false);
           console.error(err);
         }
       }
     };
-
     const timer = setTimeout(() => {
       fetchAllUsers();
     }, 1000);
     return () => clearTimeout(timer);
-  }, [userInput]);
+  }, [userInput, sendRequest, userId]);
 
-  const createConversation = (userId: string) => {
-    console.log(userId);
+  const createConversation = async (friendId: string) => {
     setIsSearching(false);
+    try {
+      const response = await sendRequest(
+        `${process.env.REACT_APP_API_SERVER}/conversations/create-convo`,
+        'POST',
+        JSON.stringify({ userId, friendId }),
+        { 'Content-Type': 'application/json' }
+      );
+      console.log(response);
+    } catch (err) {}
   };
+
+  const fetchUserConversation = async () => {};
+
+  useEffect(() => {
+    const getConvosOfUser = async () => {
+      try {
+        const { userConversations } = await sendRequest(
+          `${process.env.REACT_APP_API_SERVER}/conversations/get-convo/${userId}`
+        );
+        setUserConversations(userConversations);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getConvosOfUser();
+  }, [userId, sendRequest]);
 
   return (
     <div className='flex w-full'>
@@ -103,23 +137,14 @@ const StartPage: React.FC = () => {
           </div>
         )}
         <div className='flex flex-col justify-center pt-5'>
-          <div className='flex items-center px-6 py-3 group hover:bg-slate-800 cursor-pointer'>
-            <img
-              src={user}
-              alt="User's profile "
-              className='w-10 h-8 rounded-full'
-            />
-            <p className='ml-4 text-white font-semibold'>Stanimir Dimitrov</p>
-            <XIcon className='w-5 h-5 text-white cursor-pointer ml-auto hidden group-hover:inline-block' />
-          </div>
-          <div className='flex items-center px-6 py-3 space-x-4'>
-            <img
-              src={user}
-              alt="User's profile "
-              className='w-10 h-8 rounded-full'
-            />
-            <p>Stanimir Dimitrov</p>
-          </div>
+          {userConversations.map((conversation) => (
+            <div key={conversation._id} onClick={fetchUserConversation}>
+              <Conversation
+                conversation={conversation}
+                currentUserId={userId!}
+              />
+            </div>
+          ))}
         </div>
       </div>
       <div>

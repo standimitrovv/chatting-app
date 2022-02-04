@@ -40,3 +40,18 @@ exports.getAllUsers = async (req, res, next) => {
     );
   }
 };
+
+exports.getSingleUser = async (req, res, next) => {
+  const userId = req.params.userId;
+  try {
+    const user = await User.findOne({ userId });
+    if (!user || user.length === 0) {
+      return next(new HttpError('No user found', 400));
+    }
+    res.json({ user });
+  } catch (err) {
+    return next(
+      new HttpError('Something went wrong, please try again later!', 500)
+    );
+  }
+};

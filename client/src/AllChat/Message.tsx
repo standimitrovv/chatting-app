@@ -1,6 +1,7 @@
 import React from 'react';
 import { IMessage } from './AllChat';
 import { TrashIcon } from '@heroicons/react/outline';
+import useHttp from '../shared/hooks/useHttp';
 
 interface Props {
   message: IMessage;
@@ -13,16 +14,22 @@ const Message: React.FC<Props> = ({ message }) => {
     .split(' ')
     .filter((el) => el.length > 1);
 
+  const { sendRequest } = useHttp();
   const userId = localStorage.getItem('userId');
   const canDeleteMessage = message.creator === userId;
   const hour =
     localHour[0].split(':').slice(0, 2).join(':') + ' ' + localHour[1];
 
-  const deleteMessage = () => {
+  const deleteMessage = async () => {
     const messageId = message._id;
-    fetch('http://localhost:3001/all-chat/delete-message/' + messageId, {
-      method: 'DELETE',
-    });
+    try {
+      await sendRequest(
+        `${process.env.REACT_APP_API_SERVER}/all-chat/delete-message/${messageId}`,
+        'DELETE'
+      );
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const isAdmin =

@@ -11,8 +11,6 @@ export interface IUser {
   photoUrl: string;
 }
 
-export const apiBeginning = process.env.REACT_APP_API_SERVER!;
-
 const App: React.FC = () => {
   const [user, setUser] = useState<IUser>({
     fullName: '',

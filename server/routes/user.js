@@ -7,4 +7,6 @@ router.post('/create-user', user.createUser);
 
 router.get('/get-users', user.getAllUsers);
 
+router.get('/get-users/:userId', user.getSingleUser);
+
 module.exports = router;

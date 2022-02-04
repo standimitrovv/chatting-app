@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Greeting from './Greeting';
 import Message from './Message';
 import Input from '../shared/components/Input';
-import { apiBeginning, IUser } from '../App';
+import { IUser } from '../App';
 import openSocket from 'socket.io-client';
+import useHttp from '../shared/hooks/useHttp';
 
 export interface IMessage {
   _id: string;
@@ -21,16 +22,24 @@ interface Props {
 
 const AllChat: React.FC<Props> = ({ user, updateUser }) => {
   const [messages, setMessages] = useState<IMessage[] | []>([]);
+  const { sendRequest } = useHttp();
 
   useEffect(() => {
-    fetch(apiBeginning + '/all-chat/get-messages')
-      .then((res) => res.json())
-      .then((data) => setMessages(data.result))
-      .catch((err) => console.error(err));
-  }, []);
+    const getMessages = async () => {
+      try {
+        const { result } = await sendRequest(
+          `${process.env.REACT_APP_API_SERVER}/all-chat/get-messages`
+        );
+        setMessages(result);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getMessages();
+  }, [sendRequest]);
 
   useEffect(() => {
-    const socket = openSocket(apiBeginning);
+    const socket = openSocket(process.env.REACT_APP_API_SERVER!);
     socket.on('messages', (data) => {
       if (data.action === 'create') {
         setMessages((prevState) => [...prevState, data.result]);
