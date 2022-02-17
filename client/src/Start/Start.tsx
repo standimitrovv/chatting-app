@@ -17,10 +17,20 @@ export interface UserConversation {
   _id: string;
 }
 
+interface ConversationMessages {
+  _id: string;
+  text: string;
+  conversationId: string;
+  sender: string;
+}
+
 const StartPage: React.FC = () => {
   const [userInput, setUserInput] = useState<string>('');
   const [userConversations, setUserConversations] = useState<
     UserConversation[] | []
+  >([]);
+  const [conversationMessages, setConversationMessages] = useState<
+    ConversationMessages[] | []
   >([]);
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<UserModel[] | []>([]);
@@ -72,7 +82,19 @@ const StartPage: React.FC = () => {
     } catch (err) {}
   };
 
-  const fetchUserConversation = async () => {};
+  const fetchUserConversation = async (conversationId: string) => {
+    try {
+      const response = await sendRequest(
+        `${process.env.REACT_APP_API_SERVER}/messages/get-messages/${conversationId}`
+      );
+      if (response) {
+        console.log(response);
+        setConversationMessages(response.messages);
+      }
+    } catch (err) {}
+  };
+
+  console.log(conversationMessages);
 
   useEffect(() => {
     const getConvosOfUser = async () => {
@@ -91,54 +113,62 @@ const StartPage: React.FC = () => {
   return (
     <div className='flex w-full'>
       <div className='w-1/5 bg-slate-500 relative'>
-        <div className='flex items-center relative pt-9 pb-6 px-4 border-b'>
-          {!isLoading ? (
-            <SearchIcon className='h-5 w-5 text-white absolute left-7' />
-          ) : (
-            <CircularProgress
-              size={20}
-              className='w-full text-white absolute left-7 top-[2.9rem]'
-            />
-          )}
-
-          <input
-            type='text'
-            placeholder='Search for a friend...'
-            className='rounded-md py-2 pl-12 bg-gray-600 text-white font-bold focus-within:outline-none w-full'
-            onChange={(e) => setUserInput(e.target.value)}
-            onClick={() => setIsSearching((prevState) => !prevState)}
-            value={userInput}
-          />
-        </div>
-        {isSearching && userInput.trim().length >= 1 && (
-          <div
-            className={`w-[15.6rem] bg-orange-400 absolute top-20 left-[1.05rem] -mt-1 flex flex-col text-center ${
-              searchResults.length === 0 || isLoading
-                ? 'h-11 flex items-center justify-center '
-                : 'h-fit'
-            }`}
-          >
-            {isLoading && searchResults.length === 0 ? (
-              <p>Loading..</p>
-            ) : userInput.length === 1 ? (
-              <p>Enter one more character please.</p>
-            ) : searchResults.length === 0 && !isLoading ? (
-              <p>No results found.</p>
-            ) : (
-              searchResults.map((result) => (
-                <div
-                  key={result._id}
-                  onClick={() => createConversation(result.userId)}
-                >
-                  <SearchResult userData={result} />
-                </div>
-              ))
+        <div className='flex relative pt-9 pb-6 px-4 border-b'>
+          <div className='w-full relative'>
+            <div className='flex items-center relative justify-between'>
+              {!isLoading ? (
+                <SearchIcon className='h-5 w-5 text-white absolute left-4' />
+              ) : (
+                <CircularProgress
+                  size={20}
+                  className='w-full text-white absolute left-4 top-[2.9rem]'
+                />
+              )}
+              <input
+                type='text'
+                placeholder='Search for a friend...'
+                className='rounded-md py-2 pl-12 bg-gray-600 text-white font-bold focus-within:outline-none w-full'
+                onChange={(e) => setUserInput(e.target.value)}
+                onClick={() => setIsSearching((prevState) => !prevState)}
+                value={userInput}
+              />
+            </div>
+            {isSearching && userInput.trim().length >= 1 && (
+              <div
+                className={`bg-orange-400 rounded-lg flex flex-col text-center absolute w-full ${
+                  searchResults.length === 0 || isLoading
+                    ? 'h-11 flex items-center justify-center '
+                    : 'h-fit'
+                }`}
+              >
+                {isLoading && searchResults.length === 0 ? (
+                  <p className='py-3 px-2 w-full'>Loading..</p>
+                ) : userInput.length === 1 ? (
+                  <p className='py-3 px-2 w-full'>
+                    Enter one more character please.
+                  </p>
+                ) : searchResults.length === 0 && !isLoading ? (
+                  <p className='py-3 px-2 w-full'>No results found.</p>
+                ) : (
+                  searchResults.map((result) => (
+                    <div
+                      key={result._id}
+                      onClick={() => createConversation(result.userId)}
+                    >
+                      <SearchResult userData={result} />
+                    </div>
+                  ))
+                )}
+              </div>
             )}
           </div>
-        )}
+        </div>
         <div className='flex flex-col justify-center pt-5'>
           {userConversations.map((conversation) => (
-            <div key={conversation._id} onClick={fetchUserConversation}>
+            <div
+              key={conversation._id}
+              onClick={() => fetchUserConversation(conversation._id)}
+            >
               <Conversation
                 conversation={conversation}
                 currentUserId={userId!}
@@ -147,8 +177,10 @@ const StartPage: React.FC = () => {
           ))}
         </div>
       </div>
-      <div>
-        <p>User specific chat</p>
+      <div className='bg-cyan-400 w-[80%] px-7 py-12'>
+        {error && <p>{error}</p>}
+        {conversationMessages &&
+          conversationMessages.map((m) => <div key={m._id}>{m.text}</div>)}
       </div>
     </div>
   );

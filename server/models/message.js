@@ -9,6 +9,7 @@ const MessageSchema = new Schema({
   sender: {
     type: String,
     required: true,
+    ref: 'Users',
   },
   text: {
     type: String,

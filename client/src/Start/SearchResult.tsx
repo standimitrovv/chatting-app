@@ -7,7 +7,7 @@ interface Props {
 
 const SearchResult: React.FC<Props> = ({ userData }) => {
   return (
-    <div className='flex py-3 px-4 w-full hover:bg-gray-500 cursor-pointer'>
+    <div className='flex items-center py-3 px-4 w-full hover:bg-gray-500 cursor-pointer'>
       <img
         src={userData.photoUrl}
         alt='user profile'

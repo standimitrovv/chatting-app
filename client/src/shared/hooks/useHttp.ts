@@ -24,14 +24,15 @@ const useHttp = () => {
           body,
           headers,
         });
+        console.log(response);
         const responseData = await response.json();
-        if (!response.ok) throw new Error('An error occurred');
+        if (!response.ok) throw new Error(responseData.message);
         setIsLoading(false);
         return responseData;
       } catch (err: any) {
         setIsLoading(false);
         setError(err.message);
-        throw err;
+        return;
       }
     },
     []

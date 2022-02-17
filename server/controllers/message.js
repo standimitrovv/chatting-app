@@ -9,7 +9,17 @@ exports.createMessage = async (req, res, next) => {
       sender,
       text,
     });
-    await createdMessage.save();
+
+    try {
+      await createdMessage.save();
+    } catch (err) {
+      const error = new HttpError(
+        'Creating message failed, please try again.',
+        500
+      );
+      return next(error);
+    }
+
     res.json({ message: 'Successfully created a message', createdMessage });
   } catch (err) {
     return next(
@@ -21,8 +31,11 @@ exports.createMessage = async (req, res, next) => {
 exports.getConvoMessages = async (req, res, next) => {
   const convoId = req.params.convoId;
   try {
-    const messages = await Message.find({ conversationId: convoId });
-    if (!messages || messages.length === 0)
+    const messages = await Message.find({
+      conversationId: convoId,
+    }).populate('sender');
+
+    if (messages.length === 0)
       return next(
         new HttpError('No messages found for the current conversation', 400)
       );

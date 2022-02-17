@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
-
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from './auth/authContext';
 import SideBar from './shared/components/SideBar';
 import AllChat from './AllChat/AllChat';
 import StartPage from './Start/Start';
 import { IActiveChannelState } from './shared/components/SideBar';
+import ContextProvider from './auth/ContextProvider';
 
 export interface IUser {
   fullName: string;
@@ -12,6 +13,8 @@ export interface IUser {
 }
 
 const App: React.FC = () => {
+  const userD = useContext(AuthContext);
+  console.log(userD);
   const [user, setUser] = useState<IUser>({
     fullName: '',
     email: '',
@@ -38,17 +41,19 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className='flex flex-col md:flex-row h-screen'>
-      <SideBar
-        user={user}
-        updateUser={updateUserCredentials}
-        switchTheActiveChannel={handleActiveChannel}
-      />
-      {activeChannel.all && (
-        <AllChat user={user} updateUser={updateUserCredentials} />
-      )}
-      {activeChannel.start && <StartPage />}
-    </div>
+    <ContextProvider>
+      <div className='flex flex-col md:flex-row h-screen'>
+        <SideBar
+          user={user}
+          updateUser={updateUserCredentials}
+          switchTheActiveChannel={handleActiveChannel}
+        />
+        {activeChannel.all && (
+          <AllChat user={user} updateUser={updateUserCredentials} />
+        )}
+        {activeChannel.start && <StartPage />}
+      </div>
+    </ContextProvider>
   );
 };
 
