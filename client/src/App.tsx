@@ -14,7 +14,7 @@ export interface IUser {
 
 const App: React.FC = () => {
   const userD = useContext(AuthContext);
-  console.log(userD);
+  console.log(userD.userCredentials);
   const [user, setUser] = useState<IUser>({
     fullName: '',
     email: '',
@@ -26,15 +26,11 @@ const App: React.FC = () => {
   });
 
   useEffect(() => {
-    const fullName = localStorage.getItem('name') as string;
-    const email = localStorage.getItem('email') as string;
-    const photoUrl = localStorage.getItem('userImg') as string;
-    setUser({ fullName, email, photoUrl });
+    const { email, fullName, photoUrl } = JSON.parse(
+      localStorage.getItem('userData')!
+    );
+    // console.log(userData);
   }, []);
-
-  const updateUserCredentials = (userCredentials: IUser) => {
-    setUser(userCredentials);
-  };
 
   const handleActiveChannel = (channelState: IActiveChannelState) => {
     setActiveChannel(channelState);
@@ -43,14 +39,8 @@ const App: React.FC = () => {
   return (
     <ContextProvider>
       <div className='flex flex-col md:flex-row h-screen'>
-        <SideBar
-          user={user}
-          updateUser={updateUserCredentials}
-          switchTheActiveChannel={handleActiveChannel}
-        />
-        {activeChannel.all && (
-          <AllChat user={user} updateUser={updateUserCredentials} />
-        )}
+        <SideBar user={user} switchTheActiveChannel={handleActiveChannel} />
+        {activeChannel.all && <AllChat user={user} />}
         {activeChannel.start && <StartPage />}
       </div>
     </ContextProvider>

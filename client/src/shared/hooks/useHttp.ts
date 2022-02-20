@@ -24,7 +24,6 @@ const useHttp = () => {
           body,
           headers,
         });
-        console.log(response);
         const responseData = await response.json();
         if (!response.ok) throw new Error(responseData.message);
         setIsLoading(false);

@@ -33,7 +33,7 @@ exports.getConvoMessages = async (req, res, next) => {
   try {
     const messages = await Message.find({
       conversationId: convoId,
-    }).populate('sender');
+    });
 
     if (messages.length === 0)
       return next(

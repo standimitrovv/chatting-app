@@ -6,9 +6,14 @@ import useHttp from '../shared/hooks/useHttp';
 interface Props {
   conversation: UserConversation;
   currentUserId: string;
+  isActive: boolean;
 }
 
-const Conversation: React.FC<Props> = ({ conversation, currentUserId }) => {
+const Conversation: React.FC<Props> = ({
+  conversation,
+  currentUserId,
+  isActive,
+}) => {
   const [friendData, setFriendData] = useState<UserModel>({
     _id: '',
     email: '',
@@ -30,7 +35,11 @@ const Conversation: React.FC<Props> = ({ conversation, currentUserId }) => {
   }, [sendRequest, conversation.members, currentUserId]);
 
   return (
-    <div className='flex items-center px-6 py-3 group hover:bg-slate-800 cursor-pointer'>
+    <div
+      className={`${
+        isActive && 'bg-slate-800'
+      } flex items-center px-6 py-3 group hover:bg-slate-800 cursor-pointer`}
+    >
       <img
         src={friendData.photoUrl}
         alt="User's profile "

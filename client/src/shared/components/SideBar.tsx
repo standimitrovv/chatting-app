@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../../auth/authContext';
 import { signInWithGoogle, auth } from '../../auth/firebaseConfig';
 import { IUser } from '../../App';
 import appLogo from '../../images/logo.jpg';
@@ -9,7 +10,6 @@ import useHttp from '../hooks/useHttp';
 
 interface Props {
   user: IUser;
-  updateUser: (userCredentials: IUser) => void;
   switchTheActiveChannel: (channelState: IActiveChannelState) => void;
 }
 
@@ -18,11 +18,8 @@ export interface IActiveChannelState {
   all: boolean;
 }
 
-const SideBar: React.FC<Props> = ({
-  user,
-  updateUser,
-  switchTheActiveChannel,
-}) => {
+const SideBar: React.FC<Props> = ({ user, switchTheActiveChannel }) => {
+  const { userCredentials, login, logout } = useContext(AuthContext);
   const [activeChannel, setActiveChannel] = useState<IActiveChannelState>({
     start: true,
     all: false,
@@ -36,7 +33,7 @@ const SideBar: React.FC<Props> = ({
           const email = result.user.email as string;
           const photoUrl = result.user.photoURL as string;
           const userId = result.user.uid as string;
-          updateUser({ fullName, email, photoUrl });
+          login({ email, fullName, photoUrl, userId });
 
           sendRequest(
             `${process.env.REACT_APP_API_SERVER}/users/create-user`,
@@ -46,14 +43,10 @@ const SideBar: React.FC<Props> = ({
               'Content-Type': 'application/json',
             }
           );
-          localStorage.setItem('name', fullName);
-          localStorage.setItem('email', email);
-          localStorage.setItem('userImg', photoUrl);
-          localStorage.setItem('userId', userId);
         })
         .catch((err) => console.error(err));
     else {
-      localStorage.clear();
+      logout();
       auth.signOut();
       window.location.reload();
     }
@@ -65,21 +58,22 @@ const SideBar: React.FC<Props> = ({
 
   return (
     <div>
-      {/* <div className='md:mt-12'>
-        <img src={appLogo} alt='App logo' className='h-28 w-full md:h-full ' />
+      <div className='w-8'>
+        {user.fullName && (
+          <div className='text-center'>
+            <p className='text-white mt-3'>Signed in as:</p>
+            <p className='text-white font-bold'>
+              {user.fullName.split(' ')[0]}
+            </p>
+          </div>
+        )}
+        <button
+          className='mt-5 bg-slate-300 p-2 rounded-sm'
+          onClick={signTheUserIn}
+        >
+          {!userCredentials?.email ? 'Sign in with Google' : 'Sign out'}
+        </button>
       </div>
-      {user.fullName && (
-        <div className='text-center'>
-          <p className='text-white mt-3'>Signed in as:</p>
-          <p className='text-white font-bold'>{user.fullName.split(' ')[0]}</p>
-        </div>
-      )}
-      <button
-        className='mt-5 bg-slate-300 p-2 rounded-sm'
-        onClick={signTheUserIn}
-      >
-        {!user.email ? 'Sign in with Google' : 'Sign out'}
-      </button> */}
 
       <div className='py-4 md:py-0 md:w-28 md:h-full bg-slate-800 flex flex-col items-center relative'>
         <div

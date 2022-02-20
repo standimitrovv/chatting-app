@@ -17,10 +17,9 @@ export interface IMessage {
 
 interface Props {
   user: IUser;
-  updateUser: (userCredentials: IUser) => void;
 }
 
-const AllChat: React.FC<Props> = ({ user, updateUser }) => {
+const AllChat: React.FC<Props> = ({ user }) => {
   const [messages, setMessages] = useState<IMessage[] | []>([]);
   const { sendRequest } = useHttp();
 
@@ -54,9 +53,9 @@ const AllChat: React.FC<Props> = ({ user, updateUser }) => {
     });
   }, []);
 
-  const updateUserCredentials = (userCredentials: IUser) => {
-    updateUser(userCredentials);
-  };
+  // const updateUserCredentials = (userCredentials: IUser) => {
+  //   updateUser(userCredentials);
+  // };
   return (
     <div className='flex flex-col w-full h-full bg-zinc-700'>
       <Greeting messages={messages} />
@@ -71,7 +70,7 @@ const AllChat: React.FC<Props> = ({ user, updateUser }) => {
           messages.map((msg) => <Message message={msg} key={msg._id} />)}
       </div>
 
-      <Input userCredentials={user} updateUser={updateUserCredentials} />
+      <Input userCredentials={user} />
     </div>
   );
 };

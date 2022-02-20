@@ -4,6 +4,7 @@ import SearchResult from './SearchResult';
 import CircularProgress from '@mui/material/CircularProgress';
 import useHttp from '../shared/hooks/useHttp';
 import Conversation from './Conversation';
+import ChatMessages from './ChatMessages';
 export interface UserModel {
   _id: string;
   email: string;
@@ -17,7 +18,7 @@ export interface UserConversation {
   _id: string;
 }
 
-interface ConversationMessages {
+export interface ConversationMessages {
   _id: string;
   text: string;
   conversationId: string;
@@ -32,6 +33,7 @@ const StartPage: React.FC = () => {
   const [conversationMessages, setConversationMessages] = useState<
     ConversationMessages[] | []
   >([]);
+  const [activeConvo, setActiveConvo] = useState<string>('');
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<UserModel[] | []>([]);
   const { isLoading, error, sendRequest } = useHttp();
@@ -88,13 +90,11 @@ const StartPage: React.FC = () => {
         `${process.env.REACT_APP_API_SERVER}/messages/get-messages/${conversationId}`
       );
       if (response) {
-        console.log(response);
         setConversationMessages(response.messages);
+        setActiveConvo(conversationId);
       }
     } catch (err) {}
   };
-
-  console.log(conversationMessages);
 
   useEffect(() => {
     const getConvosOfUser = async () => {
@@ -172,15 +172,22 @@ const StartPage: React.FC = () => {
               <Conversation
                 conversation={conversation}
                 currentUserId={userId!}
+                isActive={conversation._id === activeConvo}
               />
             </div>
           ))}
         </div>
       </div>
-      <div className='bg-cyan-400 w-[80%] px-7 py-12'>
+      <div className='bg-cyan-400 w-[80%] py-12'>
         {error && <p>{error}</p>}
         {conversationMessages &&
-          conversationMessages.map((m) => <div key={m._id}>{m.text}</div>)}
+          conversationMessages.map((m) => (
+            <ChatMessages
+              key={m._id}
+              own={m.sender === userId}
+              conversation={m}
+            />
+          ))}
       </div>
     </div>
   );
