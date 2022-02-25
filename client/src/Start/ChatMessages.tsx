@@ -22,7 +22,7 @@ const ChatMessages: React.FC<Props> = ({ own, conversation }) => {
           <p>{conversation.text}</p>
         </div>
       </div>
-      <Input userCredentials={{ fullName: '', email: '', photoUrl: '' }} />
+      <Input userCredentials={userCredentials!} />
     </div>
   );
 };

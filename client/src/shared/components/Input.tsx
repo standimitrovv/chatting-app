@@ -25,12 +25,11 @@ const style = {
 
 const Input: React.FC<Props> = ({ userCredentials }) => {
   const [usersInput, setUsersInput] = useState<string>('');
-  const { isLoggedIn, login, logout } = useContext(AuthContext);
+  const { isLoggedIn, login } = useContext(AuthContext);
   const { sendRequest } = useHttp();
 
   const submitFormHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(auth.currentUser);
 
     if (usersInput.trim().length !== 0 && auth.currentUser) {
       const userId = localStorage.getItem('userId');
@@ -52,7 +51,6 @@ const Input: React.FC<Props> = ({ userCredentials }) => {
 
       setUsersInput('');
     }
-    if (!auth.currentUser) console.log('not logged');
   };
 
   const signTheUserIn = () => {
@@ -103,7 +101,7 @@ const Input: React.FC<Props> = ({ userCredentials }) => {
         </form>
       </div>
       <Modal
-        open={isLoggedIn}
+        open={!isLoggedIn}
         // onClose={() => setIsNotLogged(false)}
         aria-labelledby='modal-modal-title'
         aria-describedby='modal-modal-description'

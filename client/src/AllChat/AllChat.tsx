@@ -53,9 +53,6 @@ const AllChat: React.FC<Props> = ({ user }) => {
     });
   }, []);
 
-  // const updateUserCredentials = (userCredentials: IUser) => {
-  //   updateUser(userCredentials);
-  // };
   return (
     <div className='flex flex-col w-full h-full bg-zinc-700'>
       <Greeting messages={messages} />

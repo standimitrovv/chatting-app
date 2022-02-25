@@ -9,7 +9,12 @@ const ContextProvider: React.FC<Props> = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userCredentials, setUserCredentials] = useState<
     UserCredentials | undefined
-  >(undefined);
+  >({
+    email: '',
+    fullName: '',
+    photoUrl: '',
+    userId: '',
+  });
 
   const login = (userCredentials: UserCredentials) => {
     setIsLoggedIn(true);

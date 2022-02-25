@@ -7,6 +7,7 @@ import { PlusIcon, CogIcon } from '@heroicons/react/outline';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import useHttp from '../hooks/useHttp';
+import Settings from './Settings';
 
 interface Props {
   user: IUser;
@@ -58,23 +59,6 @@ const SideBar: React.FC<Props> = ({ user, switchTheActiveChannel }) => {
 
   return (
     <div>
-      <div className='w-8'>
-        {user.fullName && (
-          <div className='text-center'>
-            <p className='text-white mt-3'>Signed in as:</p>
-            <p className='text-white font-bold'>
-              {user.fullName.split(' ')[0]}
-            </p>
-          </div>
-        )}
-        <button
-          className='mt-5 bg-slate-300 p-2 rounded-sm'
-          onClick={signTheUserIn}
-        >
-          {!userCredentials?.email ? 'Sign in with Google' : 'Sign out'}
-        </button>
-      </div>
-
       <div className='py-4 md:py-0 md:w-28 md:h-full bg-slate-800 flex flex-col items-center relative'>
         <div
           className='w-full group flex justify-center items-center my-4'
@@ -135,13 +119,7 @@ const SideBar: React.FC<Props> = ({ user, switchTheActiveChannel }) => {
             </Tooltip>
           </div>
         </div>
-        <div className='mt-auto py-7'>
-          <Tooltip title='Settings' placement='top' arrow>
-            <IconButton>
-              <CogIcon className='w-7 h-7 text-gray-200 hover:animate-spin' />
-            </IconButton>
-          </Tooltip>
-        </div>
+        <Settings />
       </div>
     </div>
   );

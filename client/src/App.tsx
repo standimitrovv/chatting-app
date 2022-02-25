@@ -4,46 +4,42 @@ import SideBar from './shared/components/SideBar';
 import AllChat from './AllChat/AllChat';
 import StartPage from './Start/Start';
 import { IActiveChannelState } from './shared/components/SideBar';
-import ContextProvider from './auth/ContextProvider';
 
 export interface IUser {
   fullName: string;
   email: string;
   photoUrl: string;
+  userId: string;
 }
 
 const App: React.FC = () => {
-  const userD = useContext(AuthContext);
-  console.log(userD.userCredentials);
-  const [user, setUser] = useState<IUser>({
-    fullName: '',
-    email: '',
-    photoUrl: '',
-  });
+  const { userCredentials, login } = useContext(AuthContext);
   const [activeChannel, setActiveChannel] = useState<IActiveChannelState>({
     start: true,
     all: false,
   });
 
   useEffect(() => {
-    const { email, fullName, photoUrl } = JSON.parse(
-      localStorage.getItem('userData')!
+    const userData = JSON.parse(localStorage.getItem('userData')!);
+    const userCreds = Object.values(userCredentials!).every(
+      (el) => el.length !== 0
     );
-    // console.log(userData);
-  }, []);
+    if (userData && !userCreds) login(userData);
+  }, [login, userCredentials]);
 
   const handleActiveChannel = (channelState: IActiveChannelState) => {
     setActiveChannel(channelState);
   };
 
   return (
-    <ContextProvider>
-      <div className='flex flex-col md:flex-row h-screen'>
-        <SideBar user={user} switchTheActiveChannel={handleActiveChannel} />
-        {activeChannel.all && <AllChat user={user} />}
-        {activeChannel.start && <StartPage />}
-      </div>
-    </ContextProvider>
+    <div className='flex flex-col md:flex-row h-screen'>
+      <SideBar
+        user={userCredentials!}
+        switchTheActiveChannel={handleActiveChannel}
+      />
+      {activeChannel.all && <AllChat user={userCredentials!} />}
+      {activeChannel.start && <StartPage />}
+    </div>
   );
 };
 

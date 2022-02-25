@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../auth/authContext';
 import { SearchIcon } from '@heroicons/react/outline';
 import SearchResult from './SearchResult';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -37,7 +38,8 @@ const StartPage: React.FC = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<UserModel[] | []>([]);
   const { isLoading, error, sendRequest } = useHttp();
-  const userId = localStorage.getItem('userId');
+  const { userCredentials } = useContext(AuthContext);
+  const userId = userCredentials?.userId;
 
   useEffect(() => {
     const fetchAllUsers = async () => {
@@ -179,7 +181,6 @@ const StartPage: React.FC = () => {
         </div>
       </div>
       <div className='bg-cyan-400 w-[80%] py-12'>
-        {error && <p>{error}</p>}
         {conversationMessages &&
           conversationMessages.map((m) => (
             <ChatMessages
