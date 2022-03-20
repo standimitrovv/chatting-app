@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import { CogIcon } from '@heroicons/react/outline';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
+import { DialogMenu } from './Dialog';
 
 const Settings = () => {
   const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false);
@@ -12,16 +11,6 @@ const Settings = () => {
 
   const handleDialogClose = () => setDialogIsOpen(false);
 
-  const DialogComponent: React.FC<{
-    onClose: () => void;
-    open: boolean;
-  }> = () => (
-    <Dialog onClose={handleDialogClose} open={dialogIsOpen}>
-      <DialogTitle>User Settings</DialogTitle>
-      <p>Signed in as: </p>
-      <button>Log in/Log out</button>
-    </Dialog>
-  );
   return (
     <>
       <div className='mt-auto py-7' onClick={handleDialogOpen}>
@@ -31,7 +20,10 @@ const Settings = () => {
           </IconButton>
         </Tooltip>
       </div>
-      <DialogComponent onClose={handleDialogClose} open={dialogIsOpen} />
+      <DialogMenu
+        onCloseDialog={handleDialogClose}
+        dialogIsOpen={dialogIsOpen}
+      />
     </>
   );
 };
