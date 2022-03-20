@@ -26,7 +26,7 @@ export const DialogMenu: React.FC<Props> = ({
 
   return (
     <Dialog onClose={onCloseDialog} open={dialogIsOpen} fullWidth={true}>
-      <div className='flex items-center justify-between pr-6'>
+      <div className='flex items-center justify-between pr-6 border-b border-gray-300'>
         <DialogTitle>My Account</DialogTitle>
         <XIcon className='w-5 h-5 cursor-pointer' onClick={onCloseDialog} />
       </div>

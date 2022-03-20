@@ -25,6 +25,7 @@ const Conversation: React.FC<Props> = ({
 
   useEffect(() => {
     const friendId = conversation.members.find((id) => id !== currentUserId);
+    if (!friendId) return;
     const getDataOfFriend = async () => {
       const { user } = await sendRequest(
         `${process.env.REACT_APP_API_SERVER}/users/get-users/${friendId}`
@@ -41,12 +42,14 @@ const Conversation: React.FC<Props> = ({
       } flex items-center px-6 py-3 group hover:bg-slate-800 cursor-pointer`}
     >
       <img
-        src={friendData.photoUrl}
+        src={friendData && friendData.photoUrl}
         alt="User's profile "
         className='w-8 h-8 rounded-full'
         referrerPolicy='no-referrer'
       />
-      <p className='ml-4 text-white font-semibold'>{friendData.fullName}</p>
+      <p className='ml-4 text-white font-semibold'>
+        {friendData && friendData.fullName}
+      </p>
       <XIcon className='w-5 h-5 text-white cursor-pointer ml-auto hidden group-hover:inline-block' />
     </div>
   );

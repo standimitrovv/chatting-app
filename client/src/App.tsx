@@ -4,6 +4,7 @@ import SideBar from './shared/components/SideBar';
 import AllChat from './AllChat/AllChat';
 import StartPage from './Start/Start';
 import { IActiveChannelState } from './shared/components/SideBar';
+import { NotAuthorized } from './shared/components/NotAuthorized';
 
 export interface IUser {
   fullName: string;
@@ -21,10 +22,12 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem('userData')!);
-    const userCreds = Object.values(userCredentials!).every(
-      (el) => el.length !== 0
-    );
-    if (userData && !userCreds) login(userData);
+    if (userData && userCredentials) {
+      const userCreds = Object.values(userCredentials).every(
+        (el) => el.length !== 0
+      );
+      if (!userCreds) login(userData);
+    }
   }, [login, userCredentials]);
 
   const handleActiveChannel = (channelState: IActiveChannelState) => {
@@ -32,14 +35,19 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className='flex flex-col md:flex-row h-screen'>
-      <SideBar
-        user={userCredentials!}
-        switchTheActiveChannel={handleActiveChannel}
-      />
-      {activeChannel.all && <AllChat user={userCredentials!} />}
-      {activeChannel.start && <StartPage />}
-    </div>
+    <>
+      {userCredentials && (
+        <div className='flex flex-col md:flex-row h-screen'>
+          <SideBar
+            user={userCredentials}
+            switchTheActiveChannel={handleActiveChannel}
+          />
+          {activeChannel.all && <AllChat user={userCredentials} />}
+          {activeChannel.start && <StartPage />}
+        </div>
+      )}
+      {!userCredentials && <NotAuthorized />}
+    </>
   );
 };
 

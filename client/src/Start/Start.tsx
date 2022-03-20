@@ -75,6 +75,7 @@ const StartPage: React.FC = () => {
 
   const createConversation = async (friendId: string) => {
     setIsSearching(false);
+    console.log('userId', userId, 'user convos', userConversations);
     try {
       const response = await sendRequest(
         `${process.env.REACT_APP_API_SERVER}/conversations/create-convo`,
@@ -101,9 +102,11 @@ const StartPage: React.FC = () => {
   useEffect(() => {
     const getConvosOfUser = async () => {
       try {
+        if (!userId) return;
         const { userConversations } = await sendRequest(
           `${process.env.REACT_APP_API_SERVER}/conversations/get-convo/${userId}`
         );
+        if (!userConversations) return;
         setUserConversations(userConversations);
       } catch (err) {
         console.log(err);
