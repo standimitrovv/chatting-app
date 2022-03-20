@@ -25,13 +25,15 @@ app.use((req, res, next) => {
 });
 
 app.use((error, req, res, next) => {
-  if (res.headerSent) return next(error);
-  res
-    .status(error.code || 500)
-    .json({
-      message: error.message || 'An unknown error occurred',
-      code: error.code,
-    });
+  // BUG - error handling is not working - message.js - getConvoMessages
+  if (res.headerSent) {
+    return next(error);
+  }
+
+  res.status(error.code || 500).json({
+    message: error.message || 'An unknown error occurred',
+    code: error.code,
+  });
 });
 
 mongoose.connect(process.env.MONGODB_CONNECT).then((result) => {

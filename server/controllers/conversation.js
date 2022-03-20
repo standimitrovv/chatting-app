@@ -30,7 +30,7 @@ exports.getConvoOfUser = async (req, res, next) => {
   const userId = req.params.userId;
   try {
     const userConversations = await Conversation.find({
-      members: userId,
+      'members.0': userId,
     });
     if (!userConversations || userConversations.length === 0)
       return next(

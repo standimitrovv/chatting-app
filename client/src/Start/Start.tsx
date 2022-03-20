@@ -6,6 +6,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import useHttp from '../shared/hooks/useHttp';
 import Conversation from './Conversation';
 import ChatMessages from './ChatMessages';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 export interface UserModel {
   _id: string;
   email: string;
@@ -37,7 +39,8 @@ const StartPage: React.FC = () => {
   const [activeConvo, setActiveConvo] = useState<string>('');
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<UserModel[] | []>([]);
-  const { isLoading, error, sendRequest } = useHttp();
+  const [createConvoResponse, setCreateConvoResponse] = useState<string>('');
+  const { isLoading, sendRequest } = useHttp();
   const { userCredentials } = useContext(AuthContext);
   const userId = userCredentials?.userId;
 
@@ -75,7 +78,6 @@ const StartPage: React.FC = () => {
 
   const createConversation = async (friendId: string) => {
     setIsSearching(false);
-    console.log('userId', userId, 'user convos', userConversations);
     try {
       const response = await sendRequest(
         `${process.env.REACT_APP_API_SERVER}/conversations/create-convo`,
@@ -83,7 +85,7 @@ const StartPage: React.FC = () => {
         JSON.stringify({ userId, friendId }),
         { 'Content-Type': 'application/json' }
       );
-      console.log(response);
+      setCreateConvoResponse(response.message);
     } catch (err) {}
   };
 
@@ -113,7 +115,7 @@ const StartPage: React.FC = () => {
       }
     };
     getConvosOfUser();
-  }, [userId, sendRequest]);
+  }, [userId, sendRequest, createConvoResponse]);
 
   return (
     <div className='flex w-full'>
@@ -193,6 +195,22 @@ const StartPage: React.FC = () => {
             />
           ))}
       </div>
+      <Snackbar
+        open={createConvoResponse !== ''}
+        autoHideDuration={5000}
+        onClose={() => setCreateConvoResponse('')}
+      >
+        <Alert
+          onClose={() => setCreateConvoResponse('')}
+          variant='filled'
+          severity={
+            createConvoResponse.startsWith('Successfully') ? 'success' : 'error'
+          }
+          sx={{ width: '100%' }}
+        >
+          {createConvoResponse}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

@@ -34,8 +34,7 @@ exports.getConvoMessages = async (req, res, next) => {
     const messages = await Message.find({
       conversationId: convoId,
     });
-
-    if (messages.length === 0)
+    if (!messages || messages.length === 0)
       return next(
         new HttpError('No messages found for the current conversation', 400)
       );
