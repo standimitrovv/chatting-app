@@ -1,22 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Greeting from './Greeting';
-import Message from './Message';
-import Input from '../shared/components/Input';
-import { IUser } from '../App';
+import Input from '../../app/components/Input';
+import { UserCredentials } from '../../app/models/UserCredentials';
 import openSocket from 'socket.io-client';
-import useHttp from '../shared/hooks/useHttp';
-
-export interface IMessage {
-  _id: string;
-  text: string;
-  usersName: string;
-  usersImageUrl: string;
-  dateOfSending: string;
-  creator: string;
-}
+import useHttp from '../../app/hooks/useHttp';
+import { IMessage } from '../models/Message';
+import Message from './Message';
 
 interface Props {
-  user: IUser;
+  user: UserCredentials;
 }
 
 const AllChat: React.FC<Props> = ({ user }) => {

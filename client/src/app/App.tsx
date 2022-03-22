@@ -1,20 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { AuthContext } from './auth/authContext';
-import SideBar from './shared/components/SideBar';
-import AllChat from './AllChat/AllChat';
-import StartPage from './Start/Start';
-import { IActiveChannelState } from './shared/components/SideBar';
-import { NotAuthorized } from './shared/components/NotAuthorized';
-
-export interface IUser {
-  fullName: string;
-  email: string;
-  photoUrl: string;
-  userId: string;
-}
+import React, { useState, useEffect } from 'react';
+import { useAuthContext } from './hooks/useAuthContext';
+import SideBar from './components/SideBar';
+import AllChat from '../all-chat/AllChat';
+import StartPage from '../start-page/Start';
+import { IActiveChannelState } from './components/SideBar';
+import { NotAuthorized } from './components/NotAuthorized';
 
 const App: React.FC = () => {
-  const { userCredentials, login } = useContext(AuthContext);
+  const { userCredentials, login } = useAuthContext();
   const [activeChannel, setActiveChannel] = useState<IActiveChannelState>({
     start: true,
     all: false,

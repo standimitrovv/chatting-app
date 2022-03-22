@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { auth } from '../../auth/firebaseConfig';
-import { IUser } from '../../App';
+import { auth } from '../FirebaseConfig';
+import { IUser } from '../App';
 import useHttp from '../hooks/useHttp';
 
 interface Props {

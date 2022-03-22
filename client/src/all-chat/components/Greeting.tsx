@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { IUser } from '../App';
-import { IMessage } from './AllChat';
-import useHttp from '../shared/hooks/useHttp';
+import useHttp from '../app/hooks/useHttp';
+import { UserCredentials } from '../app/models/UserCredentials';
+import { IMessage } from './models/Message';
 
 interface Props {
   messages: IMessage[];
 }
 
 const Greeting: React.FC<Props> = ({ messages }) => {
-  const [users, setUsers] = useState<IUser[] | []>([]);
+  const [users, setUsers] = useState<UserCredentials[] | []>([]);
   const { sendRequest } = useHttp();
 
   useEffect(() => {

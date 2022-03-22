@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
-import { AuthContext } from '../auth/authContext';
-import { ConversationMessages } from './Start';
-import Input from '../shared/components/Input';
+import React from 'react';
+import { useAuthContext } from '../../app/hooks/useAuthContext';
+import { ConversationMessages } from '../models/ConversationMessages';
+import Input from '../../app/components/Input';
 
 interface Props {
   own: boolean;
@@ -9,8 +9,8 @@ interface Props {
 }
 
 const ChatMessages: React.FC<Props> = ({ own, conversation }) => {
-  const { userCredentials } = useContext(AuthContext);
-  console.log(userCredentials);
+  const { userCredentials } = useAuthContext();
+
   return (
     <div>
       <div className='px-7'>

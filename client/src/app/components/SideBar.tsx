@@ -1,16 +1,15 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { AuthContext } from '../../auth/authContext';
-import { signInWithGoogle, auth } from '../../auth/firebaseConfig';
-import { IUser } from '../../App';
+import React, { useState, useEffect } from 'react';
+import { useAuthContext } from '../hooks/useAuthContext';
+import { signInWithGoogle, auth } from '../FirebaseConfig';
+import { UserCredentials } from '../models/UserCredentials';
 import appLogo from '../../images/logo.jpg';
-import { PlusIcon, CogIcon } from '@heroicons/react/outline';
+import { PlusIcon } from '@heroicons/react/outline';
 import Tooltip from '@mui/material/Tooltip';
-import IconButton from '@mui/material/IconButton';
 import useHttp from '../hooks/useHttp';
 import Settings from './Settings';
 
 interface Props {
-  user: IUser;
+  user: UserCredentials;
   switchTheActiveChannel: (channelState: IActiveChannelState) => void;
 }
 
@@ -20,7 +19,7 @@ export interface IActiveChannelState {
 }
 
 const SideBar: React.FC<Props> = ({ user, switchTheActiveChannel }) => {
-  const { userCredentials, login, logout } = useContext(AuthContext);
+  const { userCredentials, login, logout } = useAuthContext();
   const [activeChannel, setActiveChannel] = useState<IActiveChannelState>({
     start: true,
     all: false,

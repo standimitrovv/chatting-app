@@ -1,8 +1,8 @@
 import React from 'react';
-import { UserModel } from './Start';
+import { User } from '../models/User';
 
 interface Props {
-  userData: UserModel;
+  userData: User;
 }
 
 const SearchResult: React.FC<Props> = ({ userData }) => {

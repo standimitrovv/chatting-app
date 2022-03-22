@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ContextProvider from './auth/ContextProvider';
+import ContextProvider from './AuthProvider';
 import './index.css';
 import App from './App';
 

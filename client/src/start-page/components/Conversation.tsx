@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { XIcon } from '@heroicons/react/outline';
-import { UserConversation, UserModel } from './Start';
-import useHttp from '../shared/hooks/useHttp';
+import { UserConversation } from '../models/UserConversation';
+import { User } from '../models/User';
+import useHttp from '../../app/hooks/useHttp';
 
 interface Props {
   conversation: UserConversation;
@@ -14,7 +15,7 @@ const Conversation: React.FC<Props> = ({
   currentUserId,
   isActive,
 }) => {
-  const [friendData, setFriendData] = useState<UserModel>({
+  const [friendData, setFriendData] = useState<User>({
     _id: '',
     email: '',
     fullName: '',

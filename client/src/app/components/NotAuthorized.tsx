@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
-import { AuthContext } from '../../auth/authContext';
+import React from 'react';
+import { useAuthContext } from '../hooks/useAuthContext';
 import Modal from '@mui/material/Modal';
 import googleSvg from '../../images/google.png';
-import { signInWithGoogle } from '../../auth/firebaseConfig';
+import { signInWithGoogle } from '../FirebaseConfig';
 import useHttp from '../hooks/useHttp';
 
 export const NotAuthorized: React.FC = () => {
-  const { isLoggedIn, login } = useContext(AuthContext);
+  const { isLoggedIn, login } = useAuthContext();
   const { sendRequest } = useHttp();
 
   const signTheUserIn = () => {

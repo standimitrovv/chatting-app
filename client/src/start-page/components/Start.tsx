@@ -1,32 +1,16 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { AuthContext } from '../auth/authContext';
+import React, { useState, useEffect } from 'react';
+import { useAuthContext } from '../../app/hooks/useAuthContext';
 import { SearchIcon } from '@heroicons/react/outline';
 import SearchResult from './SearchResult';
 import CircularProgress from '@mui/material/CircularProgress';
-import useHttp from '../shared/hooks/useHttp';
+import useHttp from '../../app/hooks/useHttp';
 import Conversation from './Conversation';
 import ChatMessages from './ChatMessages';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-export interface UserModel {
-  _id: string;
-  email: string;
-  fullName: string;
-  photoUrl: string;
-  userId: string;
-}
-
-export interface UserConversation {
-  members: [string];
-  _id: string;
-}
-
-export interface ConversationMessages {
-  _id: string;
-  text: string;
-  conversationId: string;
-  sender: string;
-}
+import { User } from '../models/User';
+import { ConversationMessages } from '../models/ConversationMessages';
+import { UserConversation } from '../models/UserConversation';
 
 const StartPage: React.FC = () => {
   const [userInput, setUserInput] = useState<string>('');
@@ -38,10 +22,10 @@ const StartPage: React.FC = () => {
   >([]);
   const [activeConvo, setActiveConvo] = useState<string>('');
   const [isSearching, setIsSearching] = useState(false);
-  const [searchResults, setSearchResults] = useState<UserModel[] | []>([]);
+  const [searchResults, setSearchResults] = useState<User[] | []>([]);
   const [createConvoResponse, setCreateConvoResponse] = useState<string>('');
   const { isLoading, sendRequest } = useHttp();
-  const { userCredentials } = useContext(AuthContext);
+  const { userCredentials } = useAuthContext();
   const userId = userCredentials?.userId;
 
   useEffect(() => {
@@ -52,10 +36,10 @@ const StartPage: React.FC = () => {
             `${process.env.REACT_APP_API_SERVER}/users/get-users`
           );
           const allUsersExceptCurrentOne = users.filter(
-            (user: UserModel) => user.userId !== userId
+            (user: User) => user.userId !== userId
           );
           const filteredUsers = allUsersExceptCurrentOne.filter(
-            (user: UserModel) => {
+            (user: User) => {
               if (userInput.trim().length < 2) return null;
               if (
                 user.fullName.toLowerCase().includes(userInput.toLowerCase())

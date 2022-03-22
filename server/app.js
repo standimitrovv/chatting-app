@@ -26,7 +26,7 @@ app.use((req, res, next) => {
 
 app.use((error, req, res, next) => {
   // BUG - error handling is not working - message.js - getConvoMessages
-  if (res.headerSent) {
+  if (res.headersSent) {
     return next(error);
   }
 

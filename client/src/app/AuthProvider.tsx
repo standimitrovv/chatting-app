@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import { AuthContext, UserCredentials } from './authContext';
+import { UserCredentials } from './models/UserCredentials';
+import { Context } from './hooks/useAuthContext';
 
-interface Props {
-  children: React.ReactNode;
-}
-
-const ContextProvider: React.FC<Props> = (props) => {
+const ContextProvider: React.FC = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userCredentials, setUserCredentials] = useState<
     UserCredentials | undefined
@@ -34,11 +31,7 @@ const ContextProvider: React.FC<Props> = (props) => {
     logout,
   };
 
-  return (
-    <AuthContext.Provider value={context}>
-      {props.children}
-    </AuthContext.Provider>
-  );
+  return <Context.Provider value={context}>{props.children}</Context.Provider>;
 };
 
 export default ContextProvider;

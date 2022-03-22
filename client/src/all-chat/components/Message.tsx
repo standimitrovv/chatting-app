@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
-import { AuthContext } from '../auth/authContext';
-import { IMessage } from './AllChat';
+import React from 'react';
+import { useAuthContext } from '../app/hooks/useAuthContext';
 import { TrashIcon } from '@heroicons/react/outline';
-import useHttp from '../shared/hooks/useHttp';
+import useHttp from '../app/hooks/useHttp';
+import { IMessage } from './models/Message';
 
 interface Props {
   message: IMessage;
@@ -16,7 +16,7 @@ const Message: React.FC<Props> = ({ message }) => {
     .filter((el) => el.length > 1);
 
   const { sendRequest } = useHttp();
-  const { userCredentials } = useContext(AuthContext);
+  const { userCredentials } = useAuthContext();
   const userId = userCredentials?.userId;
   const canDeleteMessage = message.creator === userId;
   const hour =

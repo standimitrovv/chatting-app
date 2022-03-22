@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
-import { AuthContext } from '../../auth/authContext';
+import { useAuthContext } from '../hooks/useAuthContext';
 import Button from '@mui/material/Button';
 import { XIcon } from '@heroicons/react/outline';
 
@@ -15,7 +15,7 @@ export const DialogMenu: React.FC<Props> = ({
   dialogIsOpen,
 }) => {
   const [emailIsEncrypted, setEmailIsEncrypted] = useState<boolean>(true);
-  const { userCredentials, logout } = useContext(AuthContext);
+  const { userCredentials, logout } = useAuthContext();
 
   const splittedEmail = userCredentials?.email.split('@');
   const encryptedEmail =
