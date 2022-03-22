@@ -1,8 +1,8 @@
 import React from 'react';
-import { useAuthContext } from '../app/hooks/useAuthContext';
+import { useAuthContext } from '../../app/hooks/useAuthContext';
 import { TrashIcon } from '@heroicons/react/outline';
-import useHttp from '../app/hooks/useHttp';
-import { IMessage } from './models/Message';
+import useHttp from '../../app/hooks/useHttp';
+import { IMessage } from '../models/Message';
 
 interface Props {
   message: IMessage;

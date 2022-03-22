@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import useHttp from '../app/hooks/useHttp';
-import { UserCredentials } from '../app/models/UserCredentials';
-import { IMessage } from './models/Message';
+import useHttp from '../../app/hooks/useHttp';
+import { UserCredentials } from '../../app/models/UserCredentials';
+import { IMessage } from '../models/Message';
 
 interface Props {
   messages: IMessage[];

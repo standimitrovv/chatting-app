@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { UserCredentials } from './models/UserCredentials';
 import { Context } from './hooks/useAuthContext';
 
-const ContextProvider: React.FC = (props) => {
+export const AuthProvider: React.FC = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userCredentials, setUserCredentials] = useState<
     UserCredentials | undefined
@@ -33,5 +33,3 @@ const ContextProvider: React.FC = (props) => {
 
   return <Context.Provider value={context}>{props.children}</Context.Provider>;
 };
-
-export default ContextProvider;

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useAuthContext } from './hooks/useAuthContext';
 import SideBar from './components/SideBar';
-import AllChat from '../all-chat/AllChat';
-import StartPage from '../start-page/Start';
+import AllChat from '../all-chat/components/AllChat';
+import StartPage from '../start-page/components/Start';
 import { IActiveChannelState } from './components/SideBar';
 import { NotAuthorized } from './components/NotAuthorized';
+import { AuthProvider } from './AuthProvider';
 
 const App: React.FC = () => {
   const { userCredentials, login } = useAuthContext();
@@ -28,7 +29,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <>
+    <AuthProvider>
       {userCredentials && (
         <div className='flex flex-col md:flex-row h-screen'>
           <SideBar
@@ -40,7 +41,7 @@ const App: React.FC = () => {
         </div>
       )}
       {!userCredentials && <NotAuthorized />}
-    </>
+    </AuthProvider>
   );
 };
 
