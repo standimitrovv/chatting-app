@@ -5,7 +5,7 @@ import AllChat from '../all-chat/components/AllChat';
 import StartPage from '../start-page/components/Start';
 import { IActiveChannelState } from './components/SideBar';
 import { NotAuthorized } from './components/NotAuthorized';
-import { AuthProvider } from './AuthProvider';
+import { AuthProvider } from '../app/hooks/useAuthContext';
 
 const App: React.FC = () => {
   const { userCredentials, login } = useAuthContext();

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { auth } from '../FirebaseConfig';
-import { IUser } from '../App';
+import { UserCredentials } from '../models/UserCredentials';
 import useHttp from '../hooks/useHttp';
 
 interface Props {
-  userCredentials: IUser;
+  userCredentials: UserCredentials;
 }
 
 const Input: React.FC<Props> = ({ userCredentials }) => {

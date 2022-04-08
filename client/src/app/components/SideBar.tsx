@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { signInWithGoogle, auth } from '../FirebaseConfig';
 import { UserCredentials } from '../models/UserCredentials';
-import appLogo from '../../images/logo.jpg';
+import appLogo from '../../assets/images/logo.jpg';
 import { PlusIcon } from '@heroicons/react/outline';
 import Tooltip from '@mui/material/Tooltip';
 import useHttp from '../hooks/useHttp';

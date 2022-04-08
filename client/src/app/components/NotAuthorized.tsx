@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
 import Modal from '@mui/material/Modal';
-import googleSvg from '../../images/google.png';
+import googleSvg from '../../assets/images/google.png';
 import { signInWithGoogle } from '../FirebaseConfig';
 import useHttp from '../hooks/useHttp';
 
