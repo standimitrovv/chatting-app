@@ -1,4 +1,11 @@
-import React, { useState, createContext, useContext } from 'react';
+import React, {
+  useState,
+  createContext,
+  useContext,
+  useEffect,
+  useCallback,
+  useMemo,
+} from 'react';
 import { AuthContext } from '../models/AuthContext';
 import { UserCredentials } from '../models/UserCredentials';
 
@@ -23,30 +30,38 @@ export const AuthProvider: React.FC = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userCredentials, setUserCredentials] = useState<
     UserCredentials | undefined
-  >({
-    email: '',
-    fullName: '',
-    photoUrl: '',
-    userId: '',
-  });
+  >(undefined);
 
-  const login = (userCredentials: UserCredentials) => {
+  const login = useCallback((userCredentials: UserCredentials) => {
     setIsLoggedIn(true);
     setUserCredentials(userCredentials);
     localStorage.setItem('userData', JSON.stringify(userCredentials));
-  };
-  const logout = () => {
+  }, []);
+
+  const logout = useCallback(() => {
     setIsLoggedIn(false);
     setUserCredentials(undefined);
     localStorage.removeItem('userData');
-  };
+  }, []);
 
-  const context = {
-    isLoggedIn,
-    userCredentials,
-    login,
-    logout,
-  };
+  useEffect(() => {
+    const userData = localStorage.getItem('userData');
+    if (!userData) {
+      return;
+    }
+    const parsedUserData = JSON.parse(userData);
+    login(parsedUserData);
+  }, [login]);
+
+  const context = useMemo(
+    () => ({
+      isLoggedIn,
+      userCredentials,
+      login,
+      logout,
+    }),
+    [isLoggedIn, userCredentials, login, logout]
+  );
 
   return <Context.Provider value={context}>{props.children}</Context.Provider>;
 };
