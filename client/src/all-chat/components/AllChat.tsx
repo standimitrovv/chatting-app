@@ -59,7 +59,7 @@ const AllChat: React.FC<Props> = ({ user }) => {
           messages.map((msg) => <Message message={msg} key={msg._id} />)}
       </div>
 
-      <Input userCredentials={user} />
+      <Input />
     </div>
   );
 };

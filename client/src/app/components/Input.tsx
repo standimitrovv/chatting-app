@@ -1,30 +1,30 @@
 import React, { useState } from 'react';
-import { auth } from '../FirebaseConfig';
-import { UserCredentials } from '../models/UserCredentials';
 import useHttp from '../hooks/useHttp';
+import { useAuthContext } from '../hooks/useAuthContext';
+import { ConversationMessages } from '../../start-page/models/ConversationMessages';
 
 interface Props {
-  userCredentials: UserCredentials;
+  conversation?: ConversationMessages;
 }
 
-const Input: React.FC<Props> = ({ userCredentials }) => {
+const Input: React.FC<Props> = (props) => {
   const [usersInput, setUsersInput] = useState<string>('');
+
   const { sendRequest } = useHttp();
+
+  const { userCredentials } = useAuthContext();
 
   const submitFormHandler = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (usersInput.trim().length !== 0 && auth.currentUser) {
-      const userId = localStorage.getItem('userId');
+    if (usersInput.trim().length !== 0 && userCredentials) {
       const message = {
+        conversationId: props.conversation?.conversationId,
+        sender: props.conversation?.sender,
         text: usersInput,
-        usersName: userCredentials.fullName,
-        usersImageUrl: userCredentials.photoUrl,
-        dateOfSending: new Date(),
-        creator: userId,
       };
       await sendRequest(
-        `${process.env.REACT_APP_API_SERVER}/all-chat/create-message`,
+        `${process.env.REACT_APP_API_SERVER}/messages/create-message`,
         'POST',
         JSON.stringify(message),
         {
@@ -38,8 +38,8 @@ const Input: React.FC<Props> = ({ userCredentials }) => {
 
   //bg-zinc-700
   return (
-    <div>
-      <div className='w-full md:w-9/12 fixed bottom-0 px-2 py-3 border-t border-gray h-26'>
+    <>
+      <div className='w-full md:w-[1470px] fixed bottom-0 px-2 py-3 border-t border-gray h-26'>
         <form
           className='my-4 flex space-x-4 px-4 md:mr-28 lg:mr-24 xl:mr-20 2xl:mr-3'
           onSubmit={submitFormHandler}
@@ -62,7 +62,7 @@ const Input: React.FC<Props> = ({ userCredentials }) => {
           </button>
         </form>
       </div>
-    </div>
+    </>
   );
 };
 

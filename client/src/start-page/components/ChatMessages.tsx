@@ -1,5 +1,4 @@
 import React from 'react';
-import { useAuthContext } from '../../app/hooks/useAuthContext';
 import { ConversationMessages } from '../models/ConversationMessages';
 import Input from '../../app/components/Input';
 
@@ -9,8 +8,6 @@ interface Props {
 }
 
 const ChatMessages: React.FC<Props> = ({ own, conversation }) => {
-  const { userCredentials } = useAuthContext();
-
   return (
     <div>
       <div className='px-7'>
@@ -22,7 +19,7 @@ const ChatMessages: React.FC<Props> = ({ own, conversation }) => {
           <p>{conversation.text}</p>
         </div>
       </div>
-      <Input userCredentials={userCredentials!} />
+      <Input conversation={conversation} />
     </div>
   );
 };
