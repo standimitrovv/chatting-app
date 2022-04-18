@@ -8,12 +8,14 @@ interface Props {
   conversation: UserConversation;
   currentUserId: string;
   isActive: boolean;
+  onDelete: () => void;
 }
 
 const Conversation: React.FC<Props> = ({
   conversation,
   currentUserId,
   isActive,
+  onDelete,
 }) => {
   const [friendData, setFriendData] = useState<User>({
     _id: '',
@@ -51,7 +53,10 @@ const Conversation: React.FC<Props> = ({
       <p className='ml-4 text-white font-semibold'>
         {friendData && friendData.fullName}
       </p>
-      <XIcon className='w-5 h-5 text-white cursor-pointer ml-auto hidden group-hover:inline-block' />
+      <XIcon
+        className='w-5 h-5 text-white cursor-pointer ml-auto hidden group-hover:inline-block'
+        onClick={onDelete}
+      />
     </div>
   );
 };

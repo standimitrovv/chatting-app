@@ -43,3 +43,21 @@ exports.getConvoOfUser = async (req, res, next) => {
     );
   }
 };
+
+exports.deleteConversation = async (req, res, next) => {
+  const conversationId = req.params.convoId;
+  try {
+    const conversation = await Conversation.findById(conversationId);
+    if (!conversation) {
+      return next(
+        new HttpError('No conversation found for corresponding id', 400)
+      );
+    }
+    await Conversation.deleteOne({ _id: conversationId });
+    res.json({ message: 'Successfully deleted conversation' });
+  } catch (err) {
+    return next(
+      new HttpError('Something went wrong, please try again later!', 500)
+    );
+  }
+};

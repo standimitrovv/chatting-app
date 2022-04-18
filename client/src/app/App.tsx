@@ -15,8 +15,7 @@ const App: React.FC = () => {
 
   const handleActiveChannel = (channelState: IActiveChannelState) => {
     setActiveChannel(channelState);
-  };
-
+  }
   return (
     <>
       {userCredentials && (

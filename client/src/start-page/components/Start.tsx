@@ -23,8 +23,8 @@ const StartPage: React.FC = () => {
   const [activeConvo, setActiveConvo] = useState<string>('');
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<User[] | []>([]);
-  const [createConvoResponse, setCreateConvoResponse] = useState<string>('');
-  const { isLoading, sendRequest } = useHttp();
+  const [convoResponseMessage, setConvoResponseMessage] = useState<string>('');
+  const { isLoading, sendRequest, error } = useHttp();
   const { userCredentials } = useAuthContext();
   const userId = userCredentials?.userId;
 
@@ -69,7 +69,7 @@ const StartPage: React.FC = () => {
         JSON.stringify({ userId, friendId }),
         { 'Content-Type': 'application/json' }
       );
-      setCreateConvoResponse(response.message);
+      setConvoResponseMessage(response.message);
     } catch (err) {}
   };
 
@@ -85,21 +85,37 @@ const StartPage: React.FC = () => {
     } catch (err) {}
   };
 
+  const deleteConversation = async (conversationId: string) => {
+    try {
+      const response = await sendRequest(
+        `${process.env.REACT_APP_API_SERVER}/conversations/delete-convo/${conversationId}`,
+        'DELETE'
+      );
+      if (error) {
+        setConvoResponseMessage(error);
+        return;
+      }
+      setConvoResponseMessage(response.message);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     const getConvosOfUser = async () => {
       try {
         if (!userId) return;
-        const { userConversations } = await sendRequest(
+        const response = await sendRequest(
           `${process.env.REACT_APP_API_SERVER}/conversations/get-convo/${userId}`
         );
-        if (!userConversations) return;
-        setUserConversations(userConversations);
+        if (!response) return;
+        setUserConversations(response.userConversations);
       } catch (err) {
         console.log(err);
       }
     };
     getConvosOfUser();
-  }, [userId, sendRequest, createConvoResponse]);
+  }, [userId, sendRequest, convoResponseMessage]);
 
   return (
     <div className='flex w-full'>
@@ -164,6 +180,7 @@ const StartPage: React.FC = () => {
                 conversation={conversation}
                 currentUserId={userId!}
                 isActive={conversation._id === activeConvo}
+                onDelete={() => deleteConversation(conversation._id)}
               />
             </div>
           ))}
@@ -180,19 +197,21 @@ const StartPage: React.FC = () => {
           ))}
       </div>
       <Snackbar
-        open={createConvoResponse !== ''}
+        open={convoResponseMessage !== ''}
         autoHideDuration={5000}
-        onClose={() => setCreateConvoResponse('')}
+        onClose={() => setConvoResponseMessage('')}
       >
         <Alert
-          onClose={() => setCreateConvoResponse('')}
+          onClose={() => setConvoResponseMessage('')}
           variant='filled'
           severity={
-            createConvoResponse.startsWith('Successfully') ? 'success' : 'error'
+            convoResponseMessage.startsWith('Successfully')
+              ? 'success'
+              : 'error'
           }
           sx={{ width: '100%' }}
         >
-          {createConvoResponse}
+          {convoResponseMessage}
         </Alert>
       </Snackbar>
     </div>
