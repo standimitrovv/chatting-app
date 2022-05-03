@@ -5,22 +5,18 @@ import SearchResult from './SearchResult';
 import CircularProgress from '@mui/material/CircularProgress';
 import useHttp from '../../app/hooks/useHttp';
 import Conversation from './Conversation';
-import ChatMessages from './ChatMessages';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { User } from '../models/User';
-import { ConversationMessages } from '../models/ConversationMessages';
 import { UserConversation } from '../models/UserConversation';
+import { Chat } from './Chat';
 
 const StartPage: React.FC = () => {
   const [userInput, setUserInput] = useState<string>('');
   const [userConversations, setUserConversations] = useState<
     UserConversation[] | []
   >([]);
-  const [conversationMessages, setConversationMessages] = useState<
-    ConversationMessages[] | []
-  >([]);
-  const [activeConvo, setActiveConvo] = useState<string>('');
+  const [activeConvo, setActiveConvo] = useState<string | undefined>(undefined);
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<User[] | []>([]);
   const [convoResponseMessage, setConvoResponseMessage] = useState<string>('');
@@ -72,9 +68,7 @@ const StartPage: React.FC = () => {
           return;
         }
         setUserConversations(response.userConversations);
-      } catch (err) {
-        console.log(err);
-      }
+      } catch (err) {}
     };
     getConvosOfUser();
   }, [userId, sendRequest, convoResponseMessage]);
@@ -92,18 +86,6 @@ const StartPage: React.FC = () => {
     } catch (err) {}
   };
 
-  const fetchUserConversation = async (conversationId: string) => {
-    try {
-      const response = await sendRequest(
-        `${process.env.REACT_APP_API_SERVER}/messages/get-messages/${conversationId}`
-      );
-      if (response) {
-        setConversationMessages(response.messages);
-        setActiveConvo(conversationId);
-      }
-    } catch (err) {}
-  };
-
   const deleteConversation = async (conversationId: string) => {
     try {
       const response = await sendRequest(
@@ -115,6 +97,7 @@ const StartPage: React.FC = () => {
       }
 
       if (response.message) {
+        setActiveConvo(undefined);
         setConvoResponseMessage(response.message);
       }
     } catch (err) {
@@ -183,19 +166,13 @@ const StartPage: React.FC = () => {
               currentUserId={userId!}
               isActive={conversation._id === activeConvo}
               onDelete={() => deleteConversation(conversation._id)}
-              onClick={() => fetchUserConversation(conversation._id)}
+              onClick={() => setActiveConvo(conversation._id)}
             />
           ))}
         </div>
       </div>
       <div className='bg-cyan-400 w-[80%] py-12'>
-        {conversationMessages.map((m) => (
-          <ChatMessages
-            key={m._id}
-            own={m.sender === userId}
-            conversation={m}
-          />
-        ))}
+        {activeConvo && <Chat convoId={activeConvo} />}
       </div>
       <Snackbar
         open={convoResponseMessage !== ''}
