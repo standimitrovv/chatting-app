@@ -60,6 +60,22 @@ const StartPage: React.FC = () => {
     return () => clearTimeout(timer);
   }, [userInput, sendRequest, userId]);
 
+  useEffect(() => {
+    const getConvosOfUser = async () => {
+      try {
+        if (!userId) return;
+        const response = await sendRequest(
+          `${process.env.REACT_APP_API_SERVER}/conversations/get-convo/${userId}`
+        );
+        if (!response) return;
+        setUserConversations(response.userConversations);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getConvosOfUser();
+  }, [userId, sendRequest, convoResponseMessage]);
+
   const createConversation = async (friendId: string) => {
     setIsSearching(false);
     try {
@@ -100,22 +116,6 @@ const StartPage: React.FC = () => {
       console.log(err);
     }
   };
-
-  useEffect(() => {
-    const getConvosOfUser = async () => {
-      try {
-        if (!userId) return;
-        const response = await sendRequest(
-          `${process.env.REACT_APP_API_SERVER}/conversations/get-convo/${userId}`
-        );
-        if (!response) return;
-        setUserConversations(response.userConversations);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getConvosOfUser();
-  }, [userId, sendRequest, convoResponseMessage]);
 
   return (
     <div className='flex w-full'>
@@ -184,14 +184,13 @@ const StartPage: React.FC = () => {
         </div>
       </div>
       <div className='bg-cyan-400 w-[80%] py-12'>
-        {conversationMessages &&
-          conversationMessages.map((m) => (
-            <ChatMessages
-              key={m._id}
-              own={m.sender === userId}
-              conversation={m}
-            />
-          ))}
+        {conversationMessages.map((m) => (
+          <ChatMessages
+            key={m._id}
+            own={m.sender === userId}
+            conversation={m}
+          />
+        ))}
       </div>
       <Snackbar
         open={convoResponseMessage !== ''}
