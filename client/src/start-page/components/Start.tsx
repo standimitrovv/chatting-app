@@ -67,7 +67,10 @@ const StartPage: React.FC = () => {
         const response = await sendRequest(
           `${process.env.REACT_APP_API_SERVER}/conversations/get-convo/${userId}`
         );
-        if (!response) return;
+        if (!response) {
+          setUserConversations([]);
+          return;
+        }
         setUserConversations(response.userConversations);
       } catch (err) {
         console.log(err);
@@ -109,9 +112,11 @@ const StartPage: React.FC = () => {
       );
       if (error) {
         setConvoResponseMessage(error);
-        return;
       }
-      setConvoResponseMessage(response.message);
+
+      if (response.message) {
+        setConvoResponseMessage(response.message);
+      }
     } catch (err) {
       console.log(err);
     }
