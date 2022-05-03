@@ -9,6 +9,7 @@ interface Props {
   currentUserId: string;
   isActive: boolean;
   onDelete: () => void;
+  onClick: () => void;
 }
 
 const Conversation: React.FC<Props> = ({
@@ -16,6 +17,7 @@ const Conversation: React.FC<Props> = ({
   currentUserId,
   isActive,
   onDelete,
+  onClick,
 }) => {
   const [friendData, setFriendData] = useState<User>({
     _id: '',
@@ -44,15 +46,17 @@ const Conversation: React.FC<Props> = ({
         isActive && 'bg-slate-800'
       } flex items-center px-6 py-3 group hover:bg-slate-800 cursor-pointer`}
     >
-      <img
-        src={friendData && friendData.photoUrl}
-        alt="User's profile "
-        className='w-8 h-8 rounded-full'
-        referrerPolicy='no-referrer'
-      />
-      <p className='ml-4 text-white font-semibold'>
-        {friendData && friendData.fullName}
-      </p>
+      <div className='flex items-center' onClick={onClick}>
+        <img
+          src={friendData && friendData.photoUrl}
+          alt="User's profile "
+          className='w-8 h-8 rounded-full'
+          referrerPolicy='no-referrer'
+        />
+        <p className='ml-4 text-white font-semibold'>
+          {friendData && friendData.fullName}
+        </p>
+      </div>
       <XIcon
         className='w-5 h-5 text-white cursor-pointer ml-auto hidden group-hover:inline-block'
         onClick={onDelete}

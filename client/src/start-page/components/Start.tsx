@@ -172,17 +172,14 @@ const StartPage: React.FC = () => {
         </div>
         <div className='flex flex-col justify-center pt-5'>
           {userConversations.map((conversation) => (
-            <div
+            <Conversation
               key={conversation._id}
+              conversation={conversation}
+              currentUserId={userId!}
+              isActive={conversation._id === activeConvo}
+              onDelete={() => deleteConversation(conversation._id)}
               onClick={() => fetchUserConversation(conversation._id)}
-            >
-              <Conversation
-                conversation={conversation}
-                currentUserId={userId!}
-                isActive={conversation._id === activeConvo}
-                onDelete={() => deleteConversation(conversation._id)}
-              />
-            </div>
+            />
           ))}
         </div>
       </div>
