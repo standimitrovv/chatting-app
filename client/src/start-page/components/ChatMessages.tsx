@@ -6,7 +6,7 @@ interface Props {
   conversation?: ConversationMessages;
 }
 
-const ChatMessages: React.FC<Props> = ({ own, conversation }) => {
+export const ChatMessage: React.FC<Props> = ({ own, conversation }) => {
   return (
     <div className='px-7'>
       <div
@@ -19,5 +19,3 @@ const ChatMessages: React.FC<Props> = ({ own, conversation }) => {
     </div>
   );
 };
-
-export default ChatMessages;
