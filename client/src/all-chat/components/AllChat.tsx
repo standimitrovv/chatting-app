@@ -3,7 +3,7 @@ import Greeting from './Greeting';
 import Input from '../../app/components/Input';
 import { UserCredentials } from '../../app/models/UserCredentials';
 import openSocket from 'socket.io-client';
-import useHttp from '../../app/hooks/useHttp';
+import { useHttp } from '../../app/hooks/useHttp';
 import { IMessage } from '../models/Message';
 import Message from './Message';
 

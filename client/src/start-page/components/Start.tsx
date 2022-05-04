@@ -3,7 +3,7 @@ import { useAuthContext } from '../../app/hooks/useAuthContext';
 import { SearchIcon } from '@heroicons/react/outline';
 import SearchResult from './SearchResult';
 import CircularProgress from '@mui/material/CircularProgress';
-import useHttp from '../../app/hooks/useHttp';
+import { useHttp } from '../../app/hooks/useHttp';
 import Conversation from './Conversation';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';

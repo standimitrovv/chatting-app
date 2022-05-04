@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { XIcon } from '@heroicons/react/outline';
 import { UserConversation } from '../models/UserConversation';
 import { User } from '../models/User';
-import useHttp from '../../app/hooks/useHttp';
+import {useHttp} from '../../app/hooks/useHttp';
 
 interface Props {
   conversation: UserConversation;

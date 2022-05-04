@@ -6,7 +6,7 @@ interface Headers {
   [x: string]: string;
 }
 
-const useHttp = () => {
+export const useHttp = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
@@ -39,5 +39,3 @@ const useHttp = () => {
 
   return { isLoading, error, sendRequest };
 };
-
-export default useHttp;

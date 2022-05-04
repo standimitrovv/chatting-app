@@ -5,7 +5,7 @@ import { UserCredentials } from '../models/UserCredentials';
 import appLogo from '../../assets/images/logo.jpg';
 import { PlusIcon } from '@heroicons/react/outline';
 import Tooltip from '@mui/material/Tooltip';
-import useHttp from '../hooks/useHttp';
+import {useHttp} from '../hooks/useHttp';
 import Settings from './Settings';
 
 interface Props {
