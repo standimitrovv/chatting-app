@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useAuthContext } from '../hooks/useAuthContext';
-import { signInWithGoogle, auth } from '../FirebaseConfig';
 import { UserCredentials } from '../models/UserCredentials';
 import appLogo from '../../assets/images/logo.jpg';
 import { PlusIcon } from '@heroicons/react/outline';
 import Tooltip from '@mui/material/Tooltip';
-import {useHttp} from '../hooks/useHttp';
 import Settings from './Settings';
 
 interface Props {
@@ -19,38 +16,10 @@ export interface IActiveChannelState {
 }
 
 const SideBar: React.FC<Props> = ({ user, switchTheActiveChannel }) => {
-  const { userCredentials, login, logout } = useAuthContext();
   const [activeChannel, setActiveChannel] = useState<IActiveChannelState>({
     start: true,
     all: false,
   });
-  const { sendRequest } = useHttp();
-  const signTheUserIn = () => {
-    if (!user.email)
-      signInWithGoogle()
-        .then((result) => {
-          const fullName = result.user.displayName as string;
-          const email = result.user.email as string;
-          const photoUrl = result.user.photoURL as string;
-          const userId = result.user.uid as string;
-          login({ email, fullName, photoUrl, userId });
-
-          sendRequest(
-            `${process.env.REACT_APP_API_SERVER}/users/create-user`,
-            'POST',
-            JSON.stringify({ email, fullName, photoUrl, userId }),
-            {
-              'Content-Type': 'application/json',
-            }
-          );
-        })
-        .catch((err) => console.error(err));
-    else {
-      logout();
-      auth.signOut();
-      window.location.reload();
-    }
-  };
 
   useEffect(() => {
     switchTheActiveChannel(activeChannel);
