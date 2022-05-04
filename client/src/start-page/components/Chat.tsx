@@ -3,7 +3,7 @@ import Input from '../../app/components/Input';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
 import { useHttp } from '../../app/hooks/useHttp';
 import { ConversationMessages } from '../models/ConversationMessages';
-import { ChatMessage } from './ChatMessages';
+import { ChatMessage } from './ChatMessage';
 
 interface Props {
   convoId: string;
