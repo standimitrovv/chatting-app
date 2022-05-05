@@ -30,9 +30,7 @@ exports.createConvo = async (req, res, next) => {
 exports.getConvoOfUser = async (req, res, next) => {
   const userId = req.params.userId;
   try {
-    const userConversations = await Conversation.find({
-      'members.0': userId,
-    });
+    const userConversations = await Conversation.find({ userId });
     if (!userConversations || userConversations.length === 0)
       return next(
         new HttpError('User does not have any existing conversations', 401)
