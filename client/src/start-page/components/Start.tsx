@@ -107,7 +107,7 @@ const StartPage: React.FC = () => {
 
   return (
     <div className='flex w-full'>
-      <div className='w-1/5 bg-slate-500 relative'>
+      <div className='w-72 bg-slate-500 relative'>
         <div className='flex relative pt-9 pb-6 px-4 border-b'>
           <div className='w-full relative'>
             <div className='flex items-center relative justify-between'>
