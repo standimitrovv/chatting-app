@@ -1,4 +1,5 @@
 const Conversation = require('../models/conversation');
+const Message = require('../models/message');
 const HttpError = require('../models/error');
 
 exports.createConvo = async (req, res, next) => {
@@ -53,6 +54,7 @@ exports.deleteConversation = async (req, res, next) => {
         new HttpError('No conversation found for corresponding id', 400)
       );
     }
+    await Message.deleteMany({ conversationId });
     await Conversation.deleteOne({ _id: conversationId });
     res.json({ message: 'Successfully deleted conversation' });
   } catch (err) {
