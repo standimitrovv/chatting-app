@@ -4,6 +4,7 @@ import { useAuthContext } from '../../app/hooks/useAuthContext';
 import { useHttp } from '../../app/hooks/useHttp';
 import { ConversationMessages } from '../models/ConversationMessages';
 import { ChatMessage } from './ChatMessage';
+import openSocket from 'socket.io-client';
 
 interface Props {
   convoId: string;
@@ -35,6 +36,18 @@ export const Chat: React.FunctionComponent<Props> = ({ convoId }) => {
     fetchUserConversation();
   }, [convoId, sendRequest]);
 
+  useEffect(() => {
+    const socket = openSocket(process.env.REACT_APP_API_SERVER!);
+    socket.on('message', (data) => {
+      if (data.action === 'create') {
+        setConversationMessages((prevMessages) => [
+          ...prevMessages,
+          { ...data.createdMessage },
+        ]);
+      }
+    });
+  }, []);
+
   const onSendMessage = async (usersInput: string) => {
     if (usersInput.trim().length !== 0 && userCredentials) {
       const message = {
@@ -54,7 +67,7 @@ export const Chat: React.FunctionComponent<Props> = ({ convoId }) => {
 
         setConversationMessages((prevMessages) => [
           ...prevMessages,
-          { ...res.createdMessage },
+          res.createdMessage,
         ]);
       } catch (err) {}
     }

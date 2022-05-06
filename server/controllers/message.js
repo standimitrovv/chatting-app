@@ -1,5 +1,6 @@
 const Message = require('../models/message');
 const HttpError = require('../models/error');
+const io = require('../socket');
 
 exports.createMessage = async (req, res, next) => {
   const { conversationId, sender, text } = req.body;
@@ -19,7 +20,7 @@ exports.createMessage = async (req, res, next) => {
       );
       return next(error);
     }
-
+    io.getIO().emit('message', { action: 'create', createdMessage });
     res.json({ message: 'Successfully created a message', createdMessage });
   } catch (err) {
     return next(
