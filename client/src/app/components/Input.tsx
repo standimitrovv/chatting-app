@@ -5,7 +5,7 @@ interface Props {
   onSendMessage?: (usersInput: string) => void;
 }
 
-const Input: React.FC<Props> = (props) => {
+export const Input: React.FC<Props> = (props) => {
   const [usersInput, setUsersInput] = useState<string>('');
 
   const submitFormHandler = async (e: React.FormEvent) => {
@@ -47,4 +47,3 @@ const Input: React.FC<Props> = (props) => {
   );
 };
 
-export default Input;

@@ -8,7 +8,7 @@ interface Props {
   message: IMessage;
 }
 
-const Message: React.FC<Props> = ({ message }) => {
+export const Message: React.FC<Props> = ({ message }) => {
   const localHour = new Date(message.dateOfSending)
     .toLocaleString()
     .split(',')[1]
@@ -71,4 +71,3 @@ const Message: React.FC<Props> = ({ message }) => {
   );
 };
 
-export default Message;

@@ -5,7 +5,7 @@ interface Props {
   userData: User;
 }
 
-const SearchResult: React.FC<Props> = ({ userData }) => {
+export const SearchResult: React.FC<Props> = ({ userData }) => {
   return (
     <div className='flex items-center py-3 px-4 w-full hover:bg-gray-500 cursor-pointer'>
       <img
@@ -19,4 +19,3 @@ const SearchResult: React.FC<Props> = ({ userData }) => {
   );
 };
 
-export default SearchResult;

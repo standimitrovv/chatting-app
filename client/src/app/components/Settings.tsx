@@ -4,7 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import { CogIcon } from '@heroicons/react/outline';
 import { DialogMenu } from './Dialog';
 
-const Settings = () => {
+export const Settings = () => {
   const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false);
 
   const handleDialogOpen = () => setDialogIsOpen(true);
@@ -28,4 +28,3 @@ const Settings = () => {
   );
 };
 
-export default Settings;

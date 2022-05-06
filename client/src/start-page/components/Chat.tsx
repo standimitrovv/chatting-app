@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Input from '../../app/components/Input';
+import { Input } from '../../app/components/Input';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
 import { useHttp } from '../../app/hooks/useHttp';
 import { ConversationMessages } from '../models/ConversationMessages';

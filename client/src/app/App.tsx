@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useAuthContext } from './hooks/useAuthContext';
-import SideBar from './components/SideBar';
-import AllChat from '../all-chat/components/AllChat';
-import StartPage from '../start-page/components/Start';
+import { SideBar } from './components/SideBar';
+import { AllChat } from '../all-chat/components/AllChat';
+import { StartPage } from '../start-page/components/Start';
 import { IActiveChannelState } from './components/SideBar';
 import { NotAuthorized } from './components/NotAuthorized';
 
-const App: React.FC = () => {
+export const App: React.FC = () => {
   const { userCredentials } = useAuthContext();
   const [activeChannel, setActiveChannel] = useState<IActiveChannelState>({
     start: true,
@@ -15,7 +15,7 @@ const App: React.FC = () => {
 
   const handleActiveChannel = (channelState: IActiveChannelState) => {
     setActiveChannel(channelState);
-  }
+  };
   return (
     <>
       {userCredentials && (
@@ -32,5 +32,3 @@ const App: React.FC = () => {
     </>
   );
 };
-
-export default App;

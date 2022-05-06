@@ -7,7 +7,7 @@ interface Props {
   messages: IMessage[];
 }
 
-const Greeting: React.FC<Props> = ({ messages }) => {
+export const Greeting: React.FC<Props> = ({ messages }) => {
   const [users, setUsers] = useState<UserCredentials[] | []>([]);
   const { sendRequest } = useHttp();
 
@@ -37,4 +37,3 @@ const Greeting: React.FC<Props> = ({ messages }) => {
   );
 };
 
-export default Greeting;

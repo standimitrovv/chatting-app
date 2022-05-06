@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import Greeting from './Greeting';
-import Input from '../../app/components/Input';
+import { Greeting } from './Greeting';
+import { Input } from '../../app/components/Input';
 import { UserCredentials } from '../../app/models/UserCredentials';
-import openSocket from 'socket.io-client';
 import { useHttp } from '../../app/hooks/useHttp';
 import { IMessage } from '../models/Message';
-import Message from './Message';
+import { Message } from './Message';
+import openSocket from 'socket.io-client';
 
 interface Props {
   user: UserCredentials;
 }
 
-const AllChat: React.FC<Props> = ({ user }) => {
+export const AllChat: React.FC<Props> = ({ user }) => {
   const [messages, setMessages] = useState<IMessage[] | []>([]);
   const { sendRequest } = useHttp();
 
@@ -63,5 +63,3 @@ const AllChat: React.FC<Props> = ({ user }) => {
     </div>
   );
 };
-
-export default AllChat;

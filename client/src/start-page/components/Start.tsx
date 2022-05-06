@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
-import { SearchIcon } from '@heroicons/react/outline';
-import SearchResult from './SearchResult';
-import CircularProgress from '@mui/material/CircularProgress';
+import { SearchResult } from './SearchResult';
 import { useHttp } from '../../app/hooks/useHttp';
-import Conversation from './Conversation';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
+import { Conversation } from './Conversation';
 import { User } from '../models/User';
 import { UserConversation } from '../models/UserConversation';
 import { Chat } from './Chat';
+import { SearchIcon } from '@heroicons/react/outline';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
 
-const StartPage: React.FC = () => {
+export const StartPage: React.FC = () => {
   const [userInput, setUserInput] = useState<string>('');
   const [userConversations, setUserConversations] = useState<
     UserConversation[] | []
@@ -195,5 +195,3 @@ const StartPage: React.FC = () => {
     </div>
   );
 };
-
-export default StartPage;

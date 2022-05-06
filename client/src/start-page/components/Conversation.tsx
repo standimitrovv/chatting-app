@@ -12,7 +12,7 @@ interface Props {
   onClick: () => void;
 }
 
-const Conversation: React.FC<Props> = ({
+export const Conversation: React.FC<Props> = ({
   conversation,
   currentUserId,
   isActive,
@@ -67,4 +67,3 @@ const Conversation: React.FC<Props> = ({
   );
 };
 
-export default Conversation;

@@ -3,7 +3,7 @@ import { UserCredentials } from '../models/UserCredentials';
 import appLogo from '../../assets/images/logo.jpg';
 import { PlusIcon } from '@heroicons/react/outline';
 import Tooltip from '@mui/material/Tooltip';
-import Settings from './Settings';
+import { Settings } from './Settings';
 
 interface Props {
   user: UserCredentials;
@@ -15,7 +15,7 @@ export interface IActiveChannelState {
   all: boolean;
 }
 
-const SideBar: React.FC<Props> = ({ user, switchTheActiveChannel }) => {
+export const SideBar: React.FC<Props> = ({ user, switchTheActiveChannel }) => {
   const [activeChannel, setActiveChannel] = useState<IActiveChannelState>({
     start: true,
     all: false,
@@ -90,5 +90,3 @@ const SideBar: React.FC<Props> = ({ user, switchTheActiveChannel }) => {
     </div>
   );
 };
-
-export default SideBar;
