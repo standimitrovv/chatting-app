@@ -29,12 +29,13 @@ export const Chat: React.FunctionComponent<Props> = ({ convoId }) => {
         setConversationMessages([]);
         return;
       }
-
+      console.log(response);
       setConversationMessages(response.messages);
     };
 
     fetchUserConversation();
-  }, [convoId, sendRequest]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const socket = openSocket(process.env.REACT_APP_API_SERVER!);
@@ -42,8 +43,9 @@ export const Chat: React.FunctionComponent<Props> = ({ convoId }) => {
       if (data.action === 'create') {
         setConversationMessages((prevMessages) => [
           ...prevMessages,
-          { ...data.createdMessage },
+          data.createdMessage,
         ]);
+        console.log(data);
       }
     });
   }, []);
@@ -56,7 +58,7 @@ export const Chat: React.FunctionComponent<Props> = ({ convoId }) => {
         text: usersInput,
       };
       try {
-        const res = await sendRequest(
+        await sendRequest(
           `${process.env.REACT_APP_API_SERVER}/messages/create-message`,
           'POST',
           JSON.stringify(message),
@@ -64,24 +66,21 @@ export const Chat: React.FunctionComponent<Props> = ({ convoId }) => {
             'Content-Type': 'application/json',
           }
         );
-
-        setConversationMessages((prevMessages) => [
-          ...prevMessages,
-          res.createdMessage,
-        ]);
       } catch (err) {}
     }
   };
   return (
-    <div>
-      {conversationMessages?.map((msg) => (
-        <ChatMessage
-          key={msg._id}
-          conversation={msg}
-          own={msg.sender === userCredentials?.userId}
-        />
-      ))}
+    <>
+      <div style={{ height: 'calc(100% - 102px)' }} className='overflow-y-auto'>
+        {conversationMessages?.map((msg) => (
+          <ChatMessage
+            key={msg._id}
+            conversation={msg}
+            own={msg.sender === userCredentials?.userId}
+          />
+        ))}
+      </div>
       <Input conversationId={convoId} onSendMessage={onSendMessage} />
-    </div>
+    </>
   );
 };

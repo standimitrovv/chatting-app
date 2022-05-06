@@ -171,7 +171,7 @@ const StartPage: React.FC = () => {
           ))}
         </div>
       </div>
-      <div className='bg-cyan-400 w-[80%] py-12'>
+      <div className='bg-cyan-400 w-[80%] pt-8'>
         {activeConvo && <Chat convoId={activeConvo} />}
       </div>
       <Snackbar
