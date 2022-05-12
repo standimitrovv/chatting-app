@@ -10,18 +10,23 @@ import { SearchIcon } from '@heroicons/react/outline';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useConversation } from '../hooks/useConversation';
 
 export const StartPage: React.FC = () => {
   const [userInput, setUserInput] = useState<string>('');
   const [userConversations, setUserConversations] = useState<
     UserConversation[] | []
   >([]);
-  const [activeConvo, setActiveConvo] = useState<string | undefined>(undefined);
+
+  const [convoResponseMessage, setConvoResponseMessage] = useState<string>('');
+
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<User[] | []>([]);
-  const [convoResponseMessage, setConvoResponseMessage] = useState<string>('');
   const { isLoading, sendRequest, error } = useHttp();
   const { userCredentials } = useAuthContext();
+
+  const { activeConversation, setActiveConversation } = useConversation();
+
   const userId = userCredentials?.userId;
 
   useEffect(() => {
@@ -97,7 +102,7 @@ export const StartPage: React.FC = () => {
       }
 
       if (response.message) {
-        setActiveConvo(undefined);
+        setActiveConversation(undefined);
         setConvoResponseMessage(response.message);
       }
     } catch (err) {
@@ -162,17 +167,15 @@ export const StartPage: React.FC = () => {
           {userConversations.map((conversation) => (
             <Conversation
               key={conversation._id}
-              conversation={conversation}
-              currentUserId={userId!}
-              isActive={conversation._id === activeConvo}
+              isActive={conversation._id === activeConversation?._id}
               onDelete={() => deleteConversation(conversation._id)}
-              onClick={() => setActiveConvo(conversation._id)}
+              onClick={() => setActiveConversation(conversation)}
             />
           ))}
         </div>
       </div>
       <div className='bg-cyan-400 w-[80%] pt-8'>
-        {activeConvo && <Chat convoId={activeConvo} />}
+        {activeConversation && <Chat />}
       </div>
       <Snackbar
         open={convoResponseMessage !== ''}

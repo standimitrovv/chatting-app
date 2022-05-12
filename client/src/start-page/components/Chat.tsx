@@ -5,13 +5,12 @@ import { useHttp } from '../../app/hooks/useHttp';
 import { ConversationMessages } from '../models/ConversationMessages';
 import { ChatMessage } from './ChatMessage';
 import openSocket from 'socket.io-client';
+import { useConversation } from '../hooks/useConversation';
 
-interface Props {
-  convoId: string;
-}
-
-export const Chat: React.FunctionComponent<Props> = ({ convoId }) => {
+export const Chat: React.FunctionComponent = (props) => {
   const { userCredentials } = useAuthContext();
+
+  const { activeConversation } = useConversation();
 
   const { sendRequest } = useHttp();
 
@@ -21,8 +20,11 @@ export const Chat: React.FunctionComponent<Props> = ({ convoId }) => {
 
   useEffect(() => {
     const fetchUserConversation = async () => {
+      if (!activeConversation) {
+        return;
+      }
       const response = await sendRequest(
-        `${process.env.REACT_APP_API_SERVER}/messages/get-messages/${convoId}`
+        `${process.env.REACT_APP_API_SERVER}/messages/get-messages/${activeConversation?._id}`
       );
 
       if (!response) {
@@ -53,7 +55,7 @@ export const Chat: React.FunctionComponent<Props> = ({ convoId }) => {
   const onSendMessage = async (usersInput: string) => {
     if (usersInput.trim().length !== 0 && userCredentials) {
       const message = {
-        conversationId: convoId,
+        conversationId: activeConversation?._id,
         sender: userCredentials.userId,
         text: usersInput,
       };
@@ -80,7 +82,10 @@ export const Chat: React.FunctionComponent<Props> = ({ convoId }) => {
           />
         ))}
       </div>
-      <Input conversationId={convoId} onSendMessage={onSendMessage} />
+      <Input
+        conversationId={activeConversation?._id}
+        onSendMessage={onSendMessage}
+      />
     </>
   );
 };

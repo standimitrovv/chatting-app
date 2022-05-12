@@ -1,44 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { XIcon } from '@heroicons/react/outline';
-import { UserConversation } from '../models/UserConversation';
-import { User } from '../models/User';
-import {useHttp} from '../../app/hooks/useHttp';
+import { useConversation } from '../hooks/useConversation';
 
 interface Props {
-  conversation: UserConversation;
-  currentUserId: string;
   isActive: boolean;
   onDelete: () => void;
   onClick: () => void;
 }
 
 export const Conversation: React.FC<Props> = ({
-  conversation,
-  currentUserId,
   isActive,
   onDelete,
   onClick,
 }) => {
-  const [friendData, setFriendData] = useState<User>({
-    _id: '',
-    email: '',
-    fullName: '',
-    photoUrl: '',
-    userId: '',
-  });
-  const { sendRequest } = useHttp();
-
-  useEffect(() => {
-    const friendId = conversation.members.find((id) => id !== currentUserId);
-    if (!friendId) return;
-    const getDataOfFriend = async () => {
-      const { user } = await sendRequest(
-        `${process.env.REACT_APP_API_SERVER}/users/get-users/${friendId}`
-      );
-      setFriendData(user);
-    };
-    getDataOfFriend();
-  }, [sendRequest, conversation.members, currentUserId]);
+  const { friendData } = useConversation();
 
   return (
     <div
@@ -66,4 +41,3 @@ export const Conversation: React.FC<Props> = ({
     </div>
   );
 };
-
