@@ -20,7 +20,6 @@ export const Chat: React.FunctionComponent = (props) => {
 
   useEffect(() => {
     const fetchUserConversation = async () => {
-      console.log(activeConversation);
       if (!activeConversation) {
         return;
       }
@@ -28,13 +27,10 @@ export const Chat: React.FunctionComponent = (props) => {
         `/messages/get-messages/${activeConversation?._id}`
       );
 
-      console.log(response);
-
       if (!response) {
         setConversationMessages([]);
         return;
       }
-      console.log(response);
       setConversationMessages(response.messages);
     };
 
@@ -50,7 +46,6 @@ export const Chat: React.FunctionComponent = (props) => {
           ...prevMessages,
           data.createdMessage,
         ]);
-        console.log(data);
       }
     });
   }, []);
@@ -76,7 +71,10 @@ export const Chat: React.FunctionComponent = (props) => {
   };
   return (
     <>
-      <div style={{ height: 'calc(100% - 102px)' }} className='overflow-y-auto'>
+      <div
+        style={{ height: 'calc(100% - 102px)' }}
+        className='overflow-y-auto flex flex-col'
+      >
         {conversationMessages?.map((msg) => (
           <ChatMessage
             key={msg._id}
