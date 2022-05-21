@@ -30,7 +30,9 @@ export const ChatMessage: React.FC<Props> = ({ own, conversation }) => {
           {!own && (
             <h5 className='mr-2 text-black'>{friendCredentials?.fullName}</h5>
           )}
-          <p className='text-xs text-gray-400'>21.05.2022</p>
+          <div className='text-xs text-gray-400'>
+            <TimeAgo date={conversation?.createdAt!} live={false} />
+          </div>
         </div>
         <p className='text-base text-black font-light'>{conversation?.text}</p>
       </div>
