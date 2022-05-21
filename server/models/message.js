@@ -15,6 +15,10 @@ const MessageSchema = new Schema({
     type: String,
     required: true,
   },
+  createdAt: {
+    type: Date,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model('Message', MessageSchema);

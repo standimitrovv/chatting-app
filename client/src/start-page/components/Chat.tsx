@@ -56,6 +56,7 @@ export const Chat: React.FunctionComponent = (props) => {
         conversationId: activeConversation?._id,
         sender: userCredentials.userId,
         text: usersInput,
+        createdAt: Date.now(),
       };
       try {
         await sendRequest(

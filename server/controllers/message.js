@@ -3,12 +3,13 @@ const HttpError = require('../models/error');
 const io = require('../socket');
 
 exports.createMessage = async (req, res, next) => {
-  const { conversationId, sender, text } = req.body;
+  const { conversationId, sender, text, createdAt } = req.body;
   try {
     const createdMessage = new Message({
       conversationId,
       sender,
       text,
+      createdAt,
     });
 
     try {
