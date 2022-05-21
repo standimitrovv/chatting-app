@@ -10,6 +10,8 @@ interface Props {
 export const ChatMessage: React.FC<Props> = ({ own, conversation }) => {
   const { friendCredentials } = useConversation();
 
+  console.log(conversation?.createdAt);
+
   return (
     <div className={`px-7 flex items-center ${own && 'ml-auto'} mb-3`}>
       {!own && (

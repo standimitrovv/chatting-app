@@ -3,4 +3,5 @@ export interface ConversationMessages {
   text: string;
   conversationId: string;
   sender: string;
+  createdAt?: string;
 }
