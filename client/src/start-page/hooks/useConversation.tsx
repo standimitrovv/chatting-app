@@ -1,11 +1,19 @@
-import React, { createContext, useCallback, useContext, useState } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+import { useAuthContext } from '../../app/hooks/useAuthContext';
+import { useHttp } from '../../app/hooks/useHttp';
 import { User } from '../models/User';
 import { UserConversation } from '../models/UserConversation';
 
 interface ConversationContext {
   activeConversation?: UserConversation;
   setActiveConversation: (conversation: UserConversation | undefined) => void;
-  setFriendData: (user: User | undefined) => void;
+  getFriendData: (conversation: UserConversation | undefined) => Promise<any>;
   friendCredentials: User | undefined;
 }
 
@@ -22,6 +30,10 @@ export const useConversation = () => {
 };
 
 export const ConversationProvider: React.FunctionComponent = (props) => {
+  const { userCredentials } = useAuthContext();
+
+  const { sendRequest } = useHttp();
+
   const [activeConvo, setActiveConvo] = useState<UserConversation | undefined>(
     undefined
   );
@@ -36,15 +48,33 @@ export const ConversationProvider: React.FunctionComponent = (props) => {
     []
   );
 
-  const setFriendData = useCallback(
-    (user: User | undefined) => setFriendCredentials(user),
-    []
+  const getFriendData = useCallback(
+    async (conversation: UserConversation | undefined) => {
+      const friendId = conversation?.members.find(
+        (id) => id !== userCredentials?.userId
+      );
+      if (!friendId) return;
+      const response = await sendRequest(`/users/get-user/${friendId}`);
+      if (!response.user) {
+        setFriendCredentials(undefined);
+        return;
+      }
+      setFriendCredentials(response.user);
+    },
+    [sendRequest, userCredentials?.userId]
   );
+
+  useEffect(() => {
+    const getFriend = async () => {
+      await getFriendData(activeConvo);
+    };
+    getFriend();
+  }, [getFriendData, activeConvo]);
 
   const context = {
     activeConversation: activeConvo,
     setActiveConversation,
-    setFriendData,
+    getFriendData,
     friendCredentials,
   };
 

@@ -2,9 +2,6 @@ import React, { useEffect } from 'react';
 import { XIcon } from '@heroicons/react/outline';
 import { useConversation } from '../hooks/useConversation';
 import { UserConversation } from '../models/UserConversation';
-import { useAuthContext } from '../../app/hooks/useAuthContext';
-import { useHttp } from '../../app/hooks/useHttp';
-
 interface Props {
   isActive: boolean;
   conversation: UserConversation;
@@ -18,32 +15,14 @@ export const Conversation: React.FC<Props> = ({
   onDelete,
   onClick,
 }) => {
-  const { userCredentials } = useAuthContext();
-
-  const { sendRequest } = useHttp();
-
-  const { setFriendData, friendCredentials } = useConversation();
+  const { friendCredentials, getFriendData } = useConversation();
 
   useEffect(() => {
-    const friendId = conversation.members.find(
-      (id) => id !== userCredentials?.userId
-    );
-    if (!friendId) return;
-    const getDataOfFriend = async () => {
-      const response = await sendRequest(`/users/get-user/${friendId}`);
-      if (!response.user) {
-        setFriendData(undefined);
-        return;
-      }
-      setFriendData(response.user);
+    const getFriendCredentials = async () => {
+      await getFriendData(conversation);
     };
-    getDataOfFriend();
-  }, [
-    userCredentials?.userId,
-    sendRequest,
-    conversation.members,
-    setFriendData,
-  ]);
+    getFriendCredentials();
+  }, [getFriendData, conversation]);
 
   return (
     <div
