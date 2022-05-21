@@ -35,8 +35,7 @@ export const Chat: React.FunctionComponent = (props) => {
     };
 
     fetchUserConversation();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [activeConversation, sendRequest]);
 
   useEffect(() => {
     const socket = openSocket(process.env.REACT_APP_API_SERVER!);
