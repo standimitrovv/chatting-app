@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useCallback, useContext, useState } from 'react';
 import { User } from '../models/User';
 import { UserConversation } from '../models/UserConversation';
 
@@ -30,10 +30,16 @@ export const ConversationProvider: React.FunctionComponent = (props) => {
     undefined
   );
 
-  const setActiveConversation = (conversation: UserConversation | undefined) =>
-    setActiveConvo(conversation);
+  const setActiveConversation = useCallback(
+    (conversation: UserConversation | undefined) =>
+      setActiveConvo(conversation),
+    []
+  );
 
-  const setFriendData = (user: User | undefined) => setFriendCredentials(user);
+  const setFriendData = useCallback(
+    (user: User | undefined) => setFriendCredentials(user),
+    []
+  );
 
   const context = {
     activeConversation: activeConvo,
