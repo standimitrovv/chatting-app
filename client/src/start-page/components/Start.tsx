@@ -167,6 +167,7 @@ export const StartPage: React.FC = () => {
           {userConversations.map((conversation) => (
             <Conversation
               key={conversation._id}
+              conversation={conversation}
               isActive={conversation._id === activeConversation?._id}
               onDelete={() => deleteConversation(conversation._id)}
               onClick={() => setActiveConversation(conversation)}

@@ -1,19 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { XIcon } from '@heroicons/react/outline';
 import { useConversation } from '../hooks/useConversation';
+import { UserConversation } from '../models/UserConversation';
 
 interface Props {
   isActive: boolean;
+  conversation: UserConversation;
   onDelete: () => void;
   onClick: () => void;
 }
 
 export const Conversation: React.FC<Props> = ({
   isActive,
+  conversation,
   onDelete,
   onClick,
 }) => {
-  const { friendData } = useConversation();
+  const { getFriendDataForConversation, friendData } = useConversation();
+
+  useEffect(() => {
+    const getFriend = async () => {
+      await getFriendDataForConversation(conversation);
+    };
+    getFriend();
+  }, [conversation, getFriendDataForConversation]);
 
   return (
     <div

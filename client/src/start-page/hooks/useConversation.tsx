@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { User } from '../models/User';
 import { UserConversation } from '../models/UserConversation';
 import { useHttp } from '../../app/hooks/useHttp';
@@ -7,14 +7,13 @@ import { useAuthContext } from '../../app/hooks/useAuthContext';
 interface ConversationContext {
   activeConversation?: UserConversation;
   setActiveConversation: (conversation: UserConversation | undefined) => void;
-  friendData?: User;
+  getFriendDataForConversation: (
+    conversation: UserConversation
+  ) => Promise<any>;
+  friendData: User | undefined;
 }
 
-const ConvoContext = createContext<ConversationContext>({
-  activeConversation: undefined,
-  setActiveConversation: (conversation: UserConversation | undefined) => {},
-  friendData: undefined,
-});
+const ConvoContext = createContext<ConversationContext | null>(null);
 
 export const useConversation = () => {
   const context = useContext(ConvoContext);
@@ -37,24 +36,32 @@ export const ConversationProvider: React.FunctionComponent = (props) => {
 
   const [friendData, setFriendData] = useState<User | undefined>(undefined);
 
-  const friendId = activeConvo?.members.find(
-    (id) => id !== userCredentials?.userId
-  );
+  // useEffect(() => {
+  //   const getFriendData = async () => {
+  //     if (!friendId) {
+  //       return;
+  //     }
+  //     const response = await sendRequest(
+  //       `${process.env.REACT_APP_API_SERVER}/users/get-user/${friendId}`
+  //     );
+  //     setFriendData(response.user);
+  //   };
+  //   getFriendData();
+  // }, [friendId, sendRequest]);
 
-  console.log(activeConvo);
+  const getFriendDataForConversation = async (
+    conversation: UserConversation
+  ) => {
+    const friendId = conversation.members.find(
+      (id) => id !== userCredentials?.userId
+    );
 
-  useEffect(() => {
-    const getFriendData = async () => {
-      if (!friendId) {
-        return;
-      }
-      const response = await sendRequest(
-        `${process.env.REACT_APP_API_SERVER}/users/get-user/${friendId}`
-      );
-      setFriendData(response.user);
-    };
-    getFriendData();
-  }, [friendId, sendRequest]);
+    const response = await sendRequest(
+      `${process.env.REACT_APP_API_SERVER}/users/get-user/${friendId}`
+    );
+
+    setFriendData(response.user);
+  };
 
   const setActiveConversation = (conversation: UserConversation | undefined) =>
     setActiveConvo(conversation);
@@ -62,6 +69,7 @@ export const ConversationProvider: React.FunctionComponent = (props) => {
   const context = {
     activeConversation: activeConvo,
     setActiveConversation,
+    getFriendDataForConversation,
     friendData,
   };
 
