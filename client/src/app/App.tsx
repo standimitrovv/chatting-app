@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuthContext } from './hooks/useAuthContext';
 import { SideBar } from './components/SideBar';
 import { AllChat } from '../all-chat/components/AllChat';
-import { StartPage } from '../start-page/components/Start';
+import { StartPage } from '../start-page/containers/Start';
 import { IActiveChannelState } from './components/SideBar';
 import { NotAuthorized } from './components/NotAuthorized';
 
