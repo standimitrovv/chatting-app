@@ -1,6 +1,7 @@
 import React from 'react';
 import { ConversationMessages } from '../models/ConversationMessages';
 import { useConversation } from '../hooks/useConversation';
+import TimeAgo from 'react-timeago';
 
 interface Props {
   own?: boolean;
