@@ -173,7 +173,7 @@ export const StartPage: React.FC = () => {
           ))}
         </div>
       </div>
-      <div className='bg-cyan-400 w-[80%] pt-8'>
+      <div className='bg-cyan-400 w-full pt-8'>
         {activeConversation && <Chat />}
       </div>
       <Snackbar
