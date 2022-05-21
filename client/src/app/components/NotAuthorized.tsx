@@ -18,7 +18,7 @@ export const NotAuthorized: React.FC = () => {
         const userId = result.user.uid as string;
 
         sendRequest(
-          `${process.env.REACT_APP_API_SERVER}/users/create-user`,
+          `/users/create-user`,
           'POST',
           JSON.stringify({ email, fullName, photoUrl, userId }),
           {

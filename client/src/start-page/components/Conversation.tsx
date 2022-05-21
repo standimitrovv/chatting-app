@@ -30,9 +30,7 @@ export const Conversation: React.FC<Props> = ({
     );
     if (!friendId) return;
     const getDataOfFriend = async () => {
-      const response = await sendRequest(
-        `${process.env.REACT_APP_API_SERVER}/users/get-user/${friendId}`
-      );
+      const response = await sendRequest(`/users/get-user/${friendId}`);
       if (!response.user) {
         setFriendData(undefined);
         return;

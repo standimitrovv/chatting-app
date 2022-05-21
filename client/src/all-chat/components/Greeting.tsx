@@ -14,9 +14,7 @@ export const Greeting: React.FC<Props> = ({ messages }) => {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const { users } = await sendRequest(
-          `${process.env.REACT_APP_API_SERVER}/users/get-users`
-        );
+        const { users } = await sendRequest(`/users/get-users`);
         setUsers(users);
       } catch (err) {
         console.error(err);
@@ -36,4 +34,3 @@ export const Greeting: React.FC<Props> = ({ messages }) => {
     </div>
   );
 };
-

@@ -33,9 +33,7 @@ export const StartPage: React.FC = () => {
     const fetchAllUsers = async () => {
       if (userInput.trim().length >= 2) {
         try {
-          const { users } = await sendRequest(
-            `${process.env.REACT_APP_API_SERVER}/users/get-users`
-          );
+          const { users } = await sendRequest(`/users/get-users`);
           const allUsersExceptCurrentOne = users.filter(
             (user: User) => user.userId !== userId
           );
@@ -66,7 +64,7 @@ export const StartPage: React.FC = () => {
       try {
         if (!userId) return;
         const response = await sendRequest(
-          `${process.env.REACT_APP_API_SERVER}/conversations/get-convo/${userId}`
+          `/conversations/get-convo/${userId}`
         );
         if (!response) {
           setUserConversations([]);
@@ -82,7 +80,7 @@ export const StartPage: React.FC = () => {
     setIsSearching(false);
     try {
       const response = await sendRequest(
-        `${process.env.REACT_APP_API_SERVER}/conversations/create-convo`,
+        `/conversations/create-convo`,
         'POST',
         JSON.stringify({ userId, friendId }),
         { 'Content-Type': 'application/json' }
@@ -94,7 +92,7 @@ export const StartPage: React.FC = () => {
   const deleteConversation = async (conversationId: string) => {
     try {
       const response = await sendRequest(
-        `${process.env.REACT_APP_API_SERVER}/conversations/delete-convo/${conversationId}`,
+        `/conversations/delete-convo/${conversationId}`,
         'DELETE'
       );
       if (error) {

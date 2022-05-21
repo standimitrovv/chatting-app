@@ -26,7 +26,7 @@ export const Message: React.FC<Props> = ({ message }) => {
     const messageId = message._id;
     try {
       await sendRequest(
-        `${process.env.REACT_APP_API_SERVER}/all-chat/delete-message/${messageId}`,
+        `/all-chat/delete-message/${messageId}`,
         'DELETE'
       );
     } catch (err) {

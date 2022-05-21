@@ -18,9 +18,7 @@ export const AllChat: React.FC<Props> = ({ user }) => {
   useEffect(() => {
     const getMessages = async () => {
       try {
-        const { result } = await sendRequest(
-          `${process.env.REACT_APP_API_SERVER}/all-chat/get-messages`
-        );
+        const { result } = await sendRequest(`/all-chat/get-messages`);
         setMessages(result);
       } catch (err) {
         console.error(err);

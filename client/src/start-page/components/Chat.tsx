@@ -25,7 +25,7 @@ export const Chat: React.FunctionComponent = (props) => {
         return;
       }
       const response = await sendRequest(
-        `${process.env.REACT_APP_API_SERVER}/messages/get-messages/${activeConversation?._id}`
+        `/messages/get-messages/${activeConversation?._id}`
       );
 
       console.log(response);
@@ -64,7 +64,7 @@ export const Chat: React.FunctionComponent = (props) => {
       };
       try {
         await sendRequest(
-          `${process.env.REACT_APP_API_SERVER}/messages/create-message`,
+          `/messages/create-message`,
           'POST',
           JSON.stringify(message),
           {
