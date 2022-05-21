@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { XIcon } from '@heroicons/react/outline';
 import { useConversation } from '../hooks/useConversation';
 import { UserConversation } from '../models/UserConversation';
+import { useAuthContext } from '../../app/hooks/useAuthContext';
+import { useHttp } from '../../app/hooks/useHttp';
 
 interface Props {
   isActive: boolean;
@@ -16,14 +18,34 @@ export const Conversation: React.FC<Props> = ({
   onDelete,
   onClick,
 }) => {
-  const { getFriendDataForConversation, friendData } = useConversation();
+  const { userCredentials } = useAuthContext();
+
+  const { sendRequest } = useHttp();
+
+  const { setFriendData, friendCredentials } = useConversation();
 
   useEffect(() => {
-    const getFriend = async () => {
-      await getFriendDataForConversation(conversation);
+    const friendId = conversation.members.find(
+      (id) => id !== userCredentials?.userId
+    );
+    if (!friendId) return;
+    const getDataOfFriend = async () => {
+      const response = await sendRequest(
+        `${process.env.REACT_APP_API_SERVER}/users/get-user/${friendId}`
+      );
+      if (!response.user) {
+        setFriendData(undefined);
+        return;
+      }
+      setFriendData(response.user);
     };
-    getFriend();
-  }, [conversation, getFriendDataForConversation]);
+    getDataOfFriend();
+  }, [
+    userCredentials?.userId,
+    sendRequest,
+    conversation.members,
+    setFriendData,
+  ]);
 
   return (
     <div
@@ -33,13 +55,13 @@ export const Conversation: React.FC<Props> = ({
     >
       <div className='flex items-center' onClick={onClick}>
         <img
-          src={friendData && friendData.photoUrl}
+          src={friendCredentials && friendCredentials.photoUrl}
           alt="User's profile "
           className='w-8 h-8 rounded-full'
           referrerPolicy='no-referrer'
         />
         <p className='ml-4 text-white font-semibold'>
-          {friendData && friendData.fullName}
+          {friendCredentials && friendCredentials.fullName}
         </p>
       </div>
       <div className='flex items-center justify-center'>

@@ -20,12 +20,15 @@ export const Chat: React.FunctionComponent = (props) => {
 
   useEffect(() => {
     const fetchUserConversation = async () => {
+      console.log(activeConversation);
       if (!activeConversation) {
         return;
       }
       const response = await sendRequest(
         `${process.env.REACT_APP_API_SERVER}/messages/get-messages/${activeConversation?._id}`
       );
+
+      console.log(response);
 
       if (!response) {
         setConversationMessages([]);

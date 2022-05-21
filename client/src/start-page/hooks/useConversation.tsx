@@ -7,10 +7,8 @@ import { useAuthContext } from '../../app/hooks/useAuthContext';
 interface ConversationContext {
   activeConversation?: UserConversation;
   setActiveConversation: (conversation: UserConversation | undefined) => void;
-  getFriendDataForConversation: (
-    conversation: UserConversation
-  ) => Promise<any>;
-  friendData: User | undefined;
+  setFriendData: (user: User | undefined) => void;
+  friendCredentials: User | undefined;
 }
 
 const ConvoContext = createContext<ConversationContext | null>(null);
@@ -34,7 +32,9 @@ export const ConversationProvider: React.FunctionComponent = (props) => {
     undefined
   );
 
-  const [friendData, setFriendData] = useState<User | undefined>(undefined);
+  const [friendCredentials, setFriendCredentials] = useState<User | undefined>(
+    undefined
+  );
 
   // useEffect(() => {
   //   const getFriendData = async () => {
@@ -49,28 +49,33 @@ export const ConversationProvider: React.FunctionComponent = (props) => {
   //   getFriendData();
   // }, [friendId, sendRequest]);
 
-  const getFriendDataForConversation = async (
-    conversation: UserConversation
-  ) => {
-    const friendId = conversation.members.find(
-      (id) => id !== userCredentials?.userId
-    );
+  // const getFriendDataForConversation = async (
+  //   conversationMembers: string[]
+  // ) => {
+  //   const friendId = conversationMembers.find(
+  //     (id) => id !== userCredentials?.userId
+  //   );
 
-    const response = await sendRequest(
-      `${process.env.REACT_APP_API_SERVER}/users/get-user/${friendId}`
-    );
-
-    setFriendData(response.user);
-  };
+  //   const response = await sendRequest(
+  //     `${process.env.REACT_APP_API_SERVER}/users/get-user/${friendId}`
+  //   );
+  //   // console.log(response);
+  //   // if (!response.user) {
+  //   //   return;
+  //   // }
+  //   // setFriendData(response.user);
+  // };
 
   const setActiveConversation = (conversation: UserConversation | undefined) =>
     setActiveConvo(conversation);
 
+  const setFriendData = (user: User | undefined) => setFriendCredentials(user);
+
   const context = {
     activeConversation: activeConvo,
     setActiveConversation,
-    getFriendDataForConversation,
-    friendData,
+    setFriendData,
+    friendCredentials,
   };
 
   return (
