@@ -7,6 +7,7 @@ import {
 } from '@heroicons/react/solid';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { AvailableUserStatuses } from '../models/AvailableUserStatuses';
 
 const statusAvailable = [
   {
@@ -35,7 +36,12 @@ const statusAvailable = [
   },
 ];
 
-export const UserStatus: React.FunctionComponent = () => {
+interface Props {
+  currentStatus: AvailableUserStatuses;
+  onStatusChange: (status: AvailableUserStatuses) => void;
+}
+
+export const UserStatus: React.FunctionComponent<Props> = (props) => {
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | undefined>(
     undefined
   );
@@ -44,10 +50,16 @@ export const UserStatus: React.FunctionComponent = () => {
     setAnchorEl(event.currentTarget);
   };
 
+  const onStatusItemClick = (status: AvailableUserStatuses) => {
+    props.onStatusChange(status);
+
+    setAnchorEl(undefined);
+  };
+
   return (
     <>
       <div className='flex items-center ml-4' onClick={onUserStatusClick}>
-        <span className='text-sm cursor-pointer'>Available</span>
+        <span className='text-sm cursor-pointer'>{props.currentStatus}</span>
         <ChevronDownIcon className='small-icon ml-1' />
       </div>
       <Menu
@@ -61,7 +73,10 @@ export const UserStatus: React.FunctionComponent = () => {
         }}
       >
         {statusAvailable.map((s) => (
-          <MenuItem key={s.id}>
+          <MenuItem
+            key={s.id}
+            onClick={() => onStatusItemClick(s.name as AvailableUserStatuses)}
+          >
             <s.icon className={`small-icon mr-2 ${s.color}`} />
             <p className='text-sm'>{s.name}</p>
           </MenuItem>

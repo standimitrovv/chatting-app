@@ -3,10 +3,10 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import { XIcon } from '@heroicons/react/outline';
-import { CheckCircleIcon } from '@heroicons/react/solid';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { UserStatus } from './UserStatus';
 import { AvailableUserStatuses } from '../models/AvailableUserStatuses';
+import { StatusIcon } from './StatusIcon';
 
 interface Props {
   onCloseDialog: () => void;
@@ -21,6 +21,9 @@ export const UserSettings: React.FC<Props> = ({
 
   const [emailIsEncrypted, setEmailIsEncrypted] = useState<boolean>(true);
 
+  const [userStatus, setUserStatus] =
+    useState<AvailableUserStatuses>('Available');
+
   const splittedEmail = userCredentials?.email.split('@');
 
   const encryptedEmail =
@@ -28,6 +31,10 @@ export const UserSettings: React.FC<Props> = ({
     splittedEmail[0].replace(/[a-zA-Z0-9]/g, '*') +
       '@' +
       splittedEmail.slice(1).join('');
+
+  const onUserStatusChange = (status: AvailableUserStatuses) => {
+    setUserStatus(status);
+  };
 
   return (
     <Dialog onClose={onCloseDialog} open={dialogIsOpen} fullWidth={true}>
@@ -44,11 +51,14 @@ export const UserSettings: React.FC<Props> = ({
               className='rounded-full w-20 h-20'
               referrerPolicy='no-referrer'
             />
-            <CheckCircleIcon className='base-icon text-green-500 absolute top-14 -right-1 bg-white rounded-full' />
+            <StatusIcon currentStatus={userStatus} />
           </div>
           <div className='mr-auto flex flex-col'>
             <p className='ml-4 font-semibold'>{userCredentials?.fullName}</p>
-            <UserStatus />
+            <UserStatus
+              currentStatus={userStatus}
+              onStatusChange={onUserStatusChange}
+            />
           </div>
           <Button variant='contained' onClick={logout}>
             Log Out

@@ -19,4 +19,12 @@
     height: 20px;
     cursor: pointer;
   }
+
+  .status-icon {
+    position: absolute;
+    top: 56px;
+    right: -4px;
+    background: white;
+    border-radius: 9999px;
+  }
 }
