@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
-import { XIcon, ChevronDownIcon } from '@heroicons/react/outline';
+import { XIcon } from '@heroicons/react/outline';
 import { CheckCircleIcon } from '@heroicons/react/solid';
-import { Menu, MenuItem } from '@mui/material';
 import { useAuthContext } from '../hooks/useAuthContext';
+import { UserStatus } from './UserStatus';
 
 interface Props {
   onCloseDialog: () => void;
@@ -20,20 +20,13 @@ export const UserSettings: React.FC<Props> = ({
 
   const [emailIsEncrypted, setEmailIsEncrypted] = useState<boolean>(true);
 
-  const [anchorEl, setAnchorEl] = useState<HTMLDivElement | undefined>(
-    undefined
-  );
-
   const splittedEmail = userCredentials?.email.split('@');
+
   const encryptedEmail =
     splittedEmail &&
     splittedEmail[0].replace(/[a-zA-Z0-9]/g, '*') +
       '@' +
       splittedEmail.slice(1).join('');
-
-  const onIconClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   return (
     <Dialog onClose={onCloseDialog} open={dialogIsOpen} fullWidth={true}>
@@ -52,19 +45,9 @@ export const UserSettings: React.FC<Props> = ({
             />
             <CheckCircleIcon className='base-icon text-green-500 absolute top-14 -right-1 bg-white rounded-full' />
           </div>
-          <Menu
-            anchorEl={anchorEl}
-            open={!!anchorEl}
-            onClose={() => setAnchorEl(undefined)}
-          >
-            <MenuItem>Available</MenuItem>
-          </Menu>
           <div className='mr-auto flex flex-col'>
             <p className='ml-4 font-semibold'>{userCredentials?.fullName}</p>
-            <div className='flex items-center ml-4' onClick={onIconClick}>
-              <span className='text-sm cursor-pointer'>Available</span>
-              <ChevronDownIcon className='small-icon ml-1' />
-            </div>
+            <UserStatus />
           </div>
           <Button variant='contained' onClick={logout}>
             Log Out
