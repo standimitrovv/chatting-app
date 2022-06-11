@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import { CogIcon } from '@heroicons/react/outline';
-import { DialogMenu } from './Dialog';
+import { UserSettings } from './UserSettings';
 
 export const Settings = () => {
   const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false);
@@ -20,11 +20,10 @@ export const Settings = () => {
           </IconButton>
         </Tooltip>
       </div>
-      <DialogMenu
+      <UserSettings
         onCloseDialog={handleDialogClose}
         dialogIsOpen={dialogIsOpen}
       />
     </>
   );
 };
-

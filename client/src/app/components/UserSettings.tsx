@@ -10,7 +10,7 @@ interface Props {
   dialogIsOpen: boolean;
 }
 
-export const DialogMenu: React.FC<Props> = ({
+export const UserSettings: React.FC<Props> = ({
   onCloseDialog,
   dialogIsOpen,
 }) => {
