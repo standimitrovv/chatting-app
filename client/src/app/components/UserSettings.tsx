@@ -4,6 +4,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useAuthContext } from '../hooks/useAuthContext';
 import Button from '@mui/material/Button';
 import { XIcon } from '@heroicons/react/outline';
+import { CheckCircleIcon } from '@heroicons/react/solid';
 
 interface Props {
   onCloseDialog: () => void;
@@ -28,7 +29,7 @@ export const UserSettings: React.FC<Props> = ({
     <Dialog onClose={onCloseDialog} open={dialogIsOpen} fullWidth={true}>
       <div className='flex items-center justify-between pr-6 border-b border-gray-300'>
         <DialogTitle>My Account</DialogTitle>
-        <XIcon className='w-5 h-5 cursor-pointer' onClick={onCloseDialog} />
+        <XIcon className='base-icon' onClick={onCloseDialog} />
       </div>
       <div className='p-6'>
         <div className='flex items-center'>
@@ -38,6 +39,7 @@ export const UserSettings: React.FC<Props> = ({
             className='rounded-full w-20 h-20'
             referrerPolicy='no-referrer'
           />
+          <CheckCircleIcon className='base-icon' />
           <p className='ml-4 font-semibold mr-auto'>
             {userCredentials?.fullName}
           </p>

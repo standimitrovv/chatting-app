@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .base-icon {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+}
