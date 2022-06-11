@@ -6,6 +6,7 @@ import { XIcon } from '@heroicons/react/outline';
 import { CheckCircleIcon } from '@heroicons/react/solid';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { UserStatus } from './UserStatus';
+import { AvailableUserStatuses } from '../models/AvailableUserStatuses';
 
 interface Props {
   onCloseDialog: () => void;
