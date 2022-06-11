@@ -33,13 +33,15 @@ export const UserSettings: React.FC<Props> = ({
       </div>
       <div className='p-6'>
         <div className='flex items-center'>
-          <img
-            src={userCredentials?.photoUrl}
-            alt='User'
-            className='rounded-full w-20 h-20'
-            referrerPolicy='no-referrer'
-          />
-          <CheckCircleIcon className='base-icon' />
+          <div className='relative'>
+            <img
+              src={userCredentials?.photoUrl}
+              alt='User'
+              className='rounded-full w-20 h-20'
+              referrerPolicy='no-referrer'
+            />
+            <CheckCircleIcon className='base-icon text-green-500 absolute top-14 -right-1 bg-white rounded-full' />
+          </div>
           <p className='ml-4 font-semibold mr-auto'>
             {userCredentials?.fullName}
           </p>
