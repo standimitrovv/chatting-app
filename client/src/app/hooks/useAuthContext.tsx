@@ -7,11 +7,14 @@ import React, {
   useMemo,
 } from 'react';
 import { AuthContext } from '../models/AuthContext';
+import { AvailableUserStatuses } from '../models/AvailableUserStatuses';
 import { UserCredentials } from '../models/UserCredentials';
 
 export const Context = createContext<AuthContext>({
   isLoggedIn: false,
   userCredentials: undefined,
+  userStatus: undefined,
+  onUserStatusChange: (status: AvailableUserStatuses) => {},
   login: (userCredentials: UserCredentials) => {},
   logout: () => {},
 });
@@ -28,9 +31,13 @@ export const useAuthContext = () => {
 
 export const AuthProvider: React.FC = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
   const [userCredentials, setUserCredentials] = useState<
     UserCredentials | undefined
   >(undefined);
+
+  const [userStatus, setUserStatus] =
+    useState<AvailableUserStatuses>('Available');
 
   const login = useCallback((userCredentials: UserCredentials) => {
     setIsLoggedIn(true);
@@ -42,6 +49,10 @@ export const AuthProvider: React.FC = (props) => {
     setIsLoggedIn(false);
     setUserCredentials(undefined);
     localStorage.removeItem('userData');
+  }, []);
+
+  const onUserStatusChange = useCallback((status: AvailableUserStatuses) => {
+    setUserStatus(status);
   }, []);
 
   useEffect(() => {
@@ -57,10 +68,12 @@ export const AuthProvider: React.FC = (props) => {
     () => ({
       isLoggedIn,
       userCredentials,
+      userStatus,
+      onUserStatusChange,
       login,
       logout,
     }),
-    [isLoggedIn, userCredentials, login, logout]
+    [isLoggedIn, userCredentials, userStatus, onUserStatusChange, login, logout]
   );
 
   return <Context.Provider value={context}>{props.children}</Context.Provider>;
