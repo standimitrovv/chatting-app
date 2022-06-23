@@ -2,26 +2,24 @@ import React from 'react';
 import { CheckCircleIcon } from '@heroicons/react/solid';
 import { XCircleIcon } from '@heroicons/react/outline';
 import { MinusCircleIcon, ClockIcon } from '@heroicons/react/solid';
-import { AvailableUserStatuses } from '../models/AvailableUserStatuses';
+import { useAuthContext } from '../hooks/useAuthContext';
 
-interface Props {
-  currentStatus: AvailableUserStatuses;
-}
+export const StatusIcon: React.FunctionComponent = () => {
+  const { userStatus } = useAuthContext();
 
-export const StatusIcon: React.FunctionComponent<Props> = (props) => {
-  if (props.currentStatus === 'Available') {
+  if (userStatus === 'Available') {
     return <CheckCircleIcon className='base-icon text-green-500 status-icon' />;
   }
 
-  if (props.currentStatus === 'Do Not Disturb') {
+  if (userStatus === 'Do Not Disturb') {
     return <MinusCircleIcon className='base-icon status-icon text-red-500' />;
   }
 
-  if (props.currentStatus === 'Away') {
+  if (userStatus === 'Away') {
     return <ClockIcon className='base-icon status-icon text-yellow-500' />;
   }
 
-  if (props.currentStatus === 'Offline') {
+  if (userStatus === 'Offline') {
     return <XCircleIcon className='base-icon status-icon text-gray-500' />;
   }
 

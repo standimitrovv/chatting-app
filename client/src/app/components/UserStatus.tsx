@@ -8,6 +8,7 @@ import {
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { AvailableUserStatuses } from '../models/AvailableUserStatuses';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const statusAvailable = [
   {
@@ -36,12 +37,9 @@ const statusAvailable = [
   },
 ];
 
-interface Props {
-  currentStatus: AvailableUserStatuses;
-  onStatusChange: (status: AvailableUserStatuses) => void;
-}
+export const UserStatus: React.FunctionComponent = () => {
+  const { userStatus, onUserStatusChange } = useAuthContext();
 
-export const UserStatus: React.FunctionComponent<Props> = (props) => {
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | undefined>(
     undefined
   );
@@ -51,7 +49,7 @@ export const UserStatus: React.FunctionComponent<Props> = (props) => {
   };
 
   const onStatusItemClick = (status: AvailableUserStatuses) => {
-    props.onStatusChange(status);
+    onUserStatusChange(status);
 
     setAnchorEl(undefined);
   };
@@ -59,7 +57,7 @@ export const UserStatus: React.FunctionComponent<Props> = (props) => {
   return (
     <>
       <div className='flex items-center ml-4' onClick={onUserStatusClick}>
-        <span className='text-sm cursor-pointer'>{props.currentStatus}</span>
+        <span className='text-sm cursor-pointer'>{userStatus}</span>
         <ChevronDownIcon className='small-icon ml-1' />
       </div>
       <Menu
