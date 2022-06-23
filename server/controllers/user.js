@@ -55,3 +55,5 @@ exports.getSingleUser = async (req, res, next) => {
     );
   }
 };
+
+exports.updateUserStatus = async (req, res, next) => {};

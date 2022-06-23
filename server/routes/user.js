@@ -9,4 +9,6 @@ router.get('/get-users', user.getAllUsers);
 
 router.get('/get-user/:userId', user.getSingleUser);
 
+router.put('/update-user-status/?status=', user.updateUserStatus);
+
 module.exports = router;
