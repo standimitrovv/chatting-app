@@ -56,4 +56,31 @@ exports.getSingleUser = async (req, res, next) => {
   }
 };
 
-exports.updateUserStatus = async (req, res, next) => {};
+exports.updateUserStatus = async (req, res, next) => {
+  const userId = req.params;
+
+  const status = req.query.status;
+
+  let user;
+  try {
+    user = await User.findOne(userId);
+  } catch (err) {
+    return next(
+      new HttpError('Something went wrong, please try again later!', 500)
+    );
+  }
+
+  if (!user || user.length === 0) {
+    return next(new HttpError('No user found', 400));
+  }
+
+  user.status = status;
+
+  try {
+    await user.save();
+  } catch (err) {
+    new HttpError('Something went wrong, please try again later!', 500);
+  }
+
+  res.json({ message: 'Status Updated!' });
+};
