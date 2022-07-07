@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 @layer components {
+  .xs-icon {
+    width: 13px;
+    height: 13px;
+    cursor: pointer;
+  }
+
   .small-icon {
     width: 16px;
     height: 16px;
