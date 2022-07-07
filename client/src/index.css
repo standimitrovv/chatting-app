@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 @layer components {
+  .xs-icon {
+    width: 13px;
+    height: 13px;
+    cursor: pointer;
+  }
+
   .small-icon {
     width: 16px;
     height: 16px;
@@ -21,9 +27,6 @@
   }
 
   .status-icon {
-    position: absolute;
-    top: 56px;
-    right: -4px;
     background: white;
     border-radius: 9999px;
   }
