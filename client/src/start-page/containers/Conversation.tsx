@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { XIcon } from '@heroicons/react/outline';
 import { useConversation } from '../hooks/useConversation';
 import { UserConversation } from '../models/UserConversation';
+import { StatusIcon } from '../../app/components/StatusIcon';
 interface Props {
   isActive: boolean;
   conversation: UserConversation;
@@ -34,7 +35,7 @@ export const Conversation: React.FC<Props> = ({
         <img
           src={friendCredentials && friendCredentials.photoUrl}
           alt="User's profile "
-          className='w-8 h-8 rounded-full'
+          className='w-10 h-10 rounded-full'
           referrerPolicy='no-referrer'
         />
         <p className='ml-4 text-white font-semibold'>

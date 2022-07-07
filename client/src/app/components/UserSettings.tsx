@@ -16,7 +16,7 @@ export const UserSettings: React.FC<Props> = ({
   onCloseDialog,
   dialogIsOpen,
 }) => {
-  const { userCredentials, logout } = useAuthContext();
+  const { userCredentials, logout, userStatus } = useAuthContext();
 
   const [emailIsEncrypted, setEmailIsEncrypted] = useState<boolean>(true);
 
@@ -43,7 +43,7 @@ export const UserSettings: React.FC<Props> = ({
               className='rounded-full w-20 h-20'
               referrerPolicy='no-referrer'
             />
-            <StatusIcon />
+            <StatusIcon status={!userStatus ? 'Offline' : userStatus} />
           </div>
           <div className='mr-auto flex flex-col'>
             <p className='ml-4 font-semibold'>{userCredentials?.fullName}</p>
