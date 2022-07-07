@@ -6,6 +6,7 @@ import { AvailableUserStatuses } from '../models/AvailableUserStatuses';
 
 interface Props {
   xs?: boolean;
+  className?: string;
   status: AvailableUserStatuses;
 }
 
@@ -13,8 +14,8 @@ export const StatusIcon: React.FunctionComponent<Props> = (props) => {
   if (props.status === 'Available') {
     return (
       <CheckCircleIcon
-        className={`${
-          props.xs ? 'xs-icon' : 'base-icon'
+        className={`${props.xs ? 'xs-icon' : 'base-icon'} ${
+          props.className
         } status-icon text-green-500`}
       />
     );
@@ -23,8 +24,8 @@ export const StatusIcon: React.FunctionComponent<Props> = (props) => {
   if (props.status === 'Do Not Disturb') {
     return (
       <MinusCircleIcon
-        className={`${
-          props.xs ? 'xs-icon' : 'base-icon'
+        className={`${props.xs ? 'xs-icon' : 'base-icon'} ${
+          props.className
         } status-icon text-red-500`}
       />
     );
@@ -33,8 +34,8 @@ export const StatusIcon: React.FunctionComponent<Props> = (props) => {
   if (props.status === 'Away') {
     return (
       <ClockIcon
-        className={`${
-          props.xs ? 'xs-icon' : 'base-icon'
+        className={`${props.xs ? 'xs-icon' : 'base-icon'} ${
+          props.className
         } status-icon text-yellow-500`}
       />
     );
@@ -43,8 +44,8 @@ export const StatusIcon: React.FunctionComponent<Props> = (props) => {
   if (props.status === 'Offline') {
     return (
       <XCircleIcon
-        className={`${
-          props.xs ? 'xs-icon' : 'base-icon'
+        className={`${props.xs ? 'xs-icon' : 'base-icon'} ${
+          props.className
         } status-icon text-gray-500`}
       />
     );

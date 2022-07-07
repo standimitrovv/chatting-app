@@ -32,12 +32,21 @@ export const Conversation: React.FC<Props> = ({
       } flex items-center justify-between px-6 py-3 group hover:bg-slate-800 cursor-pointer`}
     >
       <div className='flex items-center' onClick={onClick}>
-        <img
-          src={friendCredentials && friendCredentials.photoUrl}
-          alt="User's profile "
-          className='w-10 h-10 rounded-full'
-          referrerPolicy='no-referrer'
-        />
+        <div className='relative'>
+          <img
+            src={friendCredentials && friendCredentials.photoUrl}
+            alt="User's profile "
+            className='w-10 h-10 rounded-full'
+            referrerPolicy='no-referrer'
+          />
+          <StatusIcon
+            xs
+            className='absolute top-6 -right-1 '
+            status={
+              !friendCredentials?.status ? 'Offline' : friendCredentials.status
+            }
+          />
+        </div>
         <p className='ml-4 text-white font-semibold'>
           {friendCredentials && friendCredentials.fullName}
         </p>
