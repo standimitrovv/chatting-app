@@ -43,7 +43,10 @@ export const UserSettings: React.FC<Props> = ({
               className='rounded-full w-20 h-20'
               referrerPolicy='no-referrer'
             />
-            <StatusIcon status={!userStatus ? 'Offline' : userStatus} />
+            <StatusIcon
+              className='absolute top-14 -right-1'
+              status={!userStatus ? 'Offline' : userStatus}
+            />
           </div>
           <div className='mr-auto flex flex-col'>
             <p className='ml-4 font-semibold'>{userCredentials?.fullName}</p>
