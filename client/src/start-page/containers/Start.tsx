@@ -1,44 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { useAuthContext } from '../../app/hooks/useAuthContext';
+import React, { useState } from 'react';
 import { useHttp } from '../../app/hooks/useHttp';
-import { Conversation } from './Conversation';
-import { UserConversation } from '../models/UserConversation';
 import { Chat } from './Chat';
 import { useConversation } from '../hooks/useConversation';
-import { SearchBar } from '../components/SearchBar';
 import { ResponseMessage } from '../components/ResponseMessage';
+import { SidePanel } from '../components/SidePanel';
 
 export const StartPage: React.FC = () => {
-  const [userConversations, setUserConversations] = useState<
-    UserConversation[] | []
-  >([]);
-
   const [convoResponseMessage, setConvoResponseMessage] = useState<string>('');
 
-  const { isLoading, sendRequest, error } = useHttp();
-
-  const { userCredentials } = useAuthContext();
+  const { sendRequest, error } = useHttp();
 
   const { activeConversation, setActiveConversation } = useConversation();
-
-  const userId = userCredentials?.userId;
-
-  useEffect(() => {
-    const getConvosOfUser = async () => {
-      try {
-        if (!userId) return;
-        const response = await sendRequest(
-          `/conversations/get-convo/${userId}`
-        );
-        if (!response) {
-          setUserConversations([]);
-          return;
-        }
-        setUserConversations(response.userConversations);
-      } catch (err) {}
-    };
-    getConvosOfUser();
-  }, [userId, sendRequest, convoResponseMessage]);
 
   const deleteConversation = async (conversationId: string) => {
     try {
@@ -61,27 +33,14 @@ export const StartPage: React.FC = () => {
 
   return (
     <div className='flex w-full'>
-      <div className='w-96 bg-slate-500 relative'>
-        <div className='flex relative pt-9 pb-6 px-4 border-b'>
-          <SearchBar
-            isLoading={isLoading}
-            setCreateConvoResponseMessage={(message: string) =>
-              setConvoResponseMessage(message)
-            }
-          />
-        </div>
-        <div className='flex flex-col justify-center pt-5'>
-          {userConversations.map((conversation) => (
-            <Conversation
-              key={conversation._id}
-              conversation={conversation}
-              isActive={conversation._id === activeConversation?._id}
-              onDelete={() => deleteConversation(conversation._id)}
-              onClick={() => setActiveConversation(conversation)}
-            />
-          ))}
-        </div>
-      </div>
+      <SidePanel
+        activeConversationId={activeConversation?._id}
+        onCreateConversationResponse={setConvoResponseMessage}
+        onDelete={deleteConversation}
+        onConversationClick={(conversation) =>
+          setActiveConversation(conversation)
+        }
+      />
       <div className='bg-cyan-400 w-full pt-8'>
         {activeConversation && <Chat />}
       </div>
