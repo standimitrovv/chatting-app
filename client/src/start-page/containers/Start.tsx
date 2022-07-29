@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import openSocket from 'socket.io-client';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
 import { useHttp } from '../../app/hooks/useHttp';
 import { Conversation } from './Conversation';
@@ -24,21 +25,43 @@ export const StartPage: React.FC = () => {
   const userId = userCredentials?.userId;
 
   useEffect(() => {
-    const getConvosOfUser = async () => {
+    (async () => {
       try {
         if (!userId) return;
+
         const response = await sendRequest(
           `/conversations/get-convo/${userId}`
         );
+
         if (!response) {
           setUserConversations([]);
           return;
         }
+
         setUserConversations(response.userConversations);
       } catch (err) {}
-    };
-    getConvosOfUser();
+    })();
   }, [userId, sendRequest, convoResponseMessage]);
+
+  //refetch the conversations when status of a user changes
+  useEffect(() => {
+    const socket = openSocket(process.env.REACT_APP_API_SERVER!);
+
+    socket.on('status-change', () => {
+      (async () => {
+        const response = await sendRequest(
+          `/conversations/get-convo/${userId}`
+        );
+
+        if (!response) {
+          setUserConversations([]);
+          return;
+        }
+
+        setUserConversations(response.userConversations);
+      })();
+    });
+  }, [sendRequest, userId]);
 
   const deleteConversation = async (conversationId: string) => {
     try {

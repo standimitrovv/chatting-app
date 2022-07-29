@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const HttpError = require('../models/error');
+const io = require('../socket');
 
 exports.createUser = (req, res, next) => {
   const email = req.body.email;
@@ -81,6 +82,8 @@ exports.updateUserStatus = async (req, res, next) => {
   } catch (err) {
     new HttpError('Something went wrong, please try again later!', 500);
   }
+
+  io.getIO().emit('status-change');
 
   res.json({ message: 'Status Updated!' });
 };
