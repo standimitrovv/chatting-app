@@ -7,7 +7,6 @@ import { SearchResult } from '../containers/SearchResult';
 import { User } from '../models/User';
 
 interface Props {
-  isLoading: boolean;
   setCreateConvoResponseMessage: (message: string) => void;
 }
 
@@ -42,7 +41,12 @@ export const SearchBar: React.FunctionComponent<Props> = (props) => {
               } else return null;
             }
           );
-          setSearchResults(filteredUsers);
+
+          if (filteredUsers) {
+            setSearchResults(filteredUsers);
+
+            setIsSearching(false);
+          }
         } catch (err) {
           console.error(err);
         }
@@ -56,6 +60,9 @@ export const SearchBar: React.FunctionComponent<Props> = (props) => {
 
   const createConversation = async (friendId: string) => {
     setIsSearching(false);
+
+    setUserInput('');
+
     try {
       const response = await sendRequest(
         `/conversations/create-convo`,
@@ -67,50 +74,76 @@ export const SearchBar: React.FunctionComponent<Props> = (props) => {
     } catch (err) {}
   };
 
+  const onInputFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsSearching(true);
+
+    if (e.target.value.length === 0) {
+      setIsSearching(false);
+    }
+
+    setUserInput(e.target.value);
+  };
+
+  const renderContent = (): JSX.Element => {
+    const getSearchingStateLabel = () => {
+      if (userInput.length === 1) {
+        return 'Enter one more character, please.';
+      }
+
+      if (searchResults.length === 0) {
+        return 'One moment, please.';
+      }
+
+      if (searchResults.length === 0 && !isSearching) {
+        return 'No results found.';
+      }
+    };
+
+    return (
+      <>
+        {searchResults.length === 0 ? (
+          <p className='py-3 px-2 w-full'>{getSearchingStateLabel()}</p>
+        ) : (
+          searchResults.map((result) => (
+            <div
+              key={result._id}
+              onClick={() => createConversation(result.userId)}
+            >
+              <SearchResult userData={result} />
+            </div>
+          ))
+        )}
+      </>
+    );
+  };
+
   return (
     <div className='w-full relative'>
       <div className='flex items-center relative justify-between'>
-        {!props.isLoading ? (
-          <SearchIcon className='h-5 w-5 text-white absolute left-4' />
-        ) : (
-          <CircularProgress
-            size={20}
-            className='w-full text-white absolute left-4 top-[2.9rem]'
-          />
-        )}
+        <div className='absolute w-10 h-10 flex items-center justify-center'>
+          {isSearching ? (
+            <CircularProgress size={20} />
+          ) : (
+            <SearchIcon className='base-icon text-white' />
+          )}
+        </div>
         <input
           type='text'
           placeholder='Search for a friend...'
           className='rounded-md py-2 pl-12 bg-gray-600 text-white font-bold focus-within:outline-none w-full'
-          onChange={(e) => setUserInput(e.target.value)}
-          onClick={() => setIsSearching((prevState) => !prevState)}
+          onChange={onInputFieldChange}
           value={userInput}
         />
       </div>
-      {isSearching && userInput.trim().length >= 1 && (
+      {userInput.trim().length >= 1 && (
         <div
           className={`bg-orange-400 rounded-lg flex flex-col text-center absolute w-full ${
-            searchResults.length === 0 || props.isLoading
+            searchResults.length === 0
               ? 'h-11 flex items-center justify-center '
               : 'h-fit'
           }`}
         >
-          {props.isLoading && searchResults.length === 0 ? (
-            <p className='py-3 px-2 w-full'>Loading..</p>
-          ) : userInput.length === 1 ? (
-            <p className='py-3 px-2 w-full'>Enter one more character please.</p>
-          ) : searchResults.length === 0 && !props.isLoading ? (
-            <p className='py-3 px-2 w-full'>No results found.</p>
-          ) : (
-            searchResults.map((result) => (
-              <div
-                key={result._id}
-                onClick={() => createConversation(result.userId)}
-              >
-                <SearchResult userData={result} />
-              </div>
-            ))
-          )}
+          {renderContent()}
         </div>
       )}
     </div>
