@@ -84,6 +84,8 @@ export const SearchBar: React.FunctionComponent<Props> = (props) => {
     setUserInput(e.target.value);
   };
 
+  console.log(searchResults);
+
   const renderContent = (): JSX.Element => {
     const getSearchingStateLabel = () => {
       if (userInput.length === 1) {
@@ -121,7 +123,7 @@ export const SearchBar: React.FunctionComponent<Props> = (props) => {
     <div className='w-full relative'>
       <div className='flex items-center relative justify-between'>
         <div className='absolute w-10 h-10 flex items-center justify-center'>
-          {isSearching ? (
+          {isSearching && searchResults.length === 0 ? (
             <CircularProgress size={20} />
           ) : (
             <SearchIcon className='base-icon text-white' />
