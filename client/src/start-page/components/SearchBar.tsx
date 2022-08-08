@@ -86,16 +86,16 @@ export const SearchBar: React.FunctionComponent<Props> = (props) => {
 
   const renderContent = (): JSX.Element => {
     const getSearchingStateLabel = () => {
+      if (searchResults.length === 0 && !isSearching) {
+        return 'No results found.';
+      }
+
       if (userInput.length === 1) {
         return 'Enter one more character, please.';
       }
 
       if (searchResults.length === 0) {
         return 'One moment, please.';
-      }
-
-      if (searchResults.length === 0 && !isSearching) {
-        return 'No results found.';
       }
     };
 
