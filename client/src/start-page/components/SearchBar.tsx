@@ -84,8 +84,6 @@ export const SearchBar: React.FunctionComponent<Props> = (props) => {
     setUserInput(e.target.value);
   };
 
-  console.log(searchResults);
-
   const renderContent = (): JSX.Element => {
     const getSearchingStateLabel = () => {
       if (userInput.length === 1) {
