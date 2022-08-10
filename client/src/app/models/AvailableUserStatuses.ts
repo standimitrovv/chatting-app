@@ -1,5 +1,5 @@
 export type AvailableUserStatuses =
-  | 'Available'
+  | 'Online'
   | 'Do Not Disturb'
   | 'Away'
   | 'Offline';

@@ -48,7 +48,7 @@ mongoose.connect(process.env.MONGODB_CONNECT).then((result) => {
   io.on('connection', (socket) => {
     socket.on('join', async (userId) => {
       //set user status to online
-      await updateUserStatus(userId, 'Available');
+      await updateUserStatus(userId, 'Online');
     });
 
     socket.on('disconnect', async (userId) => {

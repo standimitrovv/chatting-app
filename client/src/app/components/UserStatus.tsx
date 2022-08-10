@@ -15,7 +15,7 @@ const statusAvailable = [
   {
     id: 1,
     icon: CheckCircleIcon,
-    name: 'Available',
+    name: 'Online',
     color: 'text-green-500',
   },
   {
