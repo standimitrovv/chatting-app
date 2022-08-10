@@ -1,6 +1,6 @@
 const User = require('../models/user');
 const HttpError = require('../models/error');
-const io = require('../socket');
+const updateStatus = require('./db/user/updateStatus');
 
 exports.createUser = (req, res, next) => {
   const email = req.body.email;
@@ -62,28 +62,9 @@ exports.updateUserStatus = async (req, res, next) => {
 
   const status = req.query.status;
 
-  let user;
-  try {
-    user = await User.findOne(userId);
-  } catch (err) {
-    return next(
-      new HttpError('Something went wrong, please try again later!', 500)
-    );
-  }
-
-  if (!user || user.length === 0) {
-    return next(new HttpError('No user found', 400));
-  }
-
-  user.status = status;
-
-  try {
-    await user.save();
-  } catch (err) {
-    new HttpError('Something went wrong, please try again later!', 500);
-  }
-
-  io.getIO().emit('status-change');
-
-  res.json({ message: 'Status Updated!' });
+  updateStatus(userId, status)
+    .then(() => {
+      res.json({ message: 'Status Updated!' });
+    })
+    .catch((err) => console.log(err));
 };
