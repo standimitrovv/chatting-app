@@ -1,6 +1,6 @@
-const HttpError = require('../../../models/error');
-const User = require('../../../models/user');
-const io = require('../../../socket');
+const HttpError = require('../../models/error');
+const User = require('../../models/user');
+const io = require('../../socket');
 
 module.exports = async (userId, status) => {
   let user;

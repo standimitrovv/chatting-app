@@ -44,6 +44,7 @@ export const StartPage: React.FC = () => {
 
     return () => {
       window.onbeforeunload = function () {
+        //BUG sending `transport close` to API
         socket.emit('disconnect', userId);
       };
     };

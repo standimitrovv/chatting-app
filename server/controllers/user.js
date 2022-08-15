@@ -1,6 +1,6 @@
 const User = require('../models/user');
 const HttpError = require('../models/error');
-const updateStatus = require('./db/user/updateStatus');
+const updateStatus = require('../services/user/updateStatus');
 
 exports.createUser = (req, res, next) => {
   const email = req.body.email;

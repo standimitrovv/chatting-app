@@ -12,7 +12,7 @@ const conversationRoutes = require('./routes/conversation');
 const messageRoutes = require('./routes/message');
 
 //db util functions
-const updateUserStatus = require('./controllers/db/user/updateStatus');
+const updateUserStatus = require('./services/user/updateStatus');
 
 // API essentials
 app.use(express.json());
