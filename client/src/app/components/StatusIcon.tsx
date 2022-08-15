@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const StatusIcon: React.FunctionComponent<Props> = (props) => {
-  if (props.status === 'Available') {
+  if (props.status === 'Online') {
     return (
       <CheckCircleIcon
         className={`${props.xs ? 'xs-icon' : 'base-icon'} ${

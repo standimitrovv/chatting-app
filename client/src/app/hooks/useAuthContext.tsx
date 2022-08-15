@@ -36,8 +36,7 @@ export const AuthProvider: React.FC = (props) => {
     UserCredentials | undefined
   >(undefined);
 
-  const [userStatus, setUserStatus] =
-    useState<AvailableUserStatuses>('Available');
+  const [userStatus, setUserStatus] = useState<AvailableUserStatuses>('Online');
 
   const login = useCallback((userCredentials: UserCredentials) => {
     setIsLoggedIn(true);

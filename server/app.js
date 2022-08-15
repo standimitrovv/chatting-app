@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+
 const app = express();
 
 //routes
@@ -9,6 +10,9 @@ const chatRoutes = require('./routes/chat');
 const userRoutes = require('./routes/user');
 const conversationRoutes = require('./routes/conversation');
 const messageRoutes = require('./routes/message');
+
+//db util functions
+const updateUserStatus = require('./services/user/updateStatus');
 
 // API essentials
 app.use(express.json());
@@ -38,6 +42,18 @@ app.use((error, req, res, next) => {
 
 mongoose.connect(process.env.MONGODB_CONNECT).then((result) => {
   const server = app.listen(3001);
+
   const io = require('./socket').init(server);
-  io.on('connection', (socket) => console.log('Client connected'));
+
+  io.on('connection', (socket) => {
+    socket.on('join', async (userId) => {
+      //set user status to online
+      await updateUserStatus(userId, 'Online');
+    });
+
+    socket.on('disconnect', async (userId) => {
+      // set user status to offline
+      await updateUserStatus(userId, 'Offline');
+    });
+  });
 });
