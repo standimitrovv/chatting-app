@@ -3,6 +3,8 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 
+import { IHttpError } from './models/error';
+
 //routes
 const chatRoutes = require('./routes/chat');
 const userRoutes = require('./routes/user');
@@ -27,17 +29,19 @@ app.use(() => {
   throw new Error('Not implemented!');
 });
 
-app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
-  // BUG - error handling is not working - message.js - getConvoMessages
-  if (res.headersSent) {
-    return next(error);
-  }
+app.use(
+  (error: IHttpError, req: Request, res: Response, next: NextFunction) => {
+    // BUG - error handling is not working - message.js - getConvoMessages
+    if (res.headersSent) {
+      return next(error);
+    }
 
-  res.status(error.code || 500).json({
-    message: error.message || 'An unknown error occurred',
-    code: error.code,
-  });
-});
+    res.status(error.code || 500).json({
+      message: error.message || 'An unknown error occurred',
+      code: error.code,
+    });
+  }
+);
 
 mongoose.connect(process.env.MONGODB_CONNECT!).then((result) => {
   const server = app.listen(3001);
