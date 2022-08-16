@@ -20,6 +20,10 @@ const UserSchema = new Schema({
     required: true,
     ref: 'Message',
   },
+  status: {
+    type: String,
+    required: false,
+  },
 });
 
 export const UserModel = mongoose.model('Users', UserSchema);
