@@ -36,7 +36,7 @@ export const createMessage = async (
   }
 };
 
-exports.getConvoMessages = async (
+export const getConvoMessages = async (
   req: Request,
   res: Response,
   next: NextFunction

@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 
 import { UserModel } from '../models/user';
 import { HttpError } from '../models/error';
+import { updateStatus } from '../services/user/updateStatus';
 
 export const createUser = async (req: Request, res: Response) => {
   const { email, fullName, photoUrl, userId } = req.body;
@@ -28,7 +29,7 @@ export const createUser = async (req: Request, res: Response) => {
 };
 
 export const getAllUsers = async (
-  _: never,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {
@@ -61,5 +62,19 @@ export const getSingleUser = async (
     return next(
       new HttpError('Something went wrong, please try again later!', 500)
     );
+  }
+};
+
+export const updateUserStatus = async (req: Request, res: Response) => {
+  const userId = req.params;
+
+  const status = req.query.status;
+
+  try {
+    await updateStatus(userId, status);
+
+    res.json({ message: 'Status updated!' });
+  } catch (err) {
+    throw new HttpError('Something went wrong, please try again later', 500);
   }
 };

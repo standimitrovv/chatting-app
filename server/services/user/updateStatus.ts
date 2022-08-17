@@ -1,12 +1,13 @@
-const HttpError = require('../../models/error');
-const User = require('../../models/user');
 const io = require('../../socket');
 
-module.exports = async (userId, status) => {
+import { HttpError } from '../../models/error';
+import { UserModel } from '../../models/user';
+
+export const updateStatus = async (userId: string, status: string) => {
   let user;
 
   try {
-    user = await User.findOne(userId);
+    user = await UserModel.findOne({ userId });
   } catch (err) {
     throw new HttpError('Something went wrong, please try again later!', 500);
   }
