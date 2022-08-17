@@ -1,15 +1,16 @@
-import dotenv from 'dotenv';
 import express, { Request, Response, NextFunction } from 'express';
+import dotenv from 'dotenv';
 import cors from 'cors';
 import mongoose from 'mongoose';
+import { io } from './socket';
 
 import { IHttpError } from './models/error';
 
 //routes
-const chatRoutes = require('./routes/chat');
-const userRoutes = require('./routes/user');
-const conversationRoutes = require('./routes/conversation');
-const messageRoutes = require('./routes/message');
+import { router as chatRoutes } from './routes/chat';
+import { router as userRoutes } from './routes/user';
+import { router as conversationRoutes } from './routes/conversation';
+import { router as messageRoutes } from './routes/message';
 
 dotenv.config();
 
@@ -45,6 +46,6 @@ app.use(
 
 mongoose.connect(process.env.MONGODB_CONNECT!).then((result) => {
   const server = app.listen(3001);
-  const io = require('./socket').init(server);
+
   io.on('connection', () => console.log('Client connected'));
 });
