@@ -45,7 +45,7 @@ app.use(
 );
 
 mongoose.connect(process.env.MONGODB_CONNECT!).then(() => {
-  const server = app.listen(3001);
+  app.listen(3001);
 
   io.on('connection', () => console.log('Client connected'));
 });
