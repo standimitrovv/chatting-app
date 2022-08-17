@@ -66,9 +66,9 @@ export const getSingleUser = async (
 };
 
 export const updateUserStatus = async (req: Request, res: Response) => {
-  const userId = req.params;
+  const userId = req.params.userId;
 
-  const status = req.query.status;
+  const status = req.query.status as string;
 
   try {
     await updateStatus(userId, status);

@@ -27,7 +27,7 @@ export const createMessage = async (
       );
       return next(error);
     }
-    io.getIO().emit('message', { action: 'create', createdMessage });
+    io.emit('message', { action: 'create', createdMessage });
     res.json({ message: 'Successfully created a message', createdMessage });
   } catch (err) {
     return next(

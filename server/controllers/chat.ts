@@ -1,5 +1,5 @@
-const io = require('../socket');
 import { Request, Response } from 'express';
+import { io } from '../socket';
 
 import { AllChatMessageModel } from '../models/allChatMessage';
 import { HttpError } from '../models/error';
@@ -18,7 +18,7 @@ export const createMessage = async (req: Request, res: Response) => {
   try {
     const result = await message.save();
 
-    io.getIO().emit('messages', { action: 'create', result });
+    io.emit('messages', { action: 'create', result });
 
     res.status(201).json({ message: 'Message created' });
   } catch (err) {
@@ -34,7 +34,7 @@ export const getMessages = async (_: unknown, res: Response) => {
       return res.status(200).json({ message: 'No messages found' });
     }
 
-    io.getIO().emit('messages', { action: 'get', result });
+    io.emit('messages', { action: 'get', result });
 
     res.status(201).json({ message: 'Fetched Successfully!', result });
   } catch (err) {
@@ -52,7 +52,7 @@ export const deleteMessage = async (req: Request, res: Response) => {
       return res.status(200).json({ message: 'No message found' });
     }
 
-    io.getIO().emit('messages', { action: 'delete', result });
+    io.emit('messages', { action: 'delete', result });
 
     res.status(200).json({ message: 'Deleted successfuly' });
   } catch (err) {

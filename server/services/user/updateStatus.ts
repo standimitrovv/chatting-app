@@ -1,4 +1,4 @@
-const io = require('../../socket');
+import { io } from '../../socket';
 
 import { HttpError } from '../../models/error';
 import { UserModel } from '../../models/user';
@@ -21,7 +21,7 @@ export const updateStatus = async (userId: string, status: string) => {
   try {
     await user.save();
 
-    io.getIO().emit('status-change');
+    io.emit('status-change');
   } catch (err) {
     throw new HttpError('Something went wrong, please try again later!', 500);
   }
