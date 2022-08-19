@@ -4,11 +4,18 @@ import { UserModel } from '../models/user';
 import { HttpError } from '../models/error';
 import { updateStatus } from '../services/user/updateStatus';
 
+interface RequestBody {
+  email: string;
+  fullName: string;
+  photoUrl: string;
+  userId: string;
+}
+
 export const createUser = async (req: Request, res: Response) => {
-  const { email, fullName, photoUrl, userId } = req.body;
+  const { email, fullName, photoUrl, userId } = req.body as RequestBody;
 
   try {
-    const existingUser = await UserModel.findOne({ userId });
+    const existingUser = await UserModel.findOne({ userId: userId.toString() });
 
     if (!existingUser) {
       const createdUser = new UserModel({ email, fullName, photoUrl, userId });
