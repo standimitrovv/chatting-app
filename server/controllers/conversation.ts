@@ -10,10 +10,14 @@ export const createConvo = async (
   next: NextFunction
 ) => {
   const { userId, friendId } = req.body;
+
   try {
+    const members = [userId.toString(), friendId.toString()];
+
     const existingConvo = await ConversationModel.findOne({
-      members: [userId, friendId],
+      members,
     });
+
     if (existingConvo) {
       res.json({ message: 'Conversation already exists', existingConvo });
       return next(new HttpError('Conversation already exists', 400));
