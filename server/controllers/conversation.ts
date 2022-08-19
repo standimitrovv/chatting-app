@@ -1,18 +1,28 @@
-const Conversation = require('../models/conversation');
-const Message = require('../models/message');
-const HttpError = require('../models/error');
+import { Request, Response, NextFunction } from 'express';
 
-exports.createConvo = async (req, res, next) => {
+import { ConversationModel } from '../models/conversation';
+import { MessageModel } from '../models/message';
+import { HttpError } from '../models/error';
+
+export const createConvo = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { userId, friendId } = req.body;
+
   try {
-    const existingConvo = await Conversation.findOne({
-      members: [userId, friendId],
+    const members = [userId.toString(), friendId.toString()];
+
+    const existingConvo = await ConversationModel.findOne({
+      members,
     });
+
     if (existingConvo) {
       res.json({ message: 'Conversation already exists', existingConvo });
       return next(new HttpError('Conversation already exists', 400));
     }
-    const createdConvo = new Conversation({
+    const createdConvo = new ConversationModel({
       members: [userId, friendId],
     });
     await createdConvo.save();
@@ -27,10 +37,14 @@ exports.createConvo = async (req, res, next) => {
   }
 };
 
-exports.getConvoOfUser = async (req, res, next) => {
+export const getConvoOfUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const userId = req.params.userId;
   try {
-    const userConversations = await Conversation.find({ userId });
+    const userConversations = await ConversationModel.find({ userId });
     if (!userConversations || userConversations.length === 0)
       return next(
         new HttpError('User does not have any existing conversations', 401)
@@ -43,17 +57,21 @@ exports.getConvoOfUser = async (req, res, next) => {
   }
 };
 
-exports.deleteConversation = async (req, res, next) => {
+export const deleteConversation = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const conversationId = req.params.convoId;
   try {
-    const conversation = await Conversation.findById(conversationId);
+    const conversation = await ConversationModel.findById(conversationId);
     if (!conversation) {
       return next(
         new HttpError('No conversation found for corresponding id', 400)
       );
     }
-    await Message.deleteMany({ conversationId });
-    await Conversation.deleteOne({ _id: conversationId });
+    await MessageModel.deleteMany({ conversationId });
+    await ConversationModel.deleteOne({ _id: conversationId });
     res.json({ message: 'Successfully deleted conversation' });
   } catch (err) {
     return next(
