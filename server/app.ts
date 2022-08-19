@@ -15,6 +15,7 @@ import { router as messageRoutes } from './routes/message';
 dotenv.config();
 
 const app = express();
+app.disable('x-powered-by');
 
 // API essentials
 app.use(express.json());
