@@ -1,7 +1,10 @@
 import React from 'react';
-import { CheckCircleIcon } from '@heroicons/react/solid';
+import {
+  CheckCircleIcon,
+  MinusCircleIcon,
+  ClockIcon,
+} from '@heroicons/react/solid';
 import { XCircleIcon } from '@heroicons/react/outline';
-import { MinusCircleIcon, ClockIcon } from '@heroicons/react/solid';
 import { AvailableUserStatuses } from '../models/AvailableUserStatuses';
 
 interface Props {

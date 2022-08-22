@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 
 import { UserModel } from '../models/user';
 import { HttpError } from '../models/error';
-import { updateStatus } from '../services/user/updateStatus';
+import { updateStatus } from '../service/user/updateStatus';
 
 interface RequestBody {
   email: string;
