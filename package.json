@@ -1,0 +1,7 @@
+{
+  "name": "chapp",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ]
+}
