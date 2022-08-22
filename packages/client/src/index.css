@@ -1,3 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .xs-icon {
+    width: 13px;
+    height: 13px;
+    cursor: pointer;
+  }
+
+  .small-icon {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+
+  .base-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .icon-button {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+
+  .status-icon {
+    background: white;
+    border-radius: 9999px;
+  }
+}

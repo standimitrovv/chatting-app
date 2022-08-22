@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+
 const Schema = mongoose.Schema;
 
 const MessageSchema = new Schema({
@@ -25,5 +26,7 @@ const MessageSchema = new Schema({
   },
 });
 
-const MessageModel = mongoose.model('All-Chat-Message', MessageSchema);
-module.exports = MessageModel;
+export const AllChatMessageModel = mongoose.model(
+  'All-Chat-Message',
+  MessageSchema
+);
