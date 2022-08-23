@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { UserModel } from '../models/user';
 import { HttpError } from '../models/error';
 import { updateStatus } from '../service/user/updateStatus';
 import { saveUser } from '../service/user/saveUser';
 import { getUsers } from '../service/user/getUsers';
+import { getUserById } from '../service/user/getUserById';
 
 interface RequestBody {
   email: string;
@@ -31,7 +31,7 @@ export const getAllUsers = async (
   next: NextFunction
 ) => {
   try {
-    const users = getUsers();
+    const users = await getUsers();
 
     res.json({ users });
   } catch (err) {
@@ -47,11 +47,10 @@ export const getSingleUser = async (
   next: NextFunction
 ) => {
   const userId = req.params.userId;
+
   try {
-    const user = await UserModel.findOne({ userId });
-    if (!user || user.length === 0) {
-      return next(new HttpError('No user found', 400));
-    }
+    const user = await getUserById(userId);
+
     res.json({ user });
   } catch (err) {
     return next(
