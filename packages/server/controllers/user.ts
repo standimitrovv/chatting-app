@@ -4,6 +4,7 @@ import { UserModel } from '../models/user';
 import { HttpError } from '../models/error';
 import { updateStatus } from '../service/user/updateStatus';
 import { saveUser } from '../service/user/saveUser';
+import { getUsers } from '../service/user/getUsers';
 
 interface RequestBody {
   email: string;
@@ -25,15 +26,13 @@ export const createUser = async (req: Request, res: Response) => {
 };
 
 export const getAllUsers = async (
-  req: Request,
+  _: unknown,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const users = await UserModel.find();
-    if (!users || users.length === 0) {
-      return next(new HttpError('No users found', 400));
-    }
+    const users = getUsers();
+
     res.json({ users });
   } catch (err) {
     return next(
