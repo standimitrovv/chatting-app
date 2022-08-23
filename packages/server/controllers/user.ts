@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { UserModel } from '../models/user';
 import { HttpError } from '../models/error';
 import { updateStatus } from '../service/user/updateStatus';
+import { saveUser } from '../service/user/saveUser';
 
 interface RequestBody {
   email: string;
@@ -15,21 +16,9 @@ export const createUser = async (req: Request, res: Response) => {
   const { email, fullName, photoUrl, userId } = req.body as RequestBody;
 
   try {
-    const existingUser = await UserModel.findOne({ userId: userId.toString() });
+    await saveUser(email, fullName, photoUrl, userId);
 
-    if (!existingUser) {
-      const createdUser = new UserModel({ email, fullName, photoUrl, userId });
-
-      try {
-        await createdUser.save();
-
-        res.status(201).json({ message: 'User created!' });
-      } catch (err) {
-        throw new HttpError('Could not save the user', 400);
-      }
-    } else {
-      res.status(200).json({ message: 'User already exists!' });
-    }
+    res.status(201).json({ message: 'User created!' });
   } catch (err) {
     throw new HttpError('Something went wrong, please try again later!', 500);
   }
