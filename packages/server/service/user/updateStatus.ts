@@ -12,7 +12,7 @@ export const updateStatus = async (userId: string, status: string) => {
     throw new HttpError('Something went wrong, please try again later!', 500);
   }
 
-  if (!user || user.length === 0) {
+  if (!user) {
     throw new HttpError('No user found', 400);
   }
 
