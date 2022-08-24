@@ -5,6 +5,7 @@ import { MessageModel } from '../models/message';
 import { HttpError } from '../models/error';
 import { saveConversation } from '../service/conversation/saveConversation';
 import { getUserConversations } from '../service/conversation/getUserConversations';
+import { deleteUserConversation } from '../service/conversation/deleteUserConversation';
 
 export const createConvo = async (
   req: Request,
@@ -51,14 +52,8 @@ export const deleteConversation = async (
 ) => {
   const conversationId = req.params.convoId;
   try {
-    const conversation = await ConversationModel.findById(conversationId);
-    if (!conversation) {
-      return next(
-        new HttpError('No conversation found for corresponding id', 400)
-      );
-    }
-    await MessageModel.deleteMany({ conversationId });
-    await ConversationModel.deleteOne({ _id: conversationId });
+    await deleteUserConversation(conversationId);
+
     res.json({ message: 'Successfully deleted conversation' });
   } catch (err) {
     return next(
