@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { MessageModel } from '../models/message';
 import { HttpError } from '../models/error';
 import { io } from '../socket';
 import { saveMessage } from '../service/message/saveMessage';
+import { getAllConversationMessages } from '../service/message/getAllConversationMessages';
 
 export const createMessage = async (
   req: Request,
@@ -37,13 +37,8 @@ export const getConvoMessages = async (
 ) => {
   const convoId = req.params.convoId;
   try {
-    const messages = await MessageModel.find({
-      conversationId: convoId,
-    });
-    if (!messages || messages.length === 0)
-      return next(
-        new HttpError('No messages found for the current conversation', 400)
-      );
+    const messages = await getAllConversationMessages(convoId);
+
     res.json({ messages });
   } catch (err) {
     return next(
