@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { MessageModel } from '../models/message';
 import { HttpError } from '../models/error';
 import { io } from '../socket';
+import { saveMessage } from '../service/message/saveMessage';
 
 export const createMessage = async (
   req: Request,
@@ -10,24 +11,17 @@ export const createMessage = async (
   next: NextFunction
 ) => {
   const { conversationId, sender, text, createdAt } = req.body;
+
   try {
-    const createdMessage = new MessageModel({
+    const createdMessage = await saveMessage(
       conversationId,
       sender,
       text,
-      createdAt,
-    });
+      createdAt
+    );
 
-    try {
-      await createdMessage.save();
-    } catch (err) {
-      const error = new HttpError(
-        'Creating message failed, please try again.',
-        500
-      );
-      return next(error);
-    }
     io.emit('message', { action: 'create', createdMessage });
+
     res.json({ message: 'Successfully created a message', createdMessage });
   } catch (err) {
     return next(
