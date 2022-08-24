@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { ConversationModel } from '../models/conversation';
 import { MessageModel } from '../models/message';
 import { HttpError } from '../models/error';
+import { saveConversation } from '../service/conversation/saveConversation';
 
 export const createConvo = async (
   req: Request,
@@ -12,23 +13,11 @@ export const createConvo = async (
   const { userId, friendId } = req.body;
 
   try {
-    const members = [userId.toString(), friendId.toString()];
+    const createdConversation = saveConversation(userId, friendId);
 
-    const existingConvo = await ConversationModel.findOne({
-      members,
-    });
-
-    if (existingConvo) {
-      res.json({ message: 'Conversation already exists', existingConvo });
-      return next(new HttpError('Conversation already exists', 400));
-    }
-    const createdConvo = new ConversationModel({
-      members: [userId, friendId],
-    });
-    await createdConvo.save();
     res.json({
       message: 'Successfully created a new conversation',
-      conv: createdConvo,
+      conv: createdConversation,
     });
   } catch (err) {
     return next(
