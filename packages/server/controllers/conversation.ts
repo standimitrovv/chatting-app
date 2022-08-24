@@ -1,7 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { ConversationModel } from '../models/conversation';
-import { MessageModel } from '../models/message';
 import { HttpError } from '../models/error';
 import { saveConversation } from '../service/conversation/saveConversation';
 import { getUserConversations } from '../service/conversation/getUserConversations';
