@@ -30,3 +30,12 @@ export const AllChatMessageModel = mongoose.model(
   'All-Chat-Message',
   MessageSchema
 );
+
+export interface AllChatMessage {
+  _id: string;
+  text: string;
+  usersName: string;
+  usersImageUrl: string;
+  dateOfSending: Date;
+  creator: string;
+}

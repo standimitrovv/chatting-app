@@ -27,3 +27,12 @@ const UserSchema = new Schema({
 });
 
 export const UserModel = mongoose.model('Users', UserSchema);
+
+export interface User {
+  _id: string;
+  email: string;
+  fullName: string;
+  photoUrl: string;
+  userId: string;
+  status?: string;
+}
