@@ -1,9 +1,9 @@
 import { HttpError } from '../../models/error';
-import { MessageModel, MessageResult } from '../../models/message';
+import { MessageModel, Message } from '../../models/message';
 
 export const getAllConversationMessages = async (conversationId: string) => {
   try {
-    const messages: MessageResult[] = await MessageModel.find({
+    const messages: Message[] = await MessageModel.find({
       conversationId,
     });
 
