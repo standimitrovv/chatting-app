@@ -1,9 +1,12 @@
-import { Conversation, ConversationModel } from '../../models/conversation';
+import {
+  ConversationResult,
+  ConversationModel,
+} from '../../models/conversation';
 import { HttpError } from '../../models/error';
 
 export const getUserConversations = async (userId: string) => {
   try {
-    const conversations: Conversation[] = await ConversationModel.find({
+    const conversations: ConversationResult[] = await ConversationModel.find({
       userId,
     });
 

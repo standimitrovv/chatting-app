@@ -13,6 +13,10 @@ export const ConversationModel = mongoose.model(
   ConversationSchema
 );
 
-export interface Conversation {
+interface ConversationModel {
   members: [string, string];
+}
+
+export interface ConversationResult extends ConversationModel {
+  _id: string;
 }
