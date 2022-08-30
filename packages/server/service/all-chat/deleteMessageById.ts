@@ -1,9 +1,14 @@
-import { AllChatMessageModel } from '../../models/allChatMessage';
+import {
+  AllChatMessage,
+  AllChatMessageModel,
+} from '../../models/allChatMessage';
 import { HttpError } from '../../models/error';
 
 export const deleteMessageById = async (messageId: string) => {
   try {
-    const result = await AllChatMessageModel.findById(messageId);
+    const result: AllChatMessage | null = await AllChatMessageModel.findById(
+      messageId
+    );
 
     if (!result) {
       throw new HttpError('No message found', 200);
