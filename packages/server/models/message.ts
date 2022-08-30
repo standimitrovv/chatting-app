@@ -23,3 +23,14 @@ const MessageSchema = new Schema({
 });
 
 export const MessageModel = mongoose.model('Message', MessageSchema);
+
+interface MessageModel {
+  conversationId: string;
+  sender: string;
+  text: string;
+  createdAt: Date;
+}
+
+export interface MessageResult extends MessageModel {
+  _id: string;
+}
