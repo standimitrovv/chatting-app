@@ -32,6 +32,7 @@ export const AllChatMessageModel = mongoose.model(
 );
 
 export interface AllChatMessage {
+  _id: string;
   text: string;
   usersName: string;
   usersImageUrl: string;
