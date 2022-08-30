@@ -1,9 +1,9 @@
-import { UserModel } from '../../models/user';
+import { User, UserModel } from '../../models/user';
 import { HttpError } from '../../models/error';
 
 export const getUsers = async () => {
   try {
-    const users = await UserModel.find();
+    const users: User[] = await UserModel.find();
 
     if (!users || users.length === 0) {
       throw new HttpError('No users found', 200);
