@@ -12,3 +12,7 @@ export const ConversationModel = mongoose.model(
   'User-Conversation',
   ConversationSchema
 );
+
+export interface Conversation {
+  members: [string, string];
+}

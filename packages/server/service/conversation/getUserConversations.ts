@@ -1,9 +1,11 @@
-import { ConversationModel } from '../../models/conversation';
+import { Conversation, ConversationModel } from '../../models/conversation';
 import { HttpError } from '../../models/error';
 
 export const getUserConversations = async (userId: string) => {
   try {
-    const conversations = await ConversationModel.find({ userId });
+    const conversations: Conversation[] = await ConversationModel.find({
+      userId,
+    });
 
     if (conversations.length === 0) {
       throw new HttpError('User does not have any existing conversations', 200);
