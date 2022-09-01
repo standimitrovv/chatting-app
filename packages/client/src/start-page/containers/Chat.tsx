@@ -6,8 +6,9 @@ import { ConversationMessages } from '../models/ConversationMessages';
 import { ChatMessage } from './ChatMessage';
 import openSocket from 'socket.io-client';
 import { useConversation } from '../hooks/useConversation';
+import { getConversationMessages } from '../../service/conversation/GetConversationMessages';
 
-export const Chat: React.FunctionComponent = (props) => {
+export const Chat: React.FunctionComponent = () => {
   const { userCredentials } = useAuthContext();
 
   const { activeConversation } = useConversation();
@@ -19,23 +20,14 @@ export const Chat: React.FunctionComponent = (props) => {
   >([]);
 
   useEffect(() => {
-    const fetchUserConversation = async () => {
-      if (!activeConversation) {
-        return;
-      }
-      const response = await sendRequest(
-        `/messages/get-messages/${activeConversation?._id}`
-      );
+    if (!activeConversation) {
+      return;
+    }
 
-      if (!response) {
-        setConversationMessages([]);
-        return;
-      }
-      setConversationMessages(response.messages);
-    };
-
-    fetchUserConversation();
-  }, [activeConversation, sendRequest]);
+    getConversationMessages(activeConversation._id).then(
+      setConversationMessages
+    );
+  }, [activeConversation]);
 
   useEffect(() => {
     const socket = openSocket(process.env.REACT_APP_API_SERVER!);
