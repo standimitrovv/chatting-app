@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Message } from '@chapp/server/models/message';
 
-import { API } from '../api';
+import { API } from '../Api';
 
 interface GetConversationMessagesResult {
   messages: Message[];
