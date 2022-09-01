@@ -8,13 +8,17 @@ interface GetConversationMessagesResult {
 }
 
 export const getConversationMessages = async (conversationId: string) => {
-  const response = await axios.get<string, GetConversationMessagesResult>(
-    `${API}/messages/get-messages/${conversationId}`
-  );
+  try {
+    const response = await axios.get<string, GetConversationMessagesResult>(
+      `${API}/messages/get-messages/${conversationId}`
+    );
 
-  if (!response) {
-    return [];
+    if (!response) {
+      return [];
+    }
+
+    return response.messages;
+  } catch (err) {
+    console.error(err);
   }
-
-  return response.messages;
 };
