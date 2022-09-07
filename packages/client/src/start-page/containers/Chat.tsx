@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Input } from '../../app/components/Input';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
-import { useHttp } from '../../app/hooks/useHttp';
 import { ConversationMessages } from '../models/ConversationMessages';
 import { ChatMessage } from './ChatMessage';
 import openSocket from 'socket.io-client';
 import { useConversation } from '../hooks/useConversation';
-import { getConversationMessages } from '../../service/conversation/GetConversationMessages';
+import { getConversationMessages } from '../../service/messages/GetConversationMessages';
+import { createConversationMessage } from '../../service/messages/SaveMessage';
 
 export const Chat: React.FunctionComponent = () => {
   const { userCredentials } = useAuthContext();
 
   const { activeConversation } = useConversation();
-
-  const { sendRequest } = useHttp();
 
   const [conversationMessages, setConversationMessages] = useState<
     ConversationMessages[] | []
@@ -41,26 +39,27 @@ export const Chat: React.FunctionComponent = () => {
     });
   }, []);
 
+  if (!activeConversation || !userCredentials) {
+    return null;
+  }
+
   const onSendMessage = async (usersInput: string) => {
-    if (usersInput.trim().length !== 0 && userCredentials) {
-      const message = {
-        conversationId: activeConversation?._id,
-        sender: userCredentials.userId,
-        text: usersInput,
-        createdAt: Date.now(),
-      };
-      try {
-        await sendRequest(
-          `/messages/create-message`,
-          'POST',
-          JSON.stringify(message),
-          {
-            'Content-Type': 'application/json',
-          }
-        );
-      } catch (err) {}
+    if (usersInput.trim().length === 0) {
+      return;
     }
+
+    const message = {
+      conversationId: activeConversation?._id,
+      sender: userCredentials?.userId,
+      text: usersInput,
+      createdAt: new Date(),
+    };
+
+    try {
+      await createConversationMessage(message);
+    } catch (err) {}
   };
+
   return (
     <>
       <div
