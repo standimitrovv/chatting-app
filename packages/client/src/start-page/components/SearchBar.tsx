@@ -2,7 +2,6 @@ import { SearchIcon } from '@heroicons/react/outline';
 import CircularProgress from '@mui/material/CircularProgress';
 import React, { useEffect, useState } from 'react';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
-import { useHttp } from '../../app/hooks/useHttp';
 import { saveConversation } from '../../service/conversation/SaveConversation';
 import { getAllUsersExceptCurrentOne } from '../../service/user/GetUsers';
 import { User } from '../models/User';
@@ -14,8 +13,6 @@ interface Props {
 
 export const SearchBar: React.FunctionComponent<Props> = (props) => {
   const { userCredentials } = useAuthContext();
-
-  const { sendRequest } = useHttp();
 
   const [isSearching, setIsSearching] = useState(false);
 
@@ -56,7 +53,7 @@ export const SearchBar: React.FunctionComponent<Props> = (props) => {
       fetchAllUsers();
     }, 1000);
     return () => clearTimeout(timer);
-  }, [userInput, sendRequest, userId]);
+  }, [userInput, userId]);
 
   const createConversation = async (friendId: string) => {
     setIsSearching(false);
