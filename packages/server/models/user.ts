@@ -22,7 +22,7 @@ const UserSchema = new Schema({
   },
   status: {
     type: String,
-    required: false,
+    required: true,
   },
 });
 
@@ -34,5 +34,5 @@ export interface User {
   fullName: string;
   photoUrl: string;
   userId: string;
-  status?: string;
+  status: 'Online' | 'Do Not Disturb' | 'Away' | 'Offline';
 }
