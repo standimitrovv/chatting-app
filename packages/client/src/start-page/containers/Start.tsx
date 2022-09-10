@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import openSocket from 'socket.io-client';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
-import { deleteConversation } from '../../service/conversation/deleteConversation';
+import { deleteConversation } from '../../service/conversation/DeleteConversation';
 import { ResponseMessage } from '../components/ResponseMessage';
 import { SidePanel } from '../components/SidePanel';
 import { useConversation } from '../hooks/useConversation';
