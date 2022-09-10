@@ -3,7 +3,10 @@ import { io } from '../../socket';
 import { HttpError } from '../../models/ErrorModel';
 import { UserModel } from '../../models/UserModel';
 
-export const updateStatus = async (userId: string, status: string) => {
+export const updateUserActivityStatus = async (
+  userId: string,
+  status: string
+) => {
   let user;
 
   try {

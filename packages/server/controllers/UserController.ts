@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 
 import { HttpError } from '../models/ErrorModel';
-import { updateStatus } from '../service/user/updateStatus';
-import { saveUser } from '../service/user/saveUser';
-import { getUsers } from '../service/user/getUsers';
-import { getUserById } from '../service/user/getUserById';
+import { updateUserActivityStatus } from '../service/user/UpdateUserActivityStatus';
+import { saveUser } from '../service/user/SaveUser';
+import { getUsers } from '../service/user/GetUsers';
+import { getUserById } from '../service/user/GetUserById';
 
 interface RequestBody {
   email: string;
@@ -65,7 +65,7 @@ export const updateUserStatus = async (req: Request, res: Response) => {
   const status = req.query.status as string;
 
   try {
-    await updateStatus(userId, status);
+    await updateUserActivityStatus(userId, status);
 
     res.json({ message: 'Status updated!' });
   } catch (err) {
