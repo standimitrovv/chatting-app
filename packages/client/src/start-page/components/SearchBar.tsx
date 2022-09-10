@@ -3,8 +3,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import React, { useEffect, useState } from 'react';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
 import { useHttp } from '../../app/hooks/useHttp';
+import { saveConversation } from '../../service/conversation/SaveConversation';
 import { getAllUsersExceptCurrentOne } from '../../service/user/GetAllUsersExceptCurrentOne';
-import { getUsers } from '../../service/user/GetUsers';
 import { User } from '../models/User';
 import { SearchResult } from './SearchResult';
 
@@ -31,6 +31,7 @@ export const SearchBar: React.FunctionComponent<Props> = (props) => {
         try {
           const users = await getAllUsersExceptCurrentOne(userId!);
 
+          //TODO clean up
           const filteredUsers = users.filter((user) => {
             if (userInput.trim().length < 2) return null;
 
@@ -62,13 +63,13 @@ export const SearchBar: React.FunctionComponent<Props> = (props) => {
 
     setUserInput('');
 
+    if (!userId) {
+      return;
+    }
+
     try {
-      const response = await sendRequest(
-        `/conversations/create-convo`,
-        'POST',
-        JSON.stringify({ userId, friendId }),
-        { 'Content-Type': 'application/json' }
-      );
+      const response = await saveConversation({ userId, friendId });
+
       props.setCreateConvoResponseMessage(response.message);
     } catch (err) {}
   };
