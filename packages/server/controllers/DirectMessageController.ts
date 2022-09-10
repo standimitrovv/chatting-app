@@ -2,8 +2,8 @@ import { Request, Response, NextFunction } from 'express';
 
 import { HttpError } from '../models/ErrorModel';
 import { io } from '../socket';
-import { saveMessage } from '../service/message/saveMessage';
-import { getAllConversationMessages } from '../service/message/getAllConversationMessages';
+import { saveMessage } from '../service/direct-message/saveMessage';
+import { getAllConversationMessages } from '../service/direct-message/getAllConversationMessages';
 
 export const createMessage = async (
   req: Request,

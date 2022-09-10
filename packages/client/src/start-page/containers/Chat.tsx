@@ -5,8 +5,8 @@ import { ConversationMessages } from '../models/ConversationMessages';
 import { ChatMessage } from './ChatMessage';
 import openSocket from 'socket.io-client';
 import { useConversation } from '../hooks/useConversation';
-import { getConversationMessages } from '../../service/messages/GetConversationMessages';
-import { createConversationMessage } from '../../service/messages/SaveMessage';
+import { getConversationMessages } from '../../service/direct-message/GetConversationMessages';
+import { createConversationMessage } from '../../service/direct-message/SaveMessage';
 
 export const Chat: React.FunctionComponent = () => {
   const { userCredentials } = useAuthContext();
