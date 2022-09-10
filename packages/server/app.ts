@@ -4,13 +4,13 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import { io } from './socket';
 
-import { IHttpError } from './models/error';
+import { IHttpError } from './models/ErrorModel';
 
 //routes
-import { router as chatRoutes } from './routes/AllChatRoutes';
+import { router as allChatRoutes } from './routes/AllChatRoutes';
 import { router as userRoutes } from './routes/UserRoutes';
 import { router as conversationRoutes } from './routes/ConversationRoutes';
-import { router as messageRoutes } from './routes/DirectMessageRoutes';
+import { router as directMessageRoutes } from './routes/DirectMessageRoutes';
 
 dotenv.config();
 
@@ -22,10 +22,10 @@ app.use(express.json());
 app.use(cors());
 
 // APIs
-app.use('/all-chat', chatRoutes);
+app.use('/all-chat', allChatRoutes);
 app.use('/users', userRoutes);
 app.use('/conversations', conversationRoutes);
-app.use('/messages', messageRoutes);
+app.use('/messages', directMessageRoutes);
 
 app.use(() => {
   throw new Error('Not implemented!');
