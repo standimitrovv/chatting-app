@@ -5,8 +5,8 @@ import { ConversationMessages } from '../models/ConversationMessages';
 import { ChatMessage } from './ChatMessage';
 import openSocket from 'socket.io-client';
 import { useConversation } from '../hooks/useConversation';
-import { getConversationMessages } from '../../service/direct-message/GetConversationMessages';
-import { createConversationMessage } from '../../service/direct-message/SaveMessage';
+import { getAllDirectMessages } from '../../service/direct-message/GetAllDirectMessages';
+import { saveDirectMessage } from '../../service/direct-message/SaveDirectMessage';
 
 export const Chat: React.FunctionComponent = () => {
   const { userCredentials } = useAuthContext();
@@ -22,7 +22,7 @@ export const Chat: React.FunctionComponent = () => {
       return;
     }
 
-    getConversationMessages({ conversationId: activeConversation._id }).then(
+    getAllDirectMessages({ conversationId: activeConversation._id }).then(
       setConversationMessages
     );
   }, [activeConversation]);
@@ -56,7 +56,7 @@ export const Chat: React.FunctionComponent = () => {
     };
 
     try {
-      await createConversationMessage(message);
+      await saveDirectMessage(message);
     } catch (err) {}
   };
 
