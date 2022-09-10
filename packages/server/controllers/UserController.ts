@@ -13,7 +13,7 @@ interface RequestBody {
   userId: string;
 }
 
-export const createUser = async (req: Request, res: Response) => {
+export const onSaveUser = async (req: Request, res: Response) => {
   const { email, fullName, photoUrl, userId } = req.body as RequestBody;
 
   try {
@@ -25,7 +25,7 @@ export const createUser = async (req: Request, res: Response) => {
   }
 };
 
-export const getAllUsers = async (
+export const onGetAllUsers = async (
   _: unknown,
   res: Response,
   next: NextFunction
@@ -41,7 +41,7 @@ export const getAllUsers = async (
   }
 };
 
-export const getSingleUser = async (
+export const onGetSingleUser = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -59,7 +59,10 @@ export const getSingleUser = async (
   }
 };
 
-export const updateUserStatus = async (req: Request, res: Response) => {
+export const onUpdateUserActivityStatus = async (
+  req: Request,
+  res: Response
+) => {
   const userId = req.params.userId;
 
   const status = req.query.status as string;

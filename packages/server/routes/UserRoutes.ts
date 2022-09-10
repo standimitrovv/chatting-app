@@ -1,18 +1,18 @@
 import express from 'express';
 
 import {
-  getAllUsers,
-  createUser,
-  getSingleUser,
-  updateUserStatus,
+  onGetAllUsers,
+  onSaveUser,
+  onGetSingleUser,
+  onUpdateUserActivityStatus,
 } from '../controllers/UserController';
 
 export const router = express.Router();
 
-router.post('/create-user', createUser);
+router.post('/create-user', onSaveUser);
 
-router.get('/get-users', getAllUsers);
+router.get('/get-users', onGetAllUsers);
 
-router.get('/get-user/:userId', getSingleUser);
+router.get('/get-user/:userId', onGetSingleUser);
 
-router.patch('/update-user-status/:userId', updateUserStatus);
+router.patch('/update-user-status/:userId', onUpdateUserActivityStatus);
