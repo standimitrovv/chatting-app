@@ -3,18 +3,18 @@ import { DirectMessage } from '@chapp/server/models/DirectMessageModel';
 
 import { API } from '../Api';
 
-interface GetConversationMessagesModel {
+interface GetAllDirectMessagesModel {
   conversationId: string;
 }
 
-interface GetConversationMessagesResult {
+interface GetAllDirectMessagesResult {
   messages: DirectMessage[];
 }
 
 export const getAllDirectMessages = async (
-  model: GetConversationMessagesModel
+  model: GetAllDirectMessagesModel
 ) => {
-  const response = await axios.get<string, GetConversationMessagesResult>(
+  const response = await axios.get<string, GetAllDirectMessagesResult>(
     `${API}/messages/get-messages/${model.conversationId}`
   );
 
