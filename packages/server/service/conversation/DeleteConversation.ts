@@ -1,6 +1,6 @@
 import { ConversationModel } from '../../models/ConversationModel';
 import { HttpError } from '../../models/ErrorModel';
-import { MessageModel } from '../../models/DirectMessageModel';
+import { DirectMessageModel } from '../../models/DirectMessageModel';
 
 export const deleteConversation = async (conversationId: string) => {
   try {
@@ -10,7 +10,7 @@ export const deleteConversation = async (conversationId: string) => {
       throw new HttpError('No conversation found for corresponding id', 200);
     }
 
-    await MessageModel.deleteMany({ conversationId });
+    await DirectMessageModel.deleteMany({ conversationId });
 
     await ConversationModel.deleteOne({ _id: conversationId });
   } catch (err) {
