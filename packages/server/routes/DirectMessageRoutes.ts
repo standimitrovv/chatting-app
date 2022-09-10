@@ -1,6 +1,9 @@
 import express from 'express';
 
-import { createMessage, getConvoMessages } from '../controllers/DirectMessage';
+import {
+  createMessage,
+  getConvoMessages,
+} from '../controllers/DirectMessageController';
 
 export const router = express.Router();
 

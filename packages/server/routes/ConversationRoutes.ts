@@ -4,7 +4,7 @@ import {
   createConvo,
   getConvoOfUser,
   deleteConversation,
-} from '../controllers/conversation';
+} from '../controllers/ConversationController';
 
 export const router = express.Router();
 
