@@ -3,6 +3,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import React, { useEffect, useState } from 'react';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
 import { useHttp } from '../../app/hooks/useHttp';
+import { getAllUsersExceptCurrentOne } from '../../service/user/GetAllUsersExceptCurrentOne';
+import { getUsers } from '../../service/user/GetUsers';
 import { User } from '../models/User';
 import { SearchResult } from './SearchResult';
 
@@ -27,20 +29,17 @@ export const SearchBar: React.FunctionComponent<Props> = (props) => {
     const fetchAllUsers = async () => {
       if (userInput.trim().length >= 2) {
         try {
-          const { users } = await sendRequest(`/users/get-users`);
-          const allUsersExceptCurrentOne = users.filter(
-            (user: User) => user.userId !== userId
-          );
-          const filteredUsers = allUsersExceptCurrentOne.filter(
-            (user: User) => {
-              if (userInput.trim().length < 2) return null;
-              if (
-                user.fullName.toLowerCase().includes(userInput.toLowerCase())
-              ) {
-                return user;
-              } else return null;
+          const users = await getAllUsersExceptCurrentOne(userId!);
+
+          const filteredUsers = users.filter((user) => {
+            if (userInput.trim().length < 2) return null;
+
+            if (user.fullName.toLowerCase().includes(userInput.toLowerCase())) {
+              return user;
             }
-          );
+
+            return null;
+          });
 
           if (filteredUsers) {
             setSearchResults(filteredUsers);
