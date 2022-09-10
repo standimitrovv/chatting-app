@@ -3,13 +3,19 @@ import { Message } from '@chapp/server/models/message';
 
 import { API } from '../Api';
 
+interface GetConversationMessagesModel {
+  conversationId: string;
+}
+
 interface GetConversationMessagesResult {
   messages: Message[];
 }
 
-export const getConversationMessages = async (conversationId: string) => {
+export const getConversationMessages = async (
+  model: GetConversationMessagesModel
+) => {
   const response = await axios.get<string, GetConversationMessagesResult>(
-    `${API}/messages/get-messages/${conversationId}`
+    `${API}/messages/get-messages/${model.conversationId}`
   );
 
   if (!response) {

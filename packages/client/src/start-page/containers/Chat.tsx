@@ -22,7 +22,7 @@ export const Chat: React.FunctionComponent = () => {
       return;
     }
 
-    getConversationMessages(activeConversation._id).then(
+    getConversationMessages({ conversationId: activeConversation._id }).then(
       setConversationMessages
     );
   }, [activeConversation]);
