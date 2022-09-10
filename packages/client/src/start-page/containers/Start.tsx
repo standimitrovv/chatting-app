@@ -1,38 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import openSocket from 'socket.io-client';
-import { useHttp } from '../../app/hooks/useHttp';
-import { Chat } from './Chat';
-import { useConversation } from '../hooks/useConversation';
+import { useAuthContext } from '../../app/hooks/useAuthContext';
+import { deleteConversation } from '../../service/conversation/deleteConversation';
 import { ResponseMessage } from '../components/ResponseMessage';
 import { SidePanel } from '../components/SidePanel';
-import { useAuthContext } from '../../app/hooks/useAuthContext';
+import { useConversation } from '../hooks/useConversation';
+import { Chat } from './Chat';
 
 export const StartPage: React.FC = () => {
   const [convoResponseMessage, setConvoResponseMessage] = useState<string>('');
-
-  const { sendRequest, error } = useHttp();
 
   const { activeConversation, setActiveConversation } = useConversation();
 
   const { userCredentials } = useAuthContext();
 
-  const deleteConversation = async (conversationId: string) => {
+  const onDeleteConversation = async (conversationId: string) => {
     try {
-      const response = await sendRequest(
-        `/conversations/delete-convo/${conversationId}`,
-        'DELETE'
-      );
-      if (error) {
-        setConvoResponseMessage(error);
-      }
+      const response = await deleteConversation(conversationId);
 
       if (response.message) {
         setActiveConversation(undefined);
         setConvoResponseMessage(response.message);
       }
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -55,7 +45,7 @@ export const StartPage: React.FC = () => {
       <SidePanel
         activeConversationId={activeConversation?._id}
         onCreateConversationResponse={setConvoResponseMessage}
-        onDelete={deleteConversation}
+        onDelete={onDeleteConversation}
         onConversationClick={(conversation) =>
           setActiveConversation(conversation)
         }
