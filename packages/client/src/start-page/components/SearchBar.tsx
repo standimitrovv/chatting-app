@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
 import { SearchIcon } from '@heroicons/react/outline';
 import CircularProgress from '@mui/material/CircularProgress';
+import React, { useEffect, useState } from 'react';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
 import { useHttp } from '../../app/hooks/useHttp';
-import { SearchResult } from '../containers/SearchResult';
 import { User } from '../models/User';
+import { SearchResult } from './SearchResult';
 
 interface Props {
   setCreateConvoResponseMessage: (message: string) => void;
