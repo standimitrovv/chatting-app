@@ -16,7 +16,7 @@ export const StartPage: React.FC = () => {
 
   const onDeleteConversation = async (conversationId: string) => {
     try {
-      const response = await deleteConversation(conversationId);
+      const response = await deleteConversation({ conversationId });
 
       if (response.message) {
         setActiveConversation(undefined);
