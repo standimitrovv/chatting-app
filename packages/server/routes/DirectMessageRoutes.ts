@@ -1,12 +1,12 @@
 import express from 'express';
 
 import {
-  createMessage,
-  getConvoMessages,
+  onSaveDirectMessage,
+  onGetAllDirectMessages,
 } from '../controllers/DirectMessageController';
 
 export const router = express.Router();
 
-router.post('/create-message', createMessage);
+router.post('/create-message', onSaveDirectMessage);
 
-router.get('/get-messages/:convoId', getConvoMessages);
+router.get('/get-messages/:convoId', onGetAllDirectMessages);

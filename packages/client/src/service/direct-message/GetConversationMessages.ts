@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Message } from '@chapp/server/models/message';
+import { Message } from '@chapp/server/models/DirectMessageModel';
 
 import { API } from '../Api';
 

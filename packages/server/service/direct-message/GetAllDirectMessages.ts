@@ -1,7 +1,7 @@
 import { HttpError } from '../../models/ErrorModel';
 import { MessageModel, Message } from '../../models/DirectMessageModel';
 
-export const getAllConversationMessages = async (conversationId: string) => {
+export const getAllDirectMessages = async (conversationId: string) => {
   try {
     const messages: Message[] = await MessageModel.find({
       conversationId,
