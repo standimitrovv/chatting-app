@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
 import { useHttp } from '../../app/hooks/useHttp';
 import { saveConversation } from '../../service/conversation/SaveConversation';
-import { getAllUsersExceptCurrentOne } from '../../service/user/GetAllUsersExceptCurrentOne';
+import { getAllUsersExceptCurrentOne } from '../../service/user/GetUsers';
 import { User } from '../models/User';
 import { SearchResult } from './SearchResult';
 
