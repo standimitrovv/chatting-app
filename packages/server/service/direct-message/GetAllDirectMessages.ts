@@ -1,9 +1,12 @@
 import { HttpError } from '../../models/ErrorModel';
-import { MessageModel, Message } from '../../models/DirectMessageModel';
+import {
+  DirectMessageModel,
+  DirectMessage,
+} from '../../models/DirectMessageModel';
 
 export const getAllDirectMessages = async (conversationId: string) => {
   try {
-    const messages: Message[] = await MessageModel.find({
+    const messages: DirectMessage[] = await DirectMessageModel.find({
       conversationId,
     });
 
