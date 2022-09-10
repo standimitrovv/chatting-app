@@ -1,5 +1,5 @@
-import { ConversationModel } from '../../models/conversation';
-import { HttpError } from '../../models/error';
+import { ConversationModel } from '../../models/ConversationModel';
+import { HttpError } from '../../models/ErrorModel';
 
 export const saveConversation = async (userId: string, friendId: string) => {
   //validation

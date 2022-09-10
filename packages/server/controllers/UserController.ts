@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { HttpError } from '../models/error';
+import { HttpError } from '../models/ErrorModel';
 import { updateStatus } from '../service/user/updateStatus';
 import { saveUser } from '../service/user/saveUser';
 import { getUsers } from '../service/user/getUsers';

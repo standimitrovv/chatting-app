@@ -1,7 +1,10 @@
-import { Conversation, ConversationModel } from '../../models/conversation';
-import { HttpError } from '../../models/error';
+import {
+  Conversation,
+  ConversationModel,
+} from '../../models/ConversationModel';
+import { HttpError } from '../../models/ErrorModel';
 
-export const getUserConversations = async (userId: string) => {
+export const getAllUserConversationsById = async (userId: string) => {
   try {
     const conversations: Conversation[] = await ConversationModel.find({
       userId,

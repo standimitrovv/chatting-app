@@ -1,5 +1,5 @@
-import { UserModel } from '../../models/user';
-import { HttpError } from '../../models/error';
+import { UserModel } from '../../models/UserModel';
+import { HttpError } from '../../models/ErrorModel';
 
 export const saveUser = async (
   email: string,

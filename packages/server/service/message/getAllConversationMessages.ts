@@ -1,5 +1,5 @@
-import { HttpError } from '../../models/error';
-import { MessageModel, Message } from '../../models/message';
+import { HttpError } from '../../models/ErrorModel';
+import { MessageModel, Message } from '../../models/DirectMessageModel';
 
 export const getAllConversationMessages = async (conversationId: string) => {
   try {

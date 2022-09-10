@@ -1,5 +1,5 @@
-import { User, UserModel } from '../../models/user';
-import { HttpError } from '../../models/error';
+import { User, UserModel } from '../../models/UserModel';
+import { HttpError } from '../../models/ErrorModel';
 
 export const getUsers = async () => {
   try {

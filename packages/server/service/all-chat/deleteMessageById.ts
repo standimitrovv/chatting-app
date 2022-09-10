@@ -1,8 +1,8 @@
 import {
   AllChatMessage,
   AllChatMessageModel,
-} from '../../models/allChatMessage';
-import { HttpError } from '../../models/error';
+} from '../../models/AllChatMessageModel';
+import { HttpError } from '../../models/ErrorModel';
 
 export const deleteMessageById = async (messageId: string) => {
   try {

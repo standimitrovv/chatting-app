@@ -1,8 +1,8 @@
-import { ConversationModel } from '../../models/conversation';
-import { HttpError } from '../../models/error';
-import { MessageModel } from '../../models/message';
+import { ConversationModel } from '../../models/ConversationModel';
+import { HttpError } from '../../models/ErrorModel';
+import { MessageModel } from '../../models/DirectMessageModel';
 
-export const deleteUserConversation = async (conversationId: string) => {
+export const deleteConversation = async (conversationId: string) => {
   try {
     const conversation = await ConversationModel.findById(conversationId);
 

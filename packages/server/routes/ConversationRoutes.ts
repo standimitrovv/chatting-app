@@ -1,15 +1,15 @@
 import express from 'express';
 
 import {
-  createConvo,
-  getConvoOfUser,
-  deleteConversation,
+  onSaveConversation,
+  onGetAllUserConversationById,
+  onDeleteConversation,
 } from '../controllers/ConversationController';
 
 export const router = express.Router();
 
-router.post('/create-convo', createConvo);
+router.post('/create-convo', onSaveConversation);
 
-router.get('/get-convo/:userId', getConvoOfUser);
+router.get('/get-convo/:userId', onGetAllUserConversationById);
 
-router.delete('/delete-convo/:convoId', deleteConversation);
+router.delete('/delete-convo/:convoId', onDeleteConversation);

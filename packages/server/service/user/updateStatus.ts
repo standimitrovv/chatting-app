@@ -1,7 +1,7 @@
 import { io } from '../../socket';
 
-import { HttpError } from '../../models/error';
-import { UserModel } from '../../models/user';
+import { HttpError } from '../../models/ErrorModel';
+import { UserModel } from '../../models/UserModel';
 
 export const updateStatus = async (userId: string, status: string) => {
   let user;

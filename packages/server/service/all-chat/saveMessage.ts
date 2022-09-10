@@ -1,5 +1,5 @@
-import { AllChatMessageModel } from '../../models/allChatMessage';
-import { HttpError } from '../../models/error';
+import { AllChatMessageModel } from '../../models/AllChatMessageModel';
+import { HttpError } from '../../models/ErrorModel';
 
 export const saveMessage = async (
   text: string,
