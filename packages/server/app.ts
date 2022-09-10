@@ -7,10 +7,10 @@ import { io } from './socket';
 import { IHttpError } from './models/error';
 
 //routes
-import { router as chatRoutes } from './routes/chat';
-import { router as userRoutes } from './routes/user';
-import { router as conversationRoutes } from './routes/conversation';
-import { router as messageRoutes } from './routes/message';
+import { router as chatRoutes } from './routes/AllChatRoutes';
+import { router as userRoutes } from './routes/UserRoutes';
+import { router as conversationRoutes } from './routes/ConversationRoutes';
+import { router as messageRoutes } from './routes/DirectMessageRoutes';
 
 dotenv.config();
 
