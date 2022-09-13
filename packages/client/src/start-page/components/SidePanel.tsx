@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import openSocket from 'socket.io-client';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
-import { useHttp } from '../../app/hooks/useHttp';
 import { getAllUserConversationsById } from '../../service/conversation/GetAllUserConversationsById';
 import { Conversation } from '../containers/Conversation';
 import { UserConversation } from '../models/UserConversation';
@@ -17,54 +16,45 @@ interface Props {
 export const SidePanel: React.FunctionComponent<Props> = (props) => {
   const { userCredentials } = useAuthContext();
 
-  const { sendRequest } = useHttp();
-
   const [userConversations, setUserConversations] = useState<
     UserConversation[] | []
   >([]);
 
   const userId = userCredentials?.userId;
 
-  useEffect(() => {
-    (async () => {
-      try {
-        if (!userId) {
-          return;
-        }
-
-        const response = await getAllUserConversationsById({ userId });
-
-        if (!response) {
-          setUserConversations([]);
-          return;
-        }
-
-        setUserConversations(response.userConversations);
-      } catch (err) {}
-    })();
-  }, [userId, sendRequest]);
-
-  //refetch the conversations when status of a user changes
-  useEffect(() => {
+  const getAndSetAllUserConversations = useCallback(async () => {
     if (!userId) {
       return;
     }
 
+    const response = await getAllUserConversationsById({ userId });
+
+    if (!response) {
+      setUserConversations([]);
+      return;
+    }
+
+    setUserConversations(response.userConversations);
+  }, [userId]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        getAndSetAllUserConversations();
+      } catch (err) {}
+    })();
+  }, [userId, getAndSetAllUserConversations]);
+
+  //refetch the conversations when status of a user changes
+  useEffect(() => {
     const socket = openSocket(process.env.REACT_APP_API_SERVER!);
 
     socket.on('status-change', () => {
       (async () => {
-        const response = await getAllUserConversationsById({ userId });
-
-        if (!response) {
-          setUserConversations([]);
-          return;
-        }
-
-        setUserConversations(response.userConversations);
+        getAndSetAllUserConversations();
       })();
     });
-  }, [sendRequest, userId]);
+  }, [userId, getAndSetAllUserConversations]);
 
   return (
     <div className='w-96 bg-slate-500 relative'>
