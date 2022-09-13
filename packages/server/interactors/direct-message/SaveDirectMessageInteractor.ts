@@ -1,7 +1,7 @@
 import { DirectMessageModel } from '../../models/DirectMessageModel';
 import { HttpError } from '../../models/ErrorModel';
 
-export const saveDirectMessage = async (
+export const saveDirectMessageInteractor = async (
   conversationId: string,
   sender: string,
   text: string,

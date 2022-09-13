@@ -4,7 +4,9 @@ import {
   DirectMessage,
 } from '../../models/DirectMessageModel';
 
-export const getAllDirectMessages = async (conversationId: string) => {
+export const getAllDirectMessagesInteractor = async (
+  conversationId: string
+) => {
   try {
     const messages: DirectMessage[] = await DirectMessageModel.find({
       conversationId,
