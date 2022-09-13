@@ -14,7 +14,7 @@ interface UpdateUserActivityStatusResult {
 export const updateUserActivityStatus = async (
   model: UpdateUserActivityStatusModel
 ) => {
-  return await axios.patch<string, UpdateUserActivityStatusResult>(
+  return axios.patch<string, UpdateUserActivityStatusResult>(
     `${API}/users/update-user-status/${model.userId}
   `,
     { status: model.status }

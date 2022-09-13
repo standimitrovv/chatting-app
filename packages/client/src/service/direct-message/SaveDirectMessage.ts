@@ -15,7 +15,7 @@ interface SaveDirectMessageResult {
 }
 
 export const saveDirectMessage = async (message: SaveDirectMessageModel) => {
-  await axios.post<SaveDirectMessageResult>(`${API}/messages/create-message`, {
+  return axios.post<SaveDirectMessageResult>(`${API}/messages/create-message`, {
     message,
   });
 };

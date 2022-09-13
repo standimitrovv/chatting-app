@@ -10,7 +10,7 @@ interface DeleteConversationResult {
 }
 
 export const deleteConversation = async (model: DeleteConversationModel) => {
-  return await axios.delete<string, DeleteConversationResult>(
+  return axios.delete<string, DeleteConversationResult>(
     `${API}/conversations/delete-convo/${model.conversationId}`
   );
 };

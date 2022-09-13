@@ -13,7 +13,7 @@ interface SaveConversationResult {
 }
 
 export const saveConversation = async (model: SaveConversationModel) => {
-  return await axios.post<string, SaveConversationResult>(
+  return axios.post<string, SaveConversationResult>(
     `${API}/conversations/create-convo`,
     model
   );

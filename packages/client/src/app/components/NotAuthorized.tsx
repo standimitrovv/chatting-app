@@ -9,6 +9,7 @@ export const NotAuthorized: React.FC = () => {
   const { isLoggedIn, login } = useAuthContext();
   const { sendRequest } = useHttp();
 
+  // TODO abstract the logic in useAuthContext
   const signTheUserIn = () => {
     signInWithGoogle()
       .then((result) => {
