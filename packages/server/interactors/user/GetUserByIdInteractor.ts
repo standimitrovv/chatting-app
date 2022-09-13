@@ -1,7 +1,7 @@
 import { User, UserModel } from '../../models/UserModel';
 import { HttpError } from '../../models/ErrorModel';
 
-export const getUserById = async (userId: string) => {
+export const getUserByIdInteractor = async (userId: string) => {
   try {
     const user: User | null = await UserModel.findOne({ userId });
 

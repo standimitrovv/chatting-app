@@ -1,10 +1,10 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
+import { getUserByIdInteractor } from '../interactors/user/GetUserByIdInteractor';
+import { getUsersInteractor } from '../interactors/user/GetUsersInteractor';
+import { saveUserInteractor } from '../interactors/user/SaveUserInteractor';
+import { updateUserActivityStatusInteractor } from '../interactors/user/UpdateUserActivityStatusInteractor';
 import { HttpError } from '../models/ErrorModel';
-import { updateUserActivityStatus } from '../interactors/user/UpdateUserActivityStatus';
-import { saveUser } from '../interactors/user/SaveUser';
-import { getUsers } from '../interactors/user/GetUsers';
-import { getUserById } from '../interactors/user/GetUserById';
 
 interface RequestBody {
   email: string;
@@ -17,7 +17,7 @@ export const onSaveUser = async (req: Request, res: Response) => {
   const { email, fullName, photoUrl, userId } = req.body as RequestBody;
 
   try {
-    await saveUser(email, fullName, photoUrl, userId);
+    await saveUserInteractor(email, fullName, photoUrl, userId);
 
     res.status(201).json({ message: 'User created!' });
   } catch (err) {
@@ -31,7 +31,7 @@ export const onGetAllUsers = async (
   next: NextFunction
 ) => {
   try {
-    const users = await getUsers();
+    const users = await getUsersInteractor();
 
     res.json({ users });
   } catch (err) {
@@ -49,7 +49,7 @@ export const onGetSingleUser = async (
   const userId = req.params.userId;
 
   try {
-    const user = await getUserById(userId);
+    const user = await getUserByIdInteractor(userId);
 
     res.json({ user });
   } catch (err) {
@@ -68,7 +68,7 @@ export const onUpdateUserActivityStatus = async (
   const status = req.query.status as string;
 
   try {
-    await updateUserActivityStatus(userId, status);
+    await updateUserActivityStatusInteractor(userId, status);
 
     res.json({ message: 'Status updated!' });
   } catch (err) {

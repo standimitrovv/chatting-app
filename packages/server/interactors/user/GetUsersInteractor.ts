@@ -1,7 +1,7 @@
 import { User, UserModel } from '../../models/UserModel';
 import { HttpError } from '../../models/ErrorModel';
 
-export const getUsers = async () => {
+export const getUsersInteractor = async () => {
   try {
     const users: User[] = await UserModel.find();
 

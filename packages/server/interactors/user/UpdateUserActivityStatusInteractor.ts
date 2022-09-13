@@ -3,7 +3,7 @@ import { io } from '../../socket';
 import { HttpError } from '../../models/ErrorModel';
 import { UserModel } from '../../models/UserModel';
 
-export const updateUserActivityStatus = async (
+export const updateUserActivityStatusInteractor = async (
   userId: string,
   status: string
 ) => {

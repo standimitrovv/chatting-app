@@ -1,7 +1,7 @@
 import { UserModel } from '../../models/UserModel';
 import { HttpError } from '../../models/ErrorModel';
 
-export const saveUser = async (
+export const saveUserInteractor = async (
   email: string,
   fullName: string,
   photoUrl: string,
