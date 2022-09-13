@@ -19,10 +19,7 @@ export const App: React.FC = () => {
     <>
       {userCredentials && (
         <div className='flex flex-col md:flex-row h-screen'>
-          <SideBar
-            user={userCredentials}
-            switchTheActiveChannel={handleActiveChannel}
-          />
+          <SideBar switchTheActiveChannel={handleActiveChannel} />
           {/* {activeChannel.all && <AllChat user={userCredentials} />} */}
           {activeChannel.start && <StartPage />}
         </div>
