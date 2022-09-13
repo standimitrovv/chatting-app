@@ -23,7 +23,7 @@ export const App: React.FC = () => {
             user={userCredentials}
             switchTheActiveChannel={handleActiveChannel}
           />
-          {activeChannel.all && <AllChat user={userCredentials} />}
+          {/* {activeChannel.all && <AllChat user={userCredentials} />} */}
           {activeChannel.start && <StartPage />}
         </div>
       )}
