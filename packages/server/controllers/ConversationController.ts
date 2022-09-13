@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 
 import { HttpError } from '../models/ErrorModel';
-import { saveConversation } from '../service/conversation/SaveConversation';
-import { getAllUserConversationsById } from '../service/conversation/GetAllUserConversationsById';
-import { deleteConversation } from '../service/conversation/DeleteConversation';
+import { saveConversationInteractor } from '../interactors/conversation/SaveConversationInteractor';
+import { getAllUserConversationsByIdInteractor } from '../interactors/conversation/GetAllUserConversationsByIdInteractor';
+import { deleteConversationInteractor } from '../interactors/conversation/DeleteConversationInteractor';
 
 export const onSaveConversation = async (
   req: Request,
@@ -13,7 +13,10 @@ export const onSaveConversation = async (
   const { userId, friendId } = req.body;
 
   try {
-    const createdConversation = await saveConversation(userId, friendId);
+    const createdConversation = await saveConversationInteractor(
+      userId,
+      friendId
+    );
 
     res.json({
       message: 'Successfully created a new conversation',
@@ -33,7 +36,9 @@ export const onGetAllUserConversationById = async (
 ) => {
   const userId = req.params.userId;
   try {
-    const userConversations = await getAllUserConversationsById(userId);
+    const userConversations = await getAllUserConversationsByIdInteractor(
+      userId
+    );
 
     res.json({ userConversations });
   } catch (err) {
@@ -50,7 +55,7 @@ export const onDeleteConversation = async (
 ) => {
   const conversationId = req.params.convoId;
   try {
-    await deleteConversation(conversationId);
+    await deleteConversationInteractor(conversationId);
 
     res.json({ message: 'Successfully deleted conversation' });
   } catch (err) {

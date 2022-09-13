@@ -1,7 +1,10 @@
 import { ConversationModel } from '../../models/ConversationModel';
 import { HttpError } from '../../models/ErrorModel';
 
-export const saveConversation = async (userId: string, friendId: string) => {
+export const saveConversationInteractor = async (
+  userId: string,
+  friendId: string
+) => {
   //validation
   const members = [userId.toString(), friendId.toString()];
 

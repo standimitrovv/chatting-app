@@ -2,7 +2,7 @@ import { ConversationModel } from '../../models/ConversationModel';
 import { HttpError } from '../../models/ErrorModel';
 import { DirectMessageModel } from '../../models/DirectMessageModel';
 
-export const deleteConversation = async (conversationId: string) => {
+export const deleteConversationInteractor = async (conversationId: string) => {
   try {
     const conversation = await ConversationModel.findById(conversationId);
 

@@ -4,7 +4,7 @@ import {
 } from '../../models/ConversationModel';
 import { HttpError } from '../../models/ErrorModel';
 
-export const getAllUserConversationsById = async (userId: string) => {
+export const getAllUserConversationsByIdInteractor = async (userId: string) => {
   try {
     const conversations: Conversation[] = await ConversationModel.find({
       userId,
