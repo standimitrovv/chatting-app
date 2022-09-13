@@ -1,7 +1,7 @@
 import { AllChatMessageModel } from '../../models/AllChatMessageModel';
 import { HttpError } from '../../models/ErrorModel';
 
-export const saveMessage = async (
+export const saveMessageInteractor = async (
   text: string,
   usersName: string,
   usersImageUrl: string,

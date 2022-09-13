@@ -4,7 +4,7 @@ import {
 } from '../../models/AllChatMessageModel';
 import { HttpError } from '../../models/ErrorModel';
 
-export const getAllMessages = async () => {
+export const getAllMessagesInteractor = async () => {
   try {
     const result: AllChatMessage[] = await AllChatMessageModel.find();
 

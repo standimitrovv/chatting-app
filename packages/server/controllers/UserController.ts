@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 
 import { HttpError } from '../models/ErrorModel';
-import { updateUserActivityStatus } from '../service/user/UpdateUserActivityStatus';
-import { saveUser } from '../service/user/SaveUser';
-import { getUsers } from '../service/user/GetUsers';
-import { getUserById } from '../service/user/GetUserById';
+import { updateUserActivityStatus } from '../interactors/user/UpdateUserActivityStatus';
+import { saveUser } from '../interactors/user/SaveUser';
+import { getUsers } from '../interactors/user/GetUsers';
+import { getUserById } from '../interactors/user/GetUserById';
 
 interface RequestBody {
   email: string;

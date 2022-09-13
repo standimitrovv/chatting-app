@@ -4,7 +4,7 @@ import {
 } from '../../models/AllChatMessageModel';
 import { HttpError } from '../../models/ErrorModel';
 
-export const deleteMessageById = async (messageId: string) => {
+export const deleteMessageByIdInteractor = async (messageId: string) => {
   try {
     const result: AllChatMessage | null = await AllChatMessageModel.findById(
       messageId
