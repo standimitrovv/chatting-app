@@ -3,7 +3,7 @@ import openSocket from 'socket.io-client';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
 import { deleteConversation } from '../../service/conversation/DeleteConversation';
 import { ResponseMessage } from '../components/ResponseMessage';
-import { SidePanel } from '../components/SidePanel';
+import { SidePanel } from './SidePanel';
 import { useConversation } from '../hooks/useConversation';
 import { Chat } from './Chat';
 

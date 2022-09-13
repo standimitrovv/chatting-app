@@ -2,9 +2,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import openSocket from 'socket.io-client';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
 import { getAllUserConversationsById } from '../../service/conversation/GetAllUserConversationsById';
-import { Conversation } from '../containers/Conversation';
+import { Conversation } from './Conversation';
 import { UserConversation } from '../models/UserConversation';
-import { SearchBar } from './SearchBar';
+import { SearchBar } from '../components/SearchBar';
 
 interface Props {
   activeConversationId?: string;
