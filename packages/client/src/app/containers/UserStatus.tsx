@@ -3,7 +3,7 @@ import { ChevronDownIcon } from '@heroicons/react/outline';
 import { AvailableUserStatuses } from '../models/AvailableUserStatuses';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { updateUserActivityStatus } from '../../service/user/UpdateUserActivityStatus';
-import { StatusOptionsMenu } from './StatusOptionsMenu';
+import { StatusOptionsMenu } from '../components/StatusOptionsMenu';
 
 export const UserStatus: React.FunctionComponent = () => {
   const { userCredentials, userStatus, onUserStatusChange } = useAuthContext();
