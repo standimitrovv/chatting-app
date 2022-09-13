@@ -9,7 +9,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { AvailableUserStatuses } from '../models/AvailableUserStatuses';
 import { useAuthContext } from '../hooks/useAuthContext';
-import { useHttp } from '../hooks/useHttp';
+import { updateUserActivityStatus } from '../../service/user/UpdateUserActivityStatus';
 
 const statusAvailable = [
   {
@@ -41,11 +41,15 @@ const statusAvailable = [
 export const UserStatus: React.FunctionComponent = () => {
   const { userCredentials, userStatus, onUserStatusChange } = useAuthContext();
 
-  const { sendRequest } = useHttp();
-
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | undefined>(
     undefined
   );
+
+  const userId = userCredentials && userCredentials.userId;
+
+  if (!userId) {
+    return null;
+  }
 
   const onUserStatusClick = (event: React.MouseEvent<HTMLDivElement>) => {
     setAnchorEl(event.currentTarget);
@@ -55,10 +59,7 @@ export const UserStatus: React.FunctionComponent = () => {
     onUserStatusChange(status);
 
     try {
-      await sendRequest(
-        `/users/update-user-status/${userCredentials?.userId}/?status=${status}`,
-        'PATCH'
-      );
+      await updateUserActivityStatus({ userId, status });
 
       //TODO get the response message and display a snackbar with it
     } catch (err) {
