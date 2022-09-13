@@ -1,4 +1,4 @@
 export interface UserConversation {
-  members: [string];
+  members: [string, string];
   _id: string;
 }

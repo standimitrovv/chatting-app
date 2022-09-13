@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import openSocket from 'socket.io-client';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
 import { useHttp } from '../../app/hooks/useHttp';
+import { getAllUserConversationsById } from '../../service/conversation/GetAllUserConversationsById';
 import { Conversation } from '../containers/Conversation';
 import { UserConversation } from '../models/UserConversation';
 import { SearchBar } from './SearchBar';
@@ -27,11 +28,11 @@ export const SidePanel: React.FunctionComponent<Props> = (props) => {
   useEffect(() => {
     (async () => {
       try {
-        if (!userId) return;
+        if (!userId) {
+          return;
+        }
 
-        const response = await sendRequest(
-          `/conversations/get-convo/${userId}`
-        );
+        const response = await getAllUserConversationsById({ userId });
 
         if (!response) {
           setUserConversations([]);
@@ -45,13 +46,15 @@ export const SidePanel: React.FunctionComponent<Props> = (props) => {
 
   //refetch the conversations when status of a user changes
   useEffect(() => {
+    if (!userId) {
+      return;
+    }
+
     const socket = openSocket(process.env.REACT_APP_API_SERVER!);
 
     socket.on('status-change', () => {
       (async () => {
-        const response = await sendRequest(
-          `/conversations/get-convo/${userId}`
-        );
+        const response = await getAllUserConversationsById({ userId });
 
         if (!response) {
           setUserConversations([]);
