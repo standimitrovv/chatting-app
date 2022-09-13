@@ -2,10 +2,10 @@ import { Request, Response, NextFunction } from 'express';
 
 import { HttpError } from '../models/ErrorModel';
 import { io } from '../socket';
-import { saveMessage } from '../service/direct-message/saveMessage';
-import { getAllConversationMessages } from '../service/direct-message/getAllConversationMessages';
+import { saveDirectMessageInteractor } from '../interactors/direct-message/SaveDirectMessageInteractor';
+import { getAllDirectMessagesInteractor } from '../interactors/direct-message/GetAllDirectMessagesInteractor';
 
-export const createMessage = async (
+export const onSaveDirectMessage = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -13,7 +13,7 @@ export const createMessage = async (
   const { conversationId, sender, text, createdAt } = req.body;
 
   try {
-    const createdMessage = await saveMessage(
+    const createdMessage = await saveDirectMessageInteractor(
       conversationId,
       sender,
       text,
@@ -30,14 +30,14 @@ export const createMessage = async (
   }
 };
 
-export const getConvoMessages = async (
+export const onGetAllDirectMessages = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   const convoId = req.params.convoId;
   try {
-    const messages = await getAllConversationMessages(convoId);
+    const messages = await getAllDirectMessagesInteractor(convoId);
 
     res.json({ messages });
   } catch (err) {
