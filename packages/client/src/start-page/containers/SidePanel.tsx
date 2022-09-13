@@ -4,7 +4,7 @@ import { useAuthContext } from '../../app/hooks/useAuthContext';
 import { getAllUserConversationsById } from '../../service/conversation/GetAllUserConversationsById';
 import { Conversation } from './Conversation';
 import { UserConversation } from '../models/UserConversation';
-import { SearchBar } from '../components/SearchBar';
+import { SearchBar } from './SearchBar';
 
 interface Props {
   activeConversationId?: string;
@@ -49,6 +49,7 @@ export const SidePanel: React.FunctionComponent<Props> = (props) => {
   useEffect(() => {
     const socket = openSocket(process.env.REACT_APP_API_SERVER!);
 
+    //TODO refactor with the UseEffect above?
     socket.on('status-change', () => {
       (async () => {
         getAndSetAllUserConversations();

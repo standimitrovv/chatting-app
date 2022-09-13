@@ -5,7 +5,7 @@ import { useAuthContext } from '../../app/hooks/useAuthContext';
 import { saveConversation } from '../../service/conversation/SaveConversation';
 import { getAllUsersExceptCurrentOne } from '../../service/user/GetUsers';
 import { User } from '../models/User';
-import { SearchResult } from './SearchResult';
+import { SearchResult } from '../components/SearchResult';
 
 interface Props {
   setCreateConvoResponseMessage: (message: string) => void;
