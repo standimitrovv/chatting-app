@@ -53,12 +53,16 @@ export const ConversationProvider: React.FunctionComponent = (props) => {
       const friendId = conversation?.members.find(
         (id) => id !== userCredentials?.userId
       );
+
       if (!friendId) return;
+
       const response = await sendRequest(`/users/get-user/${friendId}`);
+
       if (!response.user) {
         setFriendCredentials(undefined);
         return;
       }
+
       setFriendCredentials(response.user);
     },
     [sendRequest, userCredentials?.userId]
