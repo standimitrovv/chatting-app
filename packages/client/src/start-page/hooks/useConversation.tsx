@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
-import { useHttp } from '../../app/hooks/useHttp';
+import { getUserById } from '../../service/user/GetUserById';
 import { User } from '../models/User';
 import { UserConversation } from '../models/UserConversation';
 
@@ -32,8 +32,6 @@ export const useConversation = () => {
 export const ConversationProvider: React.FunctionComponent = (props) => {
   const { userCredentials } = useAuthContext();
 
-  const { sendRequest } = useHttp();
-
   const [activeConvo, setActiveConvo] = useState<UserConversation | undefined>(
     undefined
   );
@@ -56,23 +54,26 @@ export const ConversationProvider: React.FunctionComponent = (props) => {
 
       if (!friendId) return;
 
-      const response = await sendRequest(`/users/get-user/${friendId}`);
+      try {
+        const response = await getUserById({ userId: friendId });
 
-      if (!response.user) {
-        setFriendCredentials(undefined);
-        return;
-      }
+        if (!response.user) {
+          setFriendCredentials(undefined);
 
-      setFriendCredentials(response.user);
+          return;
+        }
+
+        setFriendCredentials(response.user);
+      } catch (err) {}
     },
-    [sendRequest, userCredentials?.userId]
+    [userCredentials?.userId]
   );
 
+  // gets the data of the user that you are chatting with
   useEffect(() => {
-    const getFriend = async () => {
+    (async () => {
       await getFriendData(activeConvo);
-    };
-    getFriend();
+    })();
   }, [getFriendData, activeConvo]);
 
   const context = {
