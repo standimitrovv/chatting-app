@@ -2,35 +2,9 @@ import React from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
 import Modal from '@mui/material/Modal';
 import googleSvg from '../../assets/images/google.png';
-import { signInWithGoogle } from '../FirebaseConfig';
-import { useHttp } from '../hooks/useHttp';
 
 export const NotAuthorized: React.FC = () => {
-  const { isLoggedIn, login } = useAuthContext();
-  const { sendRequest } = useHttp();
-
-  // TODO abstract the logic in useAuthContext
-  const signTheUserIn = () => {
-    signInWithGoogle()
-      .then((result) => {
-        const fullName = result.user.displayName as string;
-        const email = result.user.email as string;
-        const photoUrl = result.user.photoURL as string;
-        const userId = result.user.uid as string;
-
-        sendRequest(
-          `/users/create-user`,
-          'POST',
-          JSON.stringify({ email, fullName, photoUrl, userId }),
-          {
-            'Content-Type': 'application/json',
-          }
-        ).then((res) => console.log(res));
-
-        login({ email, fullName, photoUrl, userId });
-      })
-      .catch((err) => console.error(err));
-  };
+  const { isLoggedIn, loginWithGoogle } = useAuthContext();
 
   return (
     <Modal
@@ -52,7 +26,7 @@ export const NotAuthorized: React.FC = () => {
           />
           <button
             className='bg-white rounded-full w-full py-2 mt-4 font-bold text-blue-500'
-            onClick={signTheUserIn}
+            onClick={loginWithGoogle}
           >
             Sign in with Google
           </button>

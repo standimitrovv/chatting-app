@@ -3,7 +3,7 @@ import { useAuthContext } from './hooks/useAuthContext';
 import { SideBar, IActiveChannelState } from './components/SideBar';
 import { AllChat } from '../all-chat/components/AllChat';
 import { StartPage } from '../start-page/containers/Start';
-import { NotAuthorized } from './components/NotAuthorized';
+import { NotAuthorized } from './containers/NotAuthorized';
 
 export const App: React.FC = () => {
   const { userCredentials } = useAuthContext();
