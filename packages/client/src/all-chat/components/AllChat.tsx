@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Greeting } from './Greeting';
 import { Input } from '../../app/components/Input';
 import { UserCredentials } from '../../app/models/UserCredentials';
-import { useHttp } from '../../app/hooks/useHttp';
 import { IMessage } from '../models/Message';
 import { Message } from './Message';
 import openSocket from 'socket.io-client';
@@ -13,19 +12,18 @@ interface Props {
 
 export const AllChat: React.FC<Props> = ({ user }) => {
   const [messages, setMessages] = useState<IMessage[] | []>([]);
-  const { sendRequest } = useHttp();
 
-  useEffect(() => {
-    const getMessages = async () => {
-      try {
-        const { result } = await sendRequest(`/all-chat/get-messages`);
-        setMessages(result);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    getMessages();
-  }, [sendRequest]);
+  // useEffect(() => {
+  //   const getMessages = async () => {
+  //     try {
+  //       const { result } = await sendRequest(`/all-chat/get-messages`);
+  //       setMessages(result);
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   };
+  //   getMessages();
+  // }, [sendRequest]);
 
   useEffect(() => {
     const socket = openSocket(process.env.REACT_APP_API_SERVER!);
