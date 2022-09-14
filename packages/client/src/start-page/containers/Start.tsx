@@ -7,7 +7,7 @@ import { SidePanel } from './SidePanel';
 import { useConversation } from '../hooks/useConversation';
 import { Chat } from './Chat';
 
-export const StartPage: React.FC = () => {
+export const StartPage: React.FunctionComponent = () => {
   const [convoResponseMessage, setConvoResponseMessage] = useState<string>('');
 
   const { activeConversation, setActiveConversation } = useConversation();
@@ -20,6 +20,7 @@ export const StartPage: React.FC = () => {
 
       if (response.message) {
         setActiveConversation(undefined);
+
         setConvoResponseMessage(response.message);
       }
     } catch (error) {}

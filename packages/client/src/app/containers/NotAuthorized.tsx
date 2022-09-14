@@ -3,7 +3,7 @@ import { useAuthContext } from '../hooks/useAuthContext';
 import Modal from '@mui/material/Modal';
 import googleSvg from '../../assets/images/google.png';
 
-export const NotAuthorized: React.FC = () => {
+export const NotAuthorized: React.FunctionComponent = () => {
   const { isLoggedIn, loginWithGoogle } = useAuthContext();
 
   return (

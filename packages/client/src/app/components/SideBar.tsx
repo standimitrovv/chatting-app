@@ -13,7 +13,9 @@ export interface IActiveChannelState {
   all: boolean;
 }
 
-export const SideBar: React.FC<Props> = ({ switchTheActiveChannel }) => {
+export const SideBar: React.FunctionComponent<Props> = ({
+  switchTheActiveChannel,
+}) => {
   const [activeChannel, setActiveChannel] = useState<IActiveChannelState>({
     start: true,
     all: false,

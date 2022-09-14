@@ -19,10 +19,9 @@ export const Conversation: React.FC<Props> = ({
   const { friendCredentials, getFriendData } = useConversation();
 
   useEffect(() => {
-    const getFriendCredentials = async () => {
+    (async () => {
       await getFriendData(conversation);
-    };
-    getFriendCredentials();
+    })();
   }, [getFriendData, conversation]);
 
   return (

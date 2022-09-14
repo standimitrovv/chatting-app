@@ -8,7 +8,10 @@ interface Props {
   conversation?: ConversationMessages;
 }
 
-export const ChatMessage: React.FC<Props> = ({ own, conversation }) => {
+export const ChatMessage: React.FunctionComponent<Props> = ({
+  own,
+  conversation,
+}) => {
   const { friendCredentials } = useConversation();
 
   return (

@@ -5,7 +5,7 @@ interface Props {
   onSendMessage?: (usersInput: string) => void;
 }
 
-export const Input: React.FC<Props> = (props) => {
+export const Input: React.FunctionComponent<Props> = (props) => {
   const [usersInput, setUsersInput] = useState<string>('');
 
   const submitFormHandler = async (e: React.FormEvent) => {

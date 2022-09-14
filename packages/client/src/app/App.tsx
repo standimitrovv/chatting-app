@@ -5,7 +5,7 @@ import { AllChat } from '../all-chat/components/AllChat';
 import { StartPage } from '../start-page/containers/Start';
 import { NotAuthorized } from './containers/NotAuthorized';
 
-export const App: React.FC = () => {
+export const App: React.FunctionComponent = () => {
   const { userCredentials } = useAuthContext();
   const [activeChannel, setActiveChannel] = useState<IActiveChannelState>({
     start: true,

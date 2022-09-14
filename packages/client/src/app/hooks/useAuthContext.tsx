@@ -39,7 +39,7 @@ export const useAuthContext = () => {
   return AuthContext;
 };
 
-export const AuthProvider: React.FC = (props) => {
+export const AuthProvider: React.FunctionComponent = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   const [userCredentials, setUserCredentials] = useState<

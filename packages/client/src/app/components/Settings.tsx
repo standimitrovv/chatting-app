@@ -4,7 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import { CogIcon } from '@heroicons/react/outline';
 import { UserSettings } from './UserSettings';
 
-export const Settings = () => {
+export const Settings: React.FunctionComponent = () => {
   const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false);
 
   const handleDialogOpen = () => setDialogIsOpen(true);
