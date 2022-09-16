@@ -13,7 +13,11 @@ interface RequestBody {
   userId: string;
 }
 
-export const onSaveUser = async (req: Request, res: Response) => {
+export const onSaveUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { email, fullName, photoUrl, userId } = req.body as RequestBody;
 
   try {
@@ -21,7 +25,9 @@ export const onSaveUser = async (req: Request, res: Response) => {
 
     res.status(201).json({ message: 'User created!' });
   } catch (err) {
-    throw new HttpError('Something went wrong, please try again later!', 500);
+    return next(
+      new HttpError('Something went wrong, please try again later!', 500)
+    );
   }
 };
 

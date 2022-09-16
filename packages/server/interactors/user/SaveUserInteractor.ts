@@ -19,6 +19,7 @@ export const saveUserInteractor = async (
       fullName,
       photoUrl,
       userId,
+      status: 'Online',
     });
 
     await user.save();
