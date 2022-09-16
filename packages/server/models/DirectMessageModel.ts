@@ -23,7 +23,7 @@ const DirectMessageSchema = new Schema({
 });
 
 export const DirectMessageModel = mongoose.model(
-  'Message',
+  'Direct-Message',
   DirectMessageSchema
 );
 
