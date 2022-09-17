@@ -24,34 +24,35 @@ export const SearchBar: React.FunctionComponent<Props> = (props) => {
 
   useEffect(() => {
     const fetchAllUsers = async () => {
-      if (userInput.trim().length >= 2) {
-        try {
-          const users = await getAllUsersExceptCurrentOne(userId!);
+      if (userInput.trim().length < 2) {
+        return;
+      }
 
-          //TODO clean up
-          const filteredUsers = users.filter((user) => {
-            if (userInput.trim().length < 2) return null;
+      try {
+        const users = await getAllUsersExceptCurrentOne(userId!);
 
-            if (user.fullName.toLowerCase().includes(userInput.toLowerCase())) {
-              return user;
-            }
+        const filteredUsers = users.filter((user) =>
+          user.fullName.toLowerCase().includes(userInput.toLowerCase())
+        );
 
-            return null;
-          });
+        if (filteredUsers.length === 0) {
+          setIsSearching(false);
 
-          if (filteredUsers) {
-            setSearchResults(filteredUsers);
-
-            setIsSearching(false);
-          }
-        } catch (err) {
-          console.error(err);
+          return;
         }
+
+        setSearchResults(filteredUsers);
+
+        setIsSearching(false);
+      } catch (err) {
+        console.error(err);
       }
     };
+
     const timer = setTimeout(() => {
       fetchAllUsers();
     }, 1000);
+
     return () => clearTimeout(timer);
   }, [userInput, userId]);
 
