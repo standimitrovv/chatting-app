@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Input } from '../../app/components/Input';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
 import { ConversationMessages } from '../models/ConversationMessages';
-import { ChatMessage } from './ChatMessage';
+import { ChatMessage } from '../components/ChatMessage';
 import openSocket from 'socket.io-client';
 import { useConversation } from '../hooks/useConversation';
 import { getAllDirectMessages } from '../../service/direct-message/GetAllDirectMessages';
