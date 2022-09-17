@@ -3,9 +3,9 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import { XIcon } from '@heroicons/react/outline';
-import { useAuthContext } from '../hooks/useAuthContext';
-import { UserStatus } from '../containers/UserStatus';
-import { StatusIcon } from './StatusIcon';
+import { useAuthContext } from '../../hooks/useAuthContext';
+import { UserStatus } from '../../containers/UserStatus';
+import { StatusIcon } from '../StatusIcon';
 
 interface Props {
   onCloseDialog: () => void;
