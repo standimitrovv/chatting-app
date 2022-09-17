@@ -25,7 +25,7 @@ export const onSaveConversation = async (
       await checkForExistingConversationInteractor(members);
 
     if (doesConversationAlreadyExist) {
-      res.status(200).json({ message: 'Conversation already exists!' });
+      return res.status(200).json({ message: 'Conversation already exists!' });
     }
 
     const createdConversation = await saveConversationInteractor(members);
