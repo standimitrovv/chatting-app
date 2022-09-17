@@ -6,8 +6,10 @@ import { saveConversation } from '../../service/conversation/SaveConversation';
 import { getAllUsersExceptCurrentOne } from '../../service/user/GetUsers';
 import { User } from '../models/User';
 import { SearchResult } from '../components/SearchResult';
+import { UserConversation } from '../models/UserConversation';
 
 interface Props {
+  updateUserConversations: (conversation: UserConversation) => void;
   setCreateConvoResponseMessage: (message: string) => void;
 }
 
@@ -67,6 +69,10 @@ export const SearchBar: React.FunctionComponent<Props> = (props) => {
 
     try {
       const { data } = await saveConversation({ userId, friendId });
+
+      if (data.conversation) {
+        props.updateUserConversations(data.conversation);
+      }
 
       props.setCreateConvoResponseMessage(data.message);
     } catch (err) {}
