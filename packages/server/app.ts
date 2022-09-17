@@ -25,7 +25,7 @@ app.use(cors());
 app.use('/all-chat', allChatRoutes);
 app.use('/users', userRoutes);
 app.use('/conversations', conversationRoutes);
-app.use('/messages', directMessageRoutes);
+app.use('/direct-messages', directMessageRoutes);
 
 app.use(() => {
   throw new Error('Not implemented!');

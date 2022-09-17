@@ -36,8 +36,15 @@ export const onGetAllDirectMessages = async (
   next: NextFunction
 ) => {
   const convoId = req.params.convoId;
+
   try {
     const messages = await getAllDirectMessagesInteractor(convoId);
+
+    if (messages.length === 0) {
+      return res
+        .status(201)
+        .json({ message: 'No messages found for current conversation' });
+    }
 
     res.json({ messages });
   } catch (err) {

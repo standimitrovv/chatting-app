@@ -8,13 +8,14 @@ interface GetAllDirectMessagesModel {
 }
 
 interface GetAllDirectMessagesResult {
-  messages: DirectMessage[];
+  message?: string;
+  messages?: DirectMessage[];
 }
 
 export const getAllDirectMessages = async (
   model: GetAllDirectMessagesModel
 ) => {
   return axios.get<GetAllDirectMessagesResult>(
-    `${API}/messages/get-messages/${model.conversationId}`
+    `${API}/direct-messages/get-messages/${model.conversationId}`
   );
 };
