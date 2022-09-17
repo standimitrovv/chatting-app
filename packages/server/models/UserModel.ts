@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 
 const Schema = mongoose.Schema;
 
-const UserSchema = new Schema({
+const UserSchema = new Schema<User>({
   email: {
     type: String,
     required: true,
@@ -26,13 +26,15 @@ const UserSchema = new Schema({
   },
 });
 
-export const UserModel = mongoose.model('Users', UserSchema);
+export const UserModel = mongoose.model<User>('Users', UserSchema);
 
-export interface User {
+export interface User extends Document {
   _id: string;
   email: string;
   fullName: string;
   photoUrl: string;
   userId: string;
-  status: 'Online' | 'Do Not Disturb' | 'Away' | 'Offline';
+  status: UserStatus;
 }
+
+export type UserStatus = 'Online' | 'Do Not Disturb' | 'Away' | 'Offline';

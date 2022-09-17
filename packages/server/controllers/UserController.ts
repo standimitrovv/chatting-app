@@ -5,6 +5,7 @@ import { getUsersInteractor } from '../interactors/user/GetUsersInteractor';
 import { saveUserInteractor } from '../interactors/user/SaveUserInteractor';
 import { updateUserActivityStatusInteractor } from '../interactors/user/UpdateUserActivityStatusInteractor';
 import { HttpError } from '../models/ErrorModel';
+import { UserStatus } from '../models/UserModel';
 import { io } from '../socket';
 
 interface RequestBody {
@@ -85,22 +86,31 @@ export const onGetSingleUser = async (
 
 export const onUpdateUserActivityStatus = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   const userId = req.params.userId;
 
-  const status = req.query.status as string;
+  const status = req.body.status as UserStatus;
 
   try {
-    await updateUserActivityStatusInteractor(userId, status);
+    const user = await getUserByIdInteractor(userId);
+
+    if (!user) {
+      return res.status(400).json({ message: 'User not found' });
+    }
+
+    await updateUserActivityStatusInteractor(user, status);
 
     res.json({ message: 'Status updated!' });
 
     io.emit('status-change');
   } catch (err) {
-    throw new HttpError(
-      'Something went wrong with updating the status, please try again later',
-      500
+    return next(
+      new HttpError(
+        'Something went wrong with updating the status, please try again later',
+        500
+      )
     );
   }
 };

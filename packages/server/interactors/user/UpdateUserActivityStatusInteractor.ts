@@ -1,15 +1,9 @@
-import { UserModel } from '../../models/UserModel';
+import { User, UserStatus } from '../../models/UserModel';
 
 export const updateUserActivityStatusInteractor = async (
-  userId: string,
-  status: string
+  user: User,
+  status: UserStatus
 ) => {
-  const user = await UserModel.findOne({ userId });
-
-  if (!user) {
-    return;
-  }
-
   user.status = status;
 
   await user.save();
