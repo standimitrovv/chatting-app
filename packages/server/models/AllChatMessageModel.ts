@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
-const MessageSchema = new Schema({
+const MessageSchema = new Schema<AllChatMessage>({
   text: {
     type: String,
     required: true,
@@ -26,7 +26,7 @@ const MessageSchema = new Schema({
   },
 });
 
-export const AllChatMessageModel = mongoose.model(
+export const AllChatMessageModel = mongoose.model<AllChatMessage>(
   'All-Chat-Message',
   MessageSchema
 );

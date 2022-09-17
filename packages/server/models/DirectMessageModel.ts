@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
-const DirectMessageSchema = new Schema({
+const DirectMessageSchema = new Schema<DirectMessage>({
   conversationId: {
     type: String,
     required: true,
@@ -22,7 +22,7 @@ const DirectMessageSchema = new Schema({
   },
 });
 
-export const DirectMessageModel = mongoose.model(
+export const DirectMessageModel = mongoose.model<DirectMessage>(
   'Direct-Message',
   DirectMessageSchema
 );
