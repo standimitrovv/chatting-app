@@ -61,9 +61,7 @@ export const SidePanel: React.FunctionComponent<Props> = (props) => {
     <div className='w-96 bg-slate-500 relative'>
       <div className='flex relative pt-9 pb-6 px-4 border-b'>
         <SearchBar
-          setCreateConvoResponseMessage={(message: string) =>
-            props.onCreateConversationResponse(message)
-          }
+          setCreateConvoResponseMessage={props.onCreateConversationResponse}
         />
       </div>
       <div className='flex flex-col justify-center pt-5'>
