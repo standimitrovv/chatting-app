@@ -11,7 +11,7 @@ export const saveUserInteractor = async (
     const existingUser = await UserModel.findOne({ userId: userId.toString() });
 
     if (existingUser) {
-      throw new HttpError('User already exists', 200);
+      return;
     }
 
     const user = new UserModel({

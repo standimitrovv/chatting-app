@@ -13,7 +13,7 @@ interface SaveUserResult {
 }
 
 export const saveUser = async (model: SaveUserModel) => {
-  return axios.post<string, SaveUserResult>(`${API}/users/create-user`, {
-    model,
+  return axios.post<SaveUserResult>(`${API}/users/create-user`, {
+    ...model,
   });
 };

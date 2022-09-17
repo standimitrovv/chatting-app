@@ -67,15 +67,16 @@ export const SidePanel: React.FunctionComponent<Props> = (props) => {
         />
       </div>
       <div className='flex flex-col justify-center pt-5'>
-        {userConversations.map((conversation) => (
-          <Conversation
-            key={conversation._id}
-            conversation={conversation}
-            isActive={conversation._id === props.activeConversationId}
-            onDelete={() => props.onDelete(conversation._id)}
-            onClick={() => props.onConversationClick(conversation)}
-          />
-        ))}
+        {userConversations &&
+          userConversations.map((conversation) => (
+            <Conversation
+              key={conversation._id}
+              conversation={conversation}
+              isActive={conversation._id === props.activeConversationId}
+              onDelete={() => props.onDelete(conversation._id)}
+              onClick={() => props.onConversationClick(conversation)}
+            />
+          ))}
       </div>
     </div>
   );

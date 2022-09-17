@@ -65,9 +65,9 @@ export const SearchBar: React.FunctionComponent<Props> = (props) => {
     }
 
     try {
-      const response = await saveConversation({ userId, friendId });
+      const { data } = await saveConversation({ userId, friendId });
 
-      props.setCreateConvoResponseMessage(response.message);
+      props.setCreateConvoResponseMessage(data.message);
     } catch (err) {}
   };
 
