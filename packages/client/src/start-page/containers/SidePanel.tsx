@@ -26,11 +26,9 @@ export const SidePanel: React.FunctionComponent = () => {
     try {
       const { data } = await deleteConversationService({ conversationId });
 
-      if (data.message) {
-        setActiveConversation(undefined);
+      setActiveConversation(undefined);
 
-        onResponseMessage(data.message);
-      }
+      onResponseMessage(data.message);
 
       deleteConversation(conversationId);
     } catch (err) {
