@@ -1,28 +1,11 @@
 import { ConversationModel } from '../../models/ConversationModel';
-import { HttpError } from '../../models/ErrorModel';
 
-export const saveConversationInteractor = async (
-  userId: string,
-  friendId: string
-) => {
-  //validation
-  const members = [userId.toString(), friendId.toString()];
+export const saveConversationInteractor = async (members: [string, string]) => {
+  const conversation = new ConversationModel({
+    members,
+  });
 
-  try {
-    const existingConversation = await ConversationModel.findOne({ members });
+  await conversation.save();
 
-    if (existingConversation) {
-      throw new HttpError('Conversation already exists', 200);
-    }
-
-    const conversation = new ConversationModel({
-      members,
-    });
-
-    await conversation.save();
-
-    return conversation;
-  } catch (err) {
-    throw new HttpError('Something went wrong, please try again later', 500);
-  }
+  return conversation;
 };

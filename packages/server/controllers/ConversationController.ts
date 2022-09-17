@@ -4,23 +4,35 @@ import { HttpError } from '../models/ErrorModel';
 import { saveConversationInteractor } from '../interactors/conversation/SaveConversationInteractor';
 import { getAllUserConversationsByIdInteractor } from '../interactors/conversation/GetAllUserConversationsByIdInteractor';
 import { deleteConversationInteractor } from '../interactors/conversation/DeleteConversationInteractor';
+import { checkForExistingConversationInteractor } from '../interactors/conversation/CheckForExistingConversationInteractor';
+
+interface RequestBody {
+  userId: string;
+  friendId: string;
+}
 
 export const onSaveConversation = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const { userId, friendId } = req.body;
+  const { userId, friendId } = req.body as RequestBody;
+
+  const members: [string, string] = [userId.toString(), friendId.toString()];
 
   try {
-    const createdConversation = await saveConversationInteractor(
-      userId,
-      friendId
-    );
+    const doesConversationAlreadyExist =
+      await checkForExistingConversationInteractor(members);
+
+    if (doesConversationAlreadyExist) {
+      res.status(200).json({ message: 'Conversation already exists!' });
+    }
+
+    const createdConversation = await saveConversationInteractor(members);
 
     res.json({
       message: 'Successfully created a new conversation',
-      conv: createdConversation,
+      conversation: createdConversation,
     });
   } catch (err) {
     return next(

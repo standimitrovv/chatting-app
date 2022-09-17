@@ -9,7 +9,7 @@ interface SaveConversationModel {
 
 interface SaveConversationResult {
   message: string;
-  conv: UserConversation;
+  conversation?: UserConversation;
 }
 
 export const saveConversation = async (model: SaveConversationModel) => {
