@@ -5,9 +5,9 @@ import { useAuthContext } from '../../app/hooks/useAuthContext';
 import { saveConversation as saveConversationService } from '../../service/conversation/SaveConversation';
 import { getAllUsersExceptCurrentOne } from '../../service/user/GetUsers';
 import { User } from '../models/User';
-import { SearchResult } from '../components/SearchResult';
 import { useResponseMessage } from '../hooks/useResponseMessage';
 import { useConversation } from '../hooks/useConversation';
+import { SearchResults } from '../components/SearchResults';
 
 export const SearchBar: React.FunctionComponent = () => {
   const { userCredentials } = useAuthContext();
@@ -88,39 +88,6 @@ export const SearchBar: React.FunctionComponent = () => {
     setUserInput(e.target.value);
   };
 
-  const renderContent = (): JSX.Element => {
-    const getSearchingStateLabel = () => {
-      if (searchResults.length === 0 && !isSearching) {
-        return 'No results found.';
-      }
-
-      if (userInput.length === 1) {
-        return 'Enter one more character, please.';
-      }
-
-      if (searchResults.length === 0) {
-        return 'One moment, please.';
-      }
-    };
-
-    return (
-      <>
-        {searchResults.length === 0 ? (
-          <p className='py-3 px-2 w-full'>{getSearchingStateLabel()}</p>
-        ) : (
-          searchResults.map((result) => (
-            <div
-              key={result._id}
-              onClick={() => onConversationClick(result.userId)}
-            >
-              <SearchResult userData={result} />
-            </div>
-          ))
-        )}
-      </>
-    );
-  };
-
   return (
     <div className='w-full relative'>
       <div className='flex items-center relative justify-between'>
@@ -139,16 +106,14 @@ export const SearchBar: React.FunctionComponent = () => {
           value={userInput}
         />
       </div>
-      {userInput.trim().length >= 1 && (
-        <div
-          className={`bg-orange-400 rounded-lg flex flex-col text-center absolute w-full ${
-            searchResults.length === 0
-              ? 'h-11 flex items-center justify-center '
-              : 'h-fit'
-          }`}
-        >
-          {renderContent()}
-        </div>
+
+      {userInput.trim().length > 0 && (
+        <SearchResults
+          searchResults={searchResults}
+          userInputLength={userInput.trim().length}
+          isSearching={isSearching}
+          onClick={onConversationClick}
+        />
       )}
     </div>
   );
