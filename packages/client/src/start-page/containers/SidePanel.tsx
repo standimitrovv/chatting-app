@@ -27,14 +27,14 @@ export const SidePanel: React.FunctionComponent<Props> = (props) => {
       return;
     }
 
-    const response = await getAllUserConversationsById({ userId });
+    const { data } = await getAllUserConversationsById({ userId });
 
-    if (!response) {
+    if (!data) {
       setUserConversations([]);
       return;
     }
 
-    setUserConversations(response.userConversations);
+    setUserConversations(data.userConversations);
   }, [userId]);
 
   useEffect(() => {

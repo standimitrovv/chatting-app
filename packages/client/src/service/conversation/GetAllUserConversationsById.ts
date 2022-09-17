@@ -13,7 +13,7 @@ interface GetAllUserConversationsByIdResult {
 export const getAllUserConversationsById = async (
   model: GetAllUserConversationsByIdModel
 ) => {
-  return axios.get<string, GetAllUserConversationsByIdResult>(
+  return axios.get<GetAllUserConversationsByIdResult>(
     `${API}/conversations/get-convo/${model.userId}`
   );
 };

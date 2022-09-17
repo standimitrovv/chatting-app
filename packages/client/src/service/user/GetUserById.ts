@@ -11,7 +11,5 @@ interface GetUserByIdResult {
 }
 
 export const getUserById = async (model: GetUserByIdModel) => {
-  return axios.get<string, GetUserByIdResult>(
-    `${API}/users/get-user/${model.userId}`
-  );
+  return axios.get<GetUserByIdResult>(`${API}/users/get-user/${model.userId}`);
 };

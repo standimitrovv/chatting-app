@@ -16,12 +16,12 @@ export const StartPage: React.FunctionComponent = () => {
 
   const onDeleteConversation = async (conversationId: string) => {
     try {
-      const response = await deleteConversation({ conversationId });
+      const { data } = await deleteConversation({ conversationId });
 
-      if (response.message) {
+      if (data.message) {
         setActiveConversation(undefined);
 
-        setConvoResponseMessage(response.message);
+        setConvoResponseMessage(data.message);
       }
     } catch (error) {}
   };

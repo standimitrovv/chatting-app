@@ -23,7 +23,9 @@ export const Chat: React.FunctionComponent = () => {
     }
 
     getAllDirectMessages({ conversationId: activeConversation._id }).then(
-      setConversationMessages
+      ({ data }) => {
+        setConversationMessages(data.messages);
+      }
     );
   }, [activeConversation]);
 

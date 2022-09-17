@@ -14,13 +14,7 @@ interface GetAllDirectMessagesResult {
 export const getAllDirectMessages = async (
   model: GetAllDirectMessagesModel
 ) => {
-  const response = await axios.get<string, GetAllDirectMessagesResult>(
+  return axios.get<GetAllDirectMessagesResult>(
     `${API}/messages/get-messages/${model.conversationId}`
   );
-
-  if (!response) {
-    return [];
-  }
-
-  return response.messages;
 };
