@@ -1,5 +1,4 @@
 import { UserModel } from '../../models/UserModel';
-import { HttpError } from '../../models/ErrorModel';
 
 export const saveUserInteractor = async (
   email: string,
@@ -7,23 +6,13 @@ export const saveUserInteractor = async (
   photoUrl: string,
   userId: string
 ) => {
-  try {
-    const existingUser = await UserModel.findOne({ userId: userId.toString() });
+  const user = new UserModel({
+    email,
+    fullName,
+    photoUrl,
+    userId,
+    status: 'Online',
+  });
 
-    if (existingUser) {
-      return;
-    }
-
-    const user = new UserModel({
-      email,
-      fullName,
-      photoUrl,
-      userId,
-      status: 'Online',
-    });
-
-    await user.save();
-  } catch (err) {
-    throw new HttpError('Something went wrong, please try again later!', 500);
-  }
+  await user.save();
 };
