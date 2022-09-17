@@ -13,9 +13,7 @@ export const Chat: React.FunctionComponent = () => {
 
   const { activeConversation } = useConversation();
 
-  const [conversationMessages, setChatMessages] = useState<
-    ConversationMessages[] | []
-  >([]);
+  const [chatMessages, setChatMessages] = useState<ConversationMessages[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -35,6 +33,7 @@ export const Chat: React.FunctionComponent = () => {
 
   useEffect(() => {
     const socket = openSocket(process.env.REACT_APP_API_SERVER!);
+
     socket.on('message', (data) => {
       if (data.action === 'create') {
         setChatMessages((prevMessages) => [
@@ -62,7 +61,14 @@ export const Chat: React.FunctionComponent = () => {
     };
 
     try {
-      await saveDirectMessage(message);
+      const { data } = await saveDirectMessage(message);
+
+      if (data.createdMessage) {
+        setChatMessages((prevMessages) => [
+          ...prevMessages,
+          data.createdMessage,
+        ]);
+      }
     } catch (err) {}
   };
 
@@ -72,13 +78,14 @@ export const Chat: React.FunctionComponent = () => {
         style={{ height: 'calc(100% - 102px)' }}
         className='overflow-y-auto flex flex-col'
       >
-        {conversationMessages?.map((msg) => (
-          <ChatMessage
-            key={msg._id}
-            conversation={msg}
-            own={msg.sender === userCredentials?.userId}
-          />
-        ))}
+        {chatMessages &&
+          chatMessages.map((msg) => (
+            <ChatMessage
+              key={msg._id}
+              conversation={msg}
+              own={msg.sender === userCredentials?.userId}
+            />
+          ))}
       </div>
       <Input
         conversationId={activeConversation?._id}

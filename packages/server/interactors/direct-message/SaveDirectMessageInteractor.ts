@@ -14,9 +14,7 @@ export const saveDirectMessageInteractor = async (
     createdAt,
   });
 
-  try {
-    return await message.save();
-  } catch (err) {
-    throw new HttpError('Something went wrong, please try again later', 500);
-  }
+  await message.save();
+
+  return message;
 };
