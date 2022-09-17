@@ -47,9 +47,7 @@ export const StartPage: React.FunctionComponent = () => {
         activeConversationId={activeConversation?._id}
         onCreateConversationResponse={setConvoResponseMessage}
         onDelete={onDeleteConversation}
-        onConversationClick={(conversation) =>
-          setActiveConversation(conversation)
-        }
+        onConversationClick={setActiveConversation}
       />
       <div className='bg-cyan-400 w-full pt-8'>
         {activeConversation && <Chat />}
