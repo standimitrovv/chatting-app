@@ -56,7 +56,7 @@ export const SearchBar: React.FunctionComponent<Props> = (props) => {
     return () => clearTimeout(timer);
   }, [userInput, userId]);
 
-  const createConversation = async (friendId: string) => {
+  const onConversationClick = async (friendId: string) => {
     setIsSearching(false);
 
     setUserInput('');
@@ -105,7 +105,7 @@ export const SearchBar: React.FunctionComponent<Props> = (props) => {
           searchResults.map((result) => (
             <div
               key={result._id}
-              onClick={() => createConversation(result.userId)}
+              onClick={() => onConversationClick(result.userId)}
             >
               <SearchResult userData={result} />
             </div>
