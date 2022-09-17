@@ -13,27 +13,30 @@ export const Chat: React.FunctionComponent = () => {
 
   const { activeConversation } = useConversation();
 
-  const [conversationMessages, setConversationMessages] = useState<
+  const [conversationMessages, setChatMessages] = useState<
     ConversationMessages[] | []
   >([]);
 
   useEffect(() => {
-    if (!activeConversation) {
-      return;
-    }
-
-    getAllDirectMessages({ conversationId: activeConversation._id }).then(
-      ({ data }) => {
-        setConversationMessages(data.messages);
+    (async () => {
+      if (!activeConversation) {
+        return;
       }
-    );
+
+      await getAllDirectMessages({
+        conversationId: activeConversation._id,
+      }).then(({ data }) => {
+        console.log(data);
+        setChatMessages(data.messages);
+      });
+    })();
   }, [activeConversation]);
 
   useEffect(() => {
     const socket = openSocket(process.env.REACT_APP_API_SERVER!);
     socket.on('message', (data) => {
       if (data.action === 'create') {
-        setConversationMessages((prevMessages) => [
+        setChatMessages((prevMessages) => [
           ...prevMessages,
           data.createdMessage,
         ]);
