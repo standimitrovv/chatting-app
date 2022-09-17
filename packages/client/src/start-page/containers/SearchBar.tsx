@@ -2,19 +2,17 @@ import { SearchIcon } from '@heroicons/react/outline';
 import CircularProgress from '@mui/material/CircularProgress';
 import React, { useEffect, useState } from 'react';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
-import { saveConversation } from '../../service/conversation/SaveConversation';
+import { saveConversation as saveConversationService } from '../../service/conversation/SaveConversation';
 import { getAllUsersExceptCurrentOne } from '../../service/user/GetUsers';
 import { User } from '../models/User';
 import { SearchResult } from '../components/SearchResult';
-import { UserConversation } from '../models/UserConversation';
 import { useResponseMessage } from '../hooks/useResponseMessage';
+import { useConversation } from '../hooks/useConversation';
 
-interface Props {
-  updateUserConversations: (conversation: UserConversation) => void;
-}
-
-export const SearchBar: React.FunctionComponent<Props> = (props) => {
+export const SearchBar: React.FunctionComponent = () => {
   const { userCredentials } = useAuthContext();
+
+  const { saveConversation } = useConversation();
 
   const { onResponseMessage } = useResponseMessage();
 
@@ -70,10 +68,10 @@ export const SearchBar: React.FunctionComponent<Props> = (props) => {
     }
 
     try {
-      const { data } = await saveConversation({ userId, friendId });
+      const { data } = await saveConversationService({ userId, friendId });
 
       if (data.conversation) {
-        props.updateUserConversations(data.conversation);
+        saveConversation(data.conversation);
       }
 
       onResponseMessage(data.message);

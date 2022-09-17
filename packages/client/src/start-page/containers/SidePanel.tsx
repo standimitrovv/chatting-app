@@ -1,24 +1,42 @@
 import React, { useEffect } from 'react';
 import openSocket from 'socket.io-client';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
+import { deleteConversation as deleteConversationService } from '../../service/conversation/DeleteConversation';
 import { useConversation } from '../hooks/useConversation';
-import { UserConversation } from '../models/UserConversation';
+import { useResponseMessage } from '../hooks/useResponseMessage';
 import { Conversation } from './Conversation';
 import { SearchBar } from './SearchBar';
 
-interface Props {
-  activeConversationId?: string;
-  onDelete: (conversationId: string) => void;
-  onConversationClick: (conversation: UserConversation) => void;
-}
-
-export const SidePanel: React.FunctionComponent<Props> = (props) => {
+export const SidePanel: React.FunctionComponent = () => {
   const { userCredentials } = useAuthContext();
 
-  const { conversations, saveConversation, fetchAllConversations } =
-    useConversation();
+  const { onResponseMessage } = useResponseMessage();
+
+  const {
+    activeConversation,
+    setActiveConversation,
+    conversations,
+    deleteConversation,
+    fetchAllConversations,
+  } = useConversation();
 
   const userId = userCredentials?.userId;
+
+  const onDeleteConversation = async (conversationId: string) => {
+    try {
+      const { data } = await deleteConversationService({ conversationId });
+
+      if (data.message) {
+        setActiveConversation(undefined);
+
+        onResponseMessage(data.message);
+      }
+
+      deleteConversation(conversationId);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     (async () => {
@@ -41,7 +59,7 @@ export const SidePanel: React.FunctionComponent<Props> = (props) => {
   return (
     <div className='w-96 bg-slate-500 relative'>
       <div className='flex relative pt-9 pb-6 px-4 border-b'>
-        <SearchBar updateUserConversations={saveConversation} />
+        <SearchBar />
       </div>
       <div className='flex flex-col justify-center pt-5'>
         {conversations &&
@@ -49,9 +67,9 @@ export const SidePanel: React.FunctionComponent<Props> = (props) => {
             <Conversation
               key={conversation._id}
               conversation={conversation}
-              isActive={conversation._id === props.activeConversationId}
-              onDelete={() => props.onDelete(conversation._id)}
-              onClick={() => props.onConversationClick(conversation)}
+              isActive={conversation._id === activeConversation?._id}
+              onDelete={() => onDeleteConversation(conversation._id)}
+              onClick={() => setActiveConversation(conversation)}
             />
           ))}
       </div>
