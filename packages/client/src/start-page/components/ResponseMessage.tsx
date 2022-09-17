@@ -3,28 +3,26 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
 interface Props {
-  conversationResponse: string;
-  setConversationResponse: (message: string) => void;
+  responseMessage: string;
+  onResponseMessage: (message: string) => void;
 }
 
 export const ResponseMessage: React.FunctionComponent<Props> = (props) => {
   return (
     <Snackbar
-      open={Boolean(props.conversationResponse)}
+      open={Boolean(props.responseMessage)}
       autoHideDuration={5000}
-      onClose={() => props.setConversationResponse('')}
+      onClose={() => props.onResponseMessage('')}
     >
       <Alert
-        onClose={() => props.setConversationResponse('')}
+        onClose={() => props.onResponseMessage('')}
         variant='filled'
         severity={
-          props.conversationResponse.startsWith('Successfully')
-            ? 'success'
-            : 'error'
+          props.responseMessage.startsWith('Successfully') ? 'success' : 'error'
         }
         sx={{ width: '100%' }}
       >
-        {props.conversationResponse}
+        {props.responseMessage}
       </Alert>
     </Snackbar>
   );

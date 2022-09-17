@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import openSocket from 'socket.io-client';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
 import { deleteConversation } from '../../service/conversation/DeleteConversation';
 import { ResponseMessage } from '../components/ResponseMessage';
-import { SidePanel } from './SidePanel';
 import { useConversation } from '../hooks/useConversation';
+import { useResponseMessage } from '../hooks/useResponseMessage';
 import { Chat } from './Chat';
+import { SidePanel } from './SidePanel';
 
 export const StartPage: React.FunctionComponent = () => {
-  const [convoResponseMessage, setConvoResponseMessage] = useState<string>('');
+  const { responseMessage, onResponseMessage } = useResponseMessage();
 
   const { activeConversation, setActiveConversation } = useConversation();
 
@@ -21,7 +22,7 @@ export const StartPage: React.FunctionComponent = () => {
       if (data.message) {
         setActiveConversation(undefined);
 
-        setConvoResponseMessage(data.message);
+        onResponseMessage(data.message);
       }
     } catch (error) {}
   };
@@ -45,16 +46,16 @@ export const StartPage: React.FunctionComponent = () => {
     <div className='flex w-full'>
       <SidePanel
         activeConversationId={activeConversation?._id}
-        onCreateConversationResponse={setConvoResponseMessage}
         onDelete={onDeleteConversation}
         onConversationClick={setActiveConversation}
       />
       <div className='bg-cyan-400 w-full pt-8'>
         {activeConversation && <Chat />}
       </div>
+
       <ResponseMessage
-        conversationResponse={convoResponseMessage}
-        setConversationResponse={setConvoResponseMessage}
+        responseMessage={responseMessage}
+        onResponseMessage={onResponseMessage}
       />
     </div>
   );

@@ -7,14 +7,16 @@ import { getAllUsersExceptCurrentOne } from '../../service/user/GetUsers';
 import { User } from '../models/User';
 import { SearchResult } from '../components/SearchResult';
 import { UserConversation } from '../models/UserConversation';
+import { useResponseMessage } from '../hooks/useResponseMessage';
 
 interface Props {
   updateUserConversations: (conversation: UserConversation) => void;
-  setCreateConvoResponseMessage: (message: string) => void;
 }
 
 export const SearchBar: React.FunctionComponent<Props> = (props) => {
   const { userCredentials } = useAuthContext();
+
+  const { onResponseMessage } = useResponseMessage();
 
   const [isSearching, setIsSearching] = useState(false);
 
@@ -74,7 +76,7 @@ export const SearchBar: React.FunctionComponent<Props> = (props) => {
         props.updateUserConversations(data.conversation);
       }
 
-      props.setCreateConvoResponseMessage(data.message);
+      onResponseMessage(data.message);
     } catch (err) {}
   };
 
