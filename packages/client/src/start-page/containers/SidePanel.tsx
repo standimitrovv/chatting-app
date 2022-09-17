@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import openSocket from 'socket.io-client';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
-import { getAllUserConversationsById } from '../../service/conversation/GetAllUserConversationsById';
-import { Conversation } from './Conversation';
+import { useConversation } from '../hooks/useConversation';
 import { UserConversation } from '../models/UserConversation';
+import { Conversation } from './Conversation';
 import { SearchBar } from './SearchBar';
 
 interface Props {
@@ -16,37 +16,16 @@ interface Props {
 export const SidePanel: React.FunctionComponent<Props> = (props) => {
   const { userCredentials } = useAuthContext();
 
-  const [userConversations, setUserConversations] = useState<
-    UserConversation[] | []
-  >([]);
+  const { conversations, saveConversation, fetchAllConversations } =
+    useConversation();
 
   const userId = userCredentials?.userId;
 
-  const updateUserConversations = (conversation: UserConversation) => {
-    setUserConversations((prevState) => [...prevState, conversation]);
-  };
-
-  const getAndSetAllUserConversations = useCallback(async () => {
-    if (!userId) {
-      return;
-    }
-
-    const { data } = await getAllUserConversationsById({ userId });
-
-    if (!data.userConversations || data.userConversations.length === 0) {
-      setUserConversations([]);
-
-      return;
-    }
-
-    setUserConversations(data.userConversations);
-  }, [userId]);
-
   useEffect(() => {
     (async () => {
-      await getAndSetAllUserConversations();
+      await fetchAllConversations();
     })();
-  }, [userId, getAndSetAllUserConversations]);
+  }, [userId, fetchAllConversations]);
 
   //refetch the conversations when status of a user changes
   useEffect(() => {
@@ -55,22 +34,22 @@ export const SidePanel: React.FunctionComponent<Props> = (props) => {
     //TODO refactor with the UseEffect above?
     socket.on('status-change', () => {
       (async () => {
-        await getAndSetAllUserConversations();
+        await fetchAllConversations();
       })();
     });
-  }, [userId, getAndSetAllUserConversations]);
+  }, [userId, fetchAllConversations]);
 
   return (
     <div className='w-96 bg-slate-500 relative'>
       <div className='flex relative pt-9 pb-6 px-4 border-b'>
         <SearchBar
-          updateUserConversations={updateUserConversations}
+          updateUserConversations={saveConversation}
           setCreateConvoResponseMessage={props.onCreateConversationResponse}
         />
       </div>
       <div className='flex flex-col justify-center pt-5'>
-        {userConversations &&
-          userConversations.map((conversation) => (
+        {conversations &&
+          conversations.map((conversation) => (
             <Conversation
               key={conversation._id}
               conversation={conversation}
