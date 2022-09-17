@@ -29,8 +29,9 @@ export const SidePanel: React.FunctionComponent<Props> = (props) => {
 
     const { data } = await getAllUserConversationsById({ userId });
 
-    if (!data) {
+    if (!data.userConversations || data.userConversations.length === 0) {
       setUserConversations([]);
+
       return;
     }
 
@@ -39,9 +40,7 @@ export const SidePanel: React.FunctionComponent<Props> = (props) => {
 
   useEffect(() => {
     (async () => {
-      try {
-        getAndSetAllUserConversations();
-      } catch (err) {}
+      await getAndSetAllUserConversations();
     })();
   }, [userId, getAndSetAllUserConversations]);
 
@@ -52,7 +51,7 @@ export const SidePanel: React.FunctionComponent<Props> = (props) => {
     //TODO refactor with the UseEffect above?
     socket.on('status-change', () => {
       (async () => {
-        getAndSetAllUserConversations();
+        await getAndSetAllUserConversations();
       })();
     });
   }, [userId, getAndSetAllUserConversations]);
