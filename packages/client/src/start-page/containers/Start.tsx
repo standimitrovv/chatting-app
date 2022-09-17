@@ -3,13 +3,10 @@ import openSocket from 'socket.io-client';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
 import { ResponseMessage } from '../components/ResponseMessage';
 import { useConversation } from '../hooks/useConversation';
-import { useResponseMessage } from '../hooks/useResponseMessage';
 import { Chat } from './Chat';
 import { SidePanel } from './SidePanel';
 
 export const StartPage: React.FunctionComponent = () => {
-  const { responseMessage, onResponseMessage } = useResponseMessage();
-
   const { activeConversation } = useConversation();
 
   const { userCredentials } = useAuthContext();
@@ -37,10 +34,7 @@ export const StartPage: React.FunctionComponent = () => {
         {activeConversation && <Chat />}
       </div>
 
-      <ResponseMessage
-        responseMessage={responseMessage}
-        onResponseMessage={onResponseMessage}
-      />
+      <ResponseMessage />
     </div>
   );
 };

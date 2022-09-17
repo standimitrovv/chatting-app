@@ -1,28 +1,26 @@
 import React from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { useResponseMessage } from '../hooks/useResponseMessage';
 
-interface Props {
-  responseMessage: string;
-  onResponseMessage: (message: string) => void;
-}
+export const ResponseMessage: React.FunctionComponent = () => {
+  const { responseMessage, onResponseMessage } = useResponseMessage();
 
-export const ResponseMessage: React.FunctionComponent<Props> = (props) => {
   return (
     <Snackbar
-      open={Boolean(props.responseMessage)}
+      open={Boolean(responseMessage)}
       autoHideDuration={5000}
-      onClose={() => props.onResponseMessage('')}
+      onClose={() => onResponseMessage('')}
     >
       <Alert
-        onClose={() => props.onResponseMessage('')}
+        onClose={() => onResponseMessage('')}
         variant='filled'
         severity={
-          props.responseMessage.startsWith('Successfully') ? 'success' : 'error'
+          responseMessage.startsWith('Successfully') ? 'success' : 'error'
         }
         sx={{ width: '100%' }}
       >
-        {props.responseMessage}
+        {responseMessage}
       </Alert>
     </Snackbar>
   );
