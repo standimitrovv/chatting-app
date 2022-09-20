@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 import { HttpError } from '../models/ErrorModel';
-import { io } from '../socket';
+import { io } from '../app';
 import { saveDirectMessageInteractor } from '../interactors/direct-message/SaveDirectMessageInteractor';
 import { getAllDirectMessagesInteractor } from '../interactors/direct-message/GetAllDirectMessagesInteractor';
 
@@ -20,7 +20,7 @@ export const onSaveDirectMessage = async (
       createdAt
     );
 
-    io.emit('message', { action: 'create', createdMessage });
+    // io.emit('message', { action: 'create', createdMessage });
 
     res.json({ message: 'Successfully created a message', createdMessage });
   } catch (err) {

@@ -2,9 +2,11 @@ import express, { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import mongoose from 'mongoose';
-import { io } from './socket';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
 
 import { IHttpError } from './models/ErrorModel';
+import { socket } from './socket';
 
 //routes
 import { router as allChatRoutes } from './routes/AllChatRoutes';
@@ -45,8 +47,19 @@ app.use(
   }
 );
 
-mongoose.connect(process.env.MONGODB_CONNECT!).then(() => {
-  app.listen(3001);
+const httpServer = createServer(app);
 
-  io.on('connection', () => console.log('Client connected'));
+export const io = new Server(httpServer, {
+  cors: {
+    origin: 'http://localhost:3000',
+    credentials: true,
+  },
+});
+
+mongoose.connect(process.env.MONGODB_CONNECT!, () => {
+  httpServer.listen(3001, () => {
+    console.log('server started');
+
+    socket(io);
+  });
 });

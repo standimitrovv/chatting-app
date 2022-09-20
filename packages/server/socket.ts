@@ -1,11 +1,13 @@
 import { Server } from 'socket.io';
-import { createServer } from 'http';
+import { DirectMessage } from './models/DirectMessageModel';
 
-const httpServer = createServer();
+export const socket = (io: Server) => {
+  io.on('connection', (socket) => {
+    console.log('client connected', socket.id);
 
-export const io = new Server(httpServer, {
-  cors: {
-    origin: 'http://localhost:3000',
-    credentials: true,
-  },
-});
+    socket.on('message', (data: { message: DirectMessage }) => {
+      console.log(data.message);
+      socket.to(data.message.conversationId).emit('message', data.message);
+    });
+  });
+};

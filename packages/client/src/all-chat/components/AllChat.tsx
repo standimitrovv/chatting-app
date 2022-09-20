@@ -25,21 +25,21 @@ export const AllChat: React.FC<Props> = ({ user }) => {
   //   getMessages();
   // }, [sendRequest]);
 
-  useEffect(() => {
-    const socket = openSocket(process.env.REACT_APP_API_SERVER!);
-    socket.on('messages', (data) => {
-      if (data.action === 'create') {
-        setMessages((prevState) => [...prevState, data.result]);
-      }
-      if (data.action === 'delete') {
-        const messageId = data.result._id;
-        setMessages((prevState) => {
-          prevState = prevState.filter((message) => message._id !== messageId);
-          return [...prevState];
-        });
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   const socket = openSocket(process.env.REACT_APP_API_SERVER!);
+  //   socket.on('messages', (data) => {
+  //     if (data.action === 'create') {
+  //       setMessages((prevState) => [...prevState, data.result]);
+  //     }
+  //     if (data.action === 'delete') {
+  //       const messageId = data.result._id;
+  //       setMessages((prevState) => {
+  //         prevState = prevState.filter((message) => message._id !== messageId);
+  //         return [...prevState];
+  //       });
+  //     }
+  //   });
+  // }, []);
 
   return (
     <div className='flex flex-col w-full h-full bg-zinc-700'>

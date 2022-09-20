@@ -6,7 +6,7 @@ import { saveUserInteractor } from '../interactors/user/SaveUserInteractor';
 import { updateUserActivityStatusInteractor } from '../interactors/user/UpdateUserActivityStatusInteractor';
 import { HttpError } from '../models/ErrorModel';
 import { UserStatus } from '../models/UserModel';
-import { io } from '../socket';
+import { io } from '../app';
 
 interface RequestBody {
   email: string;
@@ -104,7 +104,7 @@ export const onUpdateUserActivityStatus = async (
 
     res.json({ message: 'Status updated!' });
 
-    io.emit('status-change');
+    // io.emit('status-change');
   } catch (err) {
     return next(
       new HttpError(
