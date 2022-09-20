@@ -1,7 +1,6 @@
 import React from 'react';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
 import { TrashIcon } from '@heroicons/react/outline';
-import { useHttp } from '../../app/hooks/useHttp';
 import { IMessage } from '../models/Message';
 
 interface Props {
@@ -15,24 +14,20 @@ export const Message: React.FC<Props> = ({ message }) => {
     .split(' ')
     .filter((el) => el.length > 1);
 
-  const { sendRequest } = useHttp();
   const { userCredentials } = useAuthContext();
   const userId = userCredentials?.userId;
   const canDeleteMessage = message.creator === userId;
   const hour =
     localHour[0].split(':').slice(0, 2).join(':') + ' ' + localHour[1];
 
-  const deleteMessage = async () => {
-    const messageId = message._id;
-    try {
-      await sendRequest(
-        `/all-chat/delete-message/${messageId}`,
-        'DELETE'
-      );
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  // const deleteMessage = async () => {
+  //   const messageId = message._id;
+  //   try {
+  //     await sendRequest(`/all-chat/delete-message/${messageId}`, 'DELETE');
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   const isAdmin =
     (message.usersName === process.env.REACT_APP_ADMIN_NAME &&
@@ -59,7 +54,7 @@ export const Message: React.FC<Props> = ({ message }) => {
           {canDeleteMessage && (
             <TrashIcon
               className='h-5 w-5 cursor-pointer ml-2'
-              onClick={deleteMessage}
+              // onClick={deleteMessage}
             />
           )}
         </div>
@@ -70,4 +65,3 @@ export const Message: React.FC<Props> = ({ message }) => {
     </div>
   );
 };
-

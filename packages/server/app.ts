@@ -2,15 +2,17 @@ import express, { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import mongoose from 'mongoose';
-import { io } from './socket';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
 
-import { IHttpError } from './models/error';
+import { IHttpError } from './models/ErrorModel';
+import { socket } from './socket';
 
 //routes
-import { router as chatRoutes } from './routes/chat';
-import { router as userRoutes } from './routes/user';
-import { router as conversationRoutes } from './routes/conversation';
-import { router as messageRoutes } from './routes/message';
+import { router as allChatRoutes } from './routes/AllChatRoutes';
+import { router as userRoutes } from './routes/UserRoutes';
+import { router as conversationRoutes } from './routes/ConversationRoutes';
+import { router as directMessageRoutes } from './routes/DirectMessageRoutes';
 
 dotenv.config();
 
@@ -22,10 +24,10 @@ app.use(express.json());
 app.use(cors());
 
 // APIs
-app.use('/all-chat', chatRoutes);
+app.use('/all-chat', allChatRoutes);
 app.use('/users', userRoutes);
 app.use('/conversations', conversationRoutes);
-app.use('/messages', messageRoutes);
+app.use('/direct-messages', directMessageRoutes);
 
 app.use(() => {
   throw new Error('Not implemented!');
@@ -45,8 +47,19 @@ app.use(
   }
 );
 
-mongoose.connect(process.env.MONGODB_CONNECT!).then(() => {
-  app.listen(3001);
+const httpServer = createServer(app);
 
-  io.on('connection', () => console.log('Client connected'));
+export const io = new Server(httpServer, {
+  cors: {
+    origin: 'http://localhost:3000',
+    credentials: true,
+  },
+});
+
+mongoose.connect(process.env.MONGODB_CONNECT!, () => {
+  httpServer.listen(3001, () => {
+    console.log('server started');
+
+    socket(io);
+  });
 });

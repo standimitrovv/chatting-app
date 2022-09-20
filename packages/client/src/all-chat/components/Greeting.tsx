@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useHttp } from '../../app/hooks/useHttp';
 import { UserCredentials } from '../../app/models/UserCredentials';
 import { IMessage } from '../models/Message';
 
@@ -9,19 +8,18 @@ interface Props {
 
 export const Greeting: React.FC<Props> = ({ messages }) => {
   const [users, setUsers] = useState<UserCredentials[] | []>([]);
-  const { sendRequest } = useHttp();
 
-  useEffect(() => {
-    const getUsers = async () => {
-      try {
-        const { users } = await sendRequest(`/users/get-users`);
-        setUsers(users);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    getUsers();
-  }, [sendRequest]);
+  // useEffect(() => {
+  //   const getUsers = async () => {
+  //     try {
+  //       const { users } = await sendRequest(`/users/get-users`);
+  //       setUsers(users);
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   };
+  //   getUsers();
+  // }, [sendRequest]);
 
   return (
     <div className='text-white border-b px-5 py-6 text-center md:text-left'>

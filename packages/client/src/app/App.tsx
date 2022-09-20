@@ -1,30 +1,45 @@
 import React, { useState } from 'react';
 import { useAuthContext } from './hooks/useAuthContext';
-import { SideBar, IActiveChannelState } from './components/SideBar';
+import { SideBar } from './components/sidebar/Index';
 import { AllChat } from '../all-chat/components/AllChat';
 import { StartPage } from '../start-page/containers/Start';
-import { NotAuthorized } from './components/NotAuthorized';
+import { NotAuthorized } from './containers/NotAuthorized';
 
-export const App: React.FC = () => {
+interface ActiveChat {
+  individualChat: boolean;
+  allChat: boolean;
+}
+
+export const App: React.FunctionComponent = () => {
   const { userCredentials } = useAuthContext();
-  const [activeChannel, setActiveChannel] = useState<IActiveChannelState>({
-    start: true,
-    all: false,
+
+  const [activeChat, setActiveChat] = useState<ActiveChat>({
+    individualChat: true,
+    allChat: false,
   });
 
-  const handleActiveChannel = (channelState: IActiveChannelState) => {
-    setActiveChannel(channelState);
+  const onIndividualChatClick = () => {
+    setActiveChat({ individualChat: true, allChat: false });
   };
+
+  const onAllChatClick = () => {
+    setActiveChat({ individualChat: false, allChat: true });
+  };
+
   return (
     <>
       {userCredentials && (
         <div className='flex flex-col md:flex-row h-screen'>
           <SideBar
-            user={userCredentials}
-            switchTheActiveChannel={handleActiveChannel}
+            isIndividualChatActive={activeChat.individualChat}
+            isAllChatActive={activeChat.allChat}
+            onIndividualChatClick={onIndividualChatClick}
+            onAllChatClick={onAllChatClick}
           />
-          {activeChannel.all && <AllChat user={userCredentials} />}
-          {activeChannel.start && <StartPage />}
+
+          {/* {activeChannel.all && <AllChat user={userCredentials} />} */}
+
+          {activeChat.individualChat && <StartPage />}
         </div>
       )}
       {!userCredentials && <NotAuthorized />}

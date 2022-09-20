@@ -1,39 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import openSocket from 'socket.io-client';
-import { useHttp } from '../../app/hooks/useHttp';
-import { Chat } from './Chat';
-import { useConversation } from '../hooks/useConversation';
-import { ResponseMessage } from '../components/ResponseMessage';
-import { SidePanel } from '../components/SidePanel';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
+import { ResponseMessage } from '../components/ResponseMessage';
+import { useConversation } from '../hooks/useConversation';
+import { Chat } from './Chat';
+import { SidePanel } from './SidePanel';
 
-export const StartPage: React.FC = () => {
-  const [convoResponseMessage, setConvoResponseMessage] = useState<string>('');
-
-  const { sendRequest, error } = useHttp();
-
-  const { activeConversation, setActiveConversation } = useConversation();
+export const StartPage: React.FunctionComponent = () => {
+  const { activeConversation } = useConversation();
 
   const { userCredentials } = useAuthContext();
-
-  const deleteConversation = async (conversationId: string) => {
-    try {
-      const response = await sendRequest(
-        `/conversations/delete-convo/${conversationId}`,
-        'DELETE'
-      );
-      if (error) {
-        setConvoResponseMessage(error);
-      }
-
-      if (response.message) {
-        setActiveConversation(undefined);
-        setConvoResponseMessage(response.message);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   useEffect(() => {
     const socket = openSocket(process.env.REACT_APP_API_SERVER!);
@@ -52,21 +28,11 @@ export const StartPage: React.FC = () => {
 
   return (
     <div className='flex w-full'>
-      <SidePanel
-        activeConversationId={activeConversation?._id}
-        onCreateConversationResponse={setConvoResponseMessage}
-        onDelete={deleteConversation}
-        onConversationClick={(conversation) =>
-          setActiveConversation(conversation)
-        }
-      />
-      <div className='bg-cyan-400 w-full pt-8'>
-        {activeConversation && <Chat />}
-      </div>
-      <ResponseMessage
-        conversationResponse={convoResponseMessage}
-        setConversationResponse={setConvoResponseMessage}
-      />
+      <SidePanel />
+
+      {activeConversation && <Chat />}
+
+      <ResponseMessage />
     </div>
   );
 };

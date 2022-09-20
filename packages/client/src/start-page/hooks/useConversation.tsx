@@ -6,15 +6,20 @@ import React, {
   useState,
 } from 'react';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
-import { useHttp } from '../../app/hooks/useHttp';
+import { getAllUserConversationsById } from '../../service/conversation/GetAllUserConversationsById';
+import { getUserById } from '../../service/user/GetUserById';
 import { User } from '../models/User';
 import { UserConversation } from '../models/UserConversation';
 
 interface ConversationContext {
   activeConversation?: UserConversation;
   setActiveConversation: (conversation: UserConversation | undefined) => void;
-  getFriendData: (conversation: UserConversation | undefined) => Promise<any>;
+  getFriendData: (conversation: UserConversation | undefined) => Promise<void>;
   friendCredentials: User | undefined;
+  conversations: UserConversation[];
+  saveConversation: (conversation: UserConversation) => void;
+  deleteConversation: (conversationId: string) => void;
+  fetchAllConversations: () => Promise<void>;
 }
 
 const ConvoContext = createContext<ConversationContext | null>(null);
@@ -32,7 +37,7 @@ export const useConversation = () => {
 export const ConversationProvider: React.FunctionComponent = (props) => {
   const { userCredentials } = useAuthContext();
 
-  const { sendRequest } = useHttp();
+  const [conversations, setConversations] = useState<UserConversation[]>([]);
 
   const [activeConvo, setActiveConvo] = useState<UserConversation | undefined>(
     undefined
@@ -42,6 +47,8 @@ export const ConversationProvider: React.FunctionComponent = (props) => {
     undefined
   );
 
+  const userId = userCredentials?.userId;
+
   const setActiveConversation = useCallback(
     (conversation: UserConversation | undefined) =>
       setActiveConvo(conversation),
@@ -50,25 +57,58 @@ export const ConversationProvider: React.FunctionComponent = (props) => {
 
   const getFriendData = useCallback(
     async (conversation: UserConversation | undefined) => {
-      const friendId = conversation?.members.find(
-        (id) => id !== userCredentials?.userId
-      );
+      const friendId = conversation?.members.find((id) => id !== userId);
+
       if (!friendId) return;
-      const response = await sendRequest(`/users/get-user/${friendId}`);
-      if (!response.user) {
-        setFriendCredentials(undefined);
-        return;
-      }
-      setFriendCredentials(response.user);
+
+      try {
+        const { data } = await getUserById({ userId: friendId });
+
+        if (!data.user) {
+          setFriendCredentials(undefined);
+
+          return;
+        }
+
+        setFriendCredentials(data.user);
+      } catch (err) {}
     },
-    [sendRequest, userCredentials?.userId]
+    [userId]
   );
 
+  const fetchAllConversations = useCallback(async () => {
+    if (!userId) {
+      return;
+    }
+
+    const { data } = await getAllUserConversationsById({ userId });
+
+    if (!data.userConversations || data.userConversations.length === 0) {
+      setConversations([]);
+
+      return;
+    }
+
+    setConversations(data.userConversations);
+  }, [userId]);
+
+  const saveConversation = (conversation: UserConversation) => {
+    setConversations((prevState) => [...prevState, conversation]);
+  };
+
+  const deleteConversation = (conversationId: string) => {
+    setConversations((prevState) => {
+      return prevState.filter(
+        (conversation) => conversation._id !== conversationId
+      );
+    });
+  };
+
+  // gets the data of the user that you are chatting with
   useEffect(() => {
-    const getFriend = async () => {
+    (async () => {
       await getFriendData(activeConvo);
-    };
-    getFriend();
+    })();
   }, [getFriendData, activeConvo]);
 
   const context = {
@@ -76,6 +116,10 @@ export const ConversationProvider: React.FunctionComponent = (props) => {
     setActiveConversation,
     getFriendData,
     friendCredentials,
+    conversations,
+    saveConversation,
+    deleteConversation,
+    fetchAllConversations,
   };
 
   return (
