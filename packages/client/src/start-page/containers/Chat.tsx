@@ -73,7 +73,7 @@ export const Chat: React.FunctionComponent = () => {
   };
 
   return (
-    <>
+    <div className='bg-cyan-400 w-full pt-8'>
       <div
         style={{ height: 'calc(100% - 102px)' }}
         className='overflow-y-auto flex flex-col'
@@ -91,6 +91,6 @@ export const Chat: React.FunctionComponent = () => {
         conversationId={activeConversation?._id}
         onSendMessage={onSendMessage}
       />
-    </>
+    </div>
   );
 };

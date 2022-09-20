@@ -30,9 +30,7 @@ export const StartPage: React.FunctionComponent = () => {
     <div className='flex w-full'>
       <SidePanel />
 
-      <div className='bg-cyan-400 w-full pt-8'>
-        {activeConversation && <Chat />}
-      </div>
+      {activeConversation && <Chat />}
 
       <ResponseMessage />
     </div>
