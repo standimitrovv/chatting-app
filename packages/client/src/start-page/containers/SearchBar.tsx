@@ -4,10 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
 import { saveConversation as saveConversationService } from '../../service/conversation/SaveConversation';
 import { getAllUsersExceptCurrentOne } from '../../service/user/GetUsers';
-import { User } from '../models/User';
-import { useResponseMessage } from '../hooks/useResponseMessage';
-import { useConversation } from '../hooks/useConversation';
 import { SearchResults } from '../components/SearchResults';
+import { useConversation } from '../hooks/useConversation';
+import { useResponseMessage } from '../hooks/useResponseMessage';
+import { User } from '../models/User';
 
 export const SearchBar: React.FunctionComponent = () => {
   const { userCredentials } = useAuthContext();

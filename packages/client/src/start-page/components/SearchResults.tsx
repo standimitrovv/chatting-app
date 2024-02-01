@@ -11,8 +11,8 @@ interface Props {
 
 export const SearchResults: React.FunctionComponent<Props> = (props) => {
   return (
-    <div className='bg-orange-400 rounded-lg flex flex-col text-center absolute w-full'>
-      {props.searchResults.length === 0 && (
+    <div className='bg-orange-400 rounded-lg flex flex-col text-center absolute w-full z-10'>
+      {!props.searchResults.length ? (
         <p className='py-3 px-2 w-full'>
           {buildSearchingStateLabel(
             props.searchResults.length,
@@ -20,16 +20,15 @@ export const SearchResults: React.FunctionComponent<Props> = (props) => {
             props.userInputLength
           )}
         </p>
-      )}
-
-      {props.searchResults.length > 0 &&
+      ) : (
         props.searchResults.map((result) => (
           <SearchResult
             key={result._id}
             userData={result}
             onClick={() => props.onClick(result.userId)}
           />
-        ))}
+        ))
+      )}
     </div>
   );
 };

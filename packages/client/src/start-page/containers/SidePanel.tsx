@@ -55,21 +55,20 @@ export const SidePanel: React.FunctionComponent = () => {
   }, [userId, fetchAllConversations]);
 
   return (
-    <div className='w-96 bg-slate-500 relative'>
+    <div className='col-span-1 bg-slate-500 relative'>
       <div className='flex relative pt-9 pb-6 px-4 border-b'>
         <SearchBar />
       </div>
       <div className='flex flex-col justify-center pt-5'>
-        {conversations &&
-          conversations.map((conversation) => (
-            <Conversation
-              key={conversation._id}
-              conversation={conversation}
-              isActive={conversation._id === activeConversation?._id}
-              onDelete={() => onDeleteConversation(conversation._id)}
-              onClick={() => setActiveConversation(conversation)}
-            />
-          ))}
+        {conversations.map((conversation) => (
+          <Conversation
+            key={conversation._id}
+            conversation={conversation}
+            isActive={conversation._id === activeConversation?._id}
+            onDelete={() => onDeleteConversation(conversation._id)}
+            onClick={() => setActiveConversation(conversation)}
+          />
+        ))}
       </div>
     </div>
   );

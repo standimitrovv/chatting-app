@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
 import { XIcon } from '@heroicons/react/outline';
+import React, { useEffect } from 'react';
+import { StatusIcon } from '../../app/components/StatusIcon';
 import { useConversation } from '../hooks/useConversation';
 import { UserConversation } from '../models/UserConversation';
-import { StatusIcon } from '../../app/components/StatusIcon';
 interface Props {
   isActive: boolean;
   conversation: UserConversation;
@@ -33,8 +33,8 @@ export const Conversation: React.FC<Props> = ({
       <div className='flex items-center' onClick={onClick}>
         <div className='relative'>
           <img
-            src={friendCredentials && friendCredentials.photoUrl}
-            alt="User's profile "
+            src={friendCredentials?.photoUrl}
+            alt='User'
             className='w-10 h-10 rounded-full'
             referrerPolicy='no-referrer'
           />

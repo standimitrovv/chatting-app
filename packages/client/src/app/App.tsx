@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { useAuthContext } from './hooks/useAuthContext';
-import { SideBar } from './components/sidebar/Index';
-import { AllChat } from '../all-chat/components/AllChat';
 import { StartPage } from '../start-page/containers/Start';
+import { SideBar } from './components/sidebar/Index';
 import { NotAuthorized } from './containers/NotAuthorized';
+import { useAuthContext } from './hooks/useAuthContext';
 
 interface ActiveChat {
   individualChat: boolean;

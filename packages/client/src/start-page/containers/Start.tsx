@@ -27,7 +27,7 @@ export const StartPage: React.FunctionComponent = () => {
   }, [userCredentials?.userId]);
 
   return (
-    <div className='flex w-full'>
+    <div className='grid grid-cols-2 grid-rows-1'>
       <SidePanel />
 
       {activeConversation && <Chat />}

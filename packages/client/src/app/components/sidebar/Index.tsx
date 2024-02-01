@@ -1,7 +1,6 @@
 import React from 'react';
-import { Settings } from './Settings';
 import { IndividualChat } from './IndividualChat';
-import { AllChat } from './AllChat';
+import { Settings } from './Settings';
 
 interface Props {
   isIndividualChatActive: boolean;
@@ -20,10 +19,10 @@ export const SideBar: React.FunctionComponent<Props> = (props) => {
 
       <div className='border-b w-2/5 mb-5 -mt-[1.9rem] h-8'>&nbsp;</div>
 
-      <AllChat
+      {/* <AllChat
         isActive={props.isAllChatActive}
         onClick={props.onAllChatClick}
-      />
+      /> */}
 
       <Settings />
     </div>

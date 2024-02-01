@@ -1,8 +1,8 @@
-import express, { Request, Response, NextFunction } from 'express';
-import dotenv from 'dotenv';
 import cors from 'cors';
-import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import express, { NextFunction, Request, Response } from 'express';
 import { createServer } from 'http';
+import mongoose from 'mongoose';
 import { Server } from 'socket.io';
 
 import { IHttpError } from './models/ErrorModel';
@@ -10,9 +10,9 @@ import { socket } from './socket';
 
 //routes
 import { router as allChatRoutes } from './routes/AllChatRoutes';
-import { router as userRoutes } from './routes/UserRoutes';
 import { router as conversationRoutes } from './routes/ConversationRoutes';
 import { router as directMessageRoutes } from './routes/DirectMessageRoutes';
+import { router as userRoutes } from './routes/UserRoutes';
 
 dotenv.config();
 

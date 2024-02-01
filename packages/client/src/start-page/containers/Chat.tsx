@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import openSocket from 'socket.io-client';
 import { Input } from '../../app/components/Input';
 import { useAuthContext } from '../../app/hooks/useAuthContext';
-import { ConversationMessages } from '../models/ConversationMessages';
-import { ChatMessage } from '../components/ChatMessage';
-import openSocket from 'socket.io-client';
-import { useConversation } from '../hooks/useConversation';
 import { getAllDirectMessages } from '../../service/direct-message/GetAllDirectMessages';
 import { saveDirectMessage } from '../../service/direct-message/SaveDirectMessage';
+import { ChatMessage } from '../components/ChatMessage';
+import { useConversation } from '../hooks/useConversation';
+import { ConversationMessages } from '../models/ConversationMessages';
 
 export const Chat: React.FunctionComponent = () => {
   const { userCredentials } = useAuthContext();
@@ -73,19 +73,15 @@ export const Chat: React.FunctionComponent = () => {
   };
 
   return (
-    <div className='bg-cyan-400 w-full pt-8'>
-      <div
-        style={{ height: 'calc(100% - 102px)' }}
-        className='overflow-y-auto flex flex-col'
-      >
-        {chatMessages &&
-          chatMessages.map((msg) => (
-            <ChatMessage
-              key={msg._id}
-              conversation={msg}
-              own={msg.sender === userCredentials?.userId}
-            />
-          ))}
+    <div className='bg-cyan-400 pt-8'>
+      <div className='overflow-y-auto flex flex-col'>
+        {chatMessages.map((msg) => (
+          <ChatMessage
+            key={msg._id}
+            conversation={msg}
+            own={msg.sender === userCredentials?.userId}
+          />
+        ))}
       </div>
       <Input
         conversationId={activeConversation?._id}

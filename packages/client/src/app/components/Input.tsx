@@ -16,14 +16,10 @@ export const Input: React.FunctionComponent<Props> = (props) => {
     setUsersInput('');
   };
 
-  //bg-zinc-700
   return (
-    <div
-      style={{ width: `calc(100% - 112px - 288px)` }}
-      className='w-full fixed bottom-0 px-2 py-3 border-t border-gray h-26'
-    >
+    <div className='fixed bottom-0 px-2 py-3 border-t border-gray h-26'>
       <form
-        className='my-4 flex space-x-4 px-4 md:mr-28 lg:mr-24 xl:mr-20 2xl:mr-3'
+        className='my-4 flex justify-between gap-4 px-4'
         onSubmit={submitFormHandler}
       >
         <input
